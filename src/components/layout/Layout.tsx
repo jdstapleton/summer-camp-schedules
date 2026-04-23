@@ -18,13 +18,14 @@ export function Layout() {
             ☀️ Summer Camp
           </Typography>
           {NAV_LINKS.map((link) => (
-            <Link
+            <Button
               key={link.to}
+              component={Link}
               to={link.to}
-              style={{ textDecoration: 'none' }}
+              color="inherit"
             >
-              <Button color="inherit">{link.label}</Button>
-            </Link>
+              {link.label}
+            </Button>
           ))}
         </Toolbar>
       </AppBar>
