@@ -1,0 +1,122 @@
+import { useState } from 'react';
+import {
+  Box,
+  Button,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useSchedule } from '@/contexts/ScheduleContext';
+import type { Student } from '@/models/types';
+import { StudentDialog } from './StudentDialog';
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+
+export function StudentsPage() {
+  const { data, addStudent, updateStudent, deleteStudent } = useSchedule();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleAdd = () => {
+    setEditingStudent(null);
+    setDialogOpen(true);
+  };
+
+  const handleEdit = (student: Student) => {
+    setEditingStudent(student);
+    setDialogOpen(true);
+  };
+
+  const handleSave = (studentData: Omit<Student, 'id'>) => {
+    if (editingStudent) {
+      updateStudent({ ...studentData, id: editingStudent.id });
+    } else {
+      addStudent(studentData);
+    }
+    setDialogOpen(false);
+  };
+
+  return (
+    <Box>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, alignItems: 'center' }}
+      >
+        <Typography variant="h4">
+          Students ({data.students.length})
+        </Typography>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
+          Add Student
+        </Button>
+      </Box>
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.students.map((student) => (
+              <TableRow key={student.id}>
+                <TableCell>
+                  {student.firstName} {student.lastName}
+                </TableCell>
+                <TableCell sx={{ textTransform: 'capitalize' }}>
+                  {student.gender}
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton size="small" onClick={() => handleEdit(student)}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={() => setDeletingId(student.id)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+            {data.students.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3} align="center" sx={{ color: 'text.secondary' }}>
+                  No students added yet.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <StudentDialog
+        open={dialogOpen}
+        student={editingStudent}
+        onSave={handleSave}
+        onClose={() => setDialogOpen(false)}
+      />
+
+      <ConfirmDialog
+        open={deletingId !== null}
+        title="Delete Student"
+        message="Are you sure? This student will be removed from all class registrations."
+        onConfirm={() => {
+          if (deletingId) deleteStudent(deletingId);
+        }}
+        onClose={() => setDeletingId(null)}
+      />
+    </Box>
+  );
+}

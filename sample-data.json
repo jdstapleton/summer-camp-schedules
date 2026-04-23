@@ -1,0 +1,94 @@
+{
+  "students": [
+    { "id": "s01", "firstName": "Ethan",     "lastName": "Brooks",    "gender": "male"   },
+    { "id": "s02", "firstName": "Noah",      "lastName": "Carter",    "gender": "male"   },
+    { "id": "s03", "firstName": "Liam",      "lastName": "Davis",     "gender": "male"   },
+    { "id": "s04", "firstName": "Mason",     "lastName": "Evans",     "gender": "male"   },
+    { "id": "s05", "firstName": "Logan",     "lastName": "Foster",    "gender": "male"   },
+    { "id": "s06", "firstName": "Oliver",    "lastName": "Grant",     "gender": "male"   },
+    { "id": "s07", "firstName": "James",     "lastName": "Harris",    "gender": "male"   },
+    { "id": "s08", "firstName": "Lucas",     "lastName": "Irving",    "gender": "male"   },
+    { "id": "s09", "firstName": "Jackson",   "lastName": "Jensen",    "gender": "male"   },
+    { "id": "s10", "firstName": "Aiden",     "lastName": "Kim",       "gender": "male"   },
+    { "id": "s11", "firstName": "Carter",    "lastName": "Lewis",     "gender": "male"   },
+    { "id": "s12", "firstName": "Owen",      "lastName": "Morgan",    "gender": "male"   },
+    { "id": "s13", "firstName": "Henry",     "lastName": "Nelson",    "gender": "male"   },
+    { "id": "s14", "firstName": "Sebastian", "lastName": "Ortiz",     "gender": "male"   },
+    { "id": "s15", "firstName": "Elijah",    "lastName": "Patel",     "gender": "male"   },
+    { "id": "s16", "firstName": "Emma",      "lastName": "Quinn",     "gender": "female" },
+    { "id": "s17", "firstName": "Olivia",    "lastName": "Reed",      "gender": "female" },
+    { "id": "s18", "firstName": "Sophia",    "lastName": "Scott",     "gender": "female" },
+    { "id": "s19", "firstName": "Isabella",  "lastName": "Torres",    "gender": "female" },
+    { "id": "s20", "firstName": "Ava",       "lastName": "Upton",     "gender": "female" },
+    { "id": "s21", "firstName": "Mia",       "lastName": "Vargas",    "gender": "female" },
+    { "id": "s22", "firstName": "Charlotte", "lastName": "Walker",    "gender": "female" },
+    { "id": "s23", "firstName": "Amelia",    "lastName": "Xavier",    "gender": "female" },
+    { "id": "s24", "firstName": "Harper",    "lastName": "Young",     "gender": "female" },
+    { "id": "s25", "firstName": "Evelyn",    "lastName": "Zhang",     "gender": "female" },
+    { "id": "s26", "firstName": "Abigail",   "lastName": "Adams",     "gender": "female" },
+    { "id": "s27", "firstName": "Emily",     "lastName": "Baker",     "gender": "female" },
+    { "id": "s28", "firstName": "Madison",   "lastName": "Cole",      "gender": "female" },
+    { "id": "s29", "firstName": "Ella",      "lastName": "Diaz",      "gender": "female" },
+    { "id": "s30", "firstName": "Scarlett",  "lastName": "Edwards",   "gender": "female" }
+  ],
+  "classTypes": [
+    { "id": "c01", "name": "Minecraft Programming", "maxSize": 12 },
+    { "id": "c02", "name": "Little Chemist",        "maxSize": 16 },
+    { "id": "c03", "name": "Eco Explorer",          "maxSize": 14 },
+    { "id": "c04", "name": "Coding with Roblox",    "maxSize": 12 },
+    { "id": "c05", "name": "Jr Space Explorer",     "maxSize": 15 }
+  ],
+  "registrations": [
+    {
+      "classTypeId": "c01",
+      "studentIds": [
+        "s01","s02","s03","s04","s05","s06","s07",
+        "s16","s17","s18","s19","s20","s21","s22","s23","s24","s25","s26","s27","s28"
+      ],
+      "friendGroups": [
+        ["s01","s02","s03"],
+        ["s19","s20","s21"]
+      ]
+    },
+    {
+      "classTypeId": "c02",
+      "studentIds": [
+        "s08","s09","s10","s11","s12","s13","s14","s15",
+        "s17","s18","s22","s23","s24","s25","s26","s27","s28","s29"
+      ],
+      "friendGroups": [
+        ["s08","s09"],
+        ["s24","s25","s26"]
+      ]
+    },
+    {
+      "classTypeId": "c03",
+      "studentIds": [
+        "s01","s04","s07","s10","s13",
+        "s16","s19","s22","s25","s28"
+      ],
+      "friendGroups": []
+    },
+    {
+      "classTypeId": "c04",
+      "studentIds": [
+        "s02","s03","s05","s06","s08","s11","s12","s14","s15",
+        "s17","s18","s20","s21","s23","s29","s30"
+      ],
+      "friendGroups": [
+        ["s02","s03"],
+        ["s29","s30"]
+      ]
+    },
+    {
+      "classTypeId": "c05",
+      "studentIds": [
+        "s04","s06","s09","s13",
+        "s16","s18","s23","s27","s30"
+      ],
+      "friendGroups": [
+        ["s04","s06","s09"]
+      ]
+    }
+  ]
+}
