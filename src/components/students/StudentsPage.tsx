@@ -17,6 +17,8 @@ import CasinoIcon from '@mui/icons-material/Casino';
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import NoteIcon from '@mui/icons-material/Note';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { Student } from '@/models/types';
 import { StudentDialog } from './StudentDialog';
@@ -93,9 +95,13 @@ export function StudentsPage() {
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Gender</TableCell>
+              <TableCell align="right">Age</TableCell>
               <TableCell>Safety Code</TableCell>
+              <TableCell>Custody</TableCell>
+              <TableCell align="center">Photo</TableCell>
               <TableCell align="center">Pre-Camp</TableCell>
               <TableCell align="center">Post-Camp</TableCell>
+              <TableCell align="center">Notes</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -106,12 +112,33 @@ export function StudentsPage() {
                   {student.firstName} {student.lastName}
                 </TableCell>
                 <CapitalizedTableCell>{student.gender}</CapitalizedTableCell>
+                <TableCell align="right">{student.age}</TableCell>
                 <MonospaceTableCell>{student.safetyCode}</MonospaceTableCell>
+                <TableCell>{student.custody}</TableCell>
+                <TableCell align="center">
+                  {student.photo && <CheckIcon fontSize="small" />}
+                </TableCell>
                 <TableCell align="center">
                   {student.preCamp && <CheckIcon fontSize="small" />}
                 </TableCell>
                 <TableCell align="center">
                   {student.postCamp && <CheckIcon fontSize="small" />}
+                </TableCell>
+                <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>
+                  {student.medicalIssues && (
+                    <Tooltip title={student.medicalIssues}>
+                      <LocalHospitalIcon
+                        fontSize="small"
+                        color="error"
+                        sx={{ mr: student.specialRequest ? 0.5 : 0 }}
+                      />
+                    </Tooltip>
+                  )}
+                  {student.specialRequest && (
+                    <Tooltip title={student.specialRequest}>
+                      <NoteIcon fontSize="small" color="action" />
+                    </Tooltip>
+                  )}
                 </TableCell>
                 <TableCell align="right">
                   <IconButton size="small" onClick={() => handleEdit(student)}>
@@ -129,7 +156,7 @@ export function StudentsPage() {
             ))}
             {data.students.length === 0 && (
               <TableRow>
-                <MutedTableCell colSpan={6} align="center">
+                <MutedTableCell colSpan={10} align="center">
                   No students added yet.
                 </MutedTableCell>
               </TableRow>

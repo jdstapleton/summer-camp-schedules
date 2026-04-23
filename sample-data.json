@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "students": [
     {
       "id": "s01",
@@ -7,16 +7,28 @@
       "lastName": "Brooks",
       "gender": "male",
       "safetyCode": "1000",
-      "emergency": {
-        "name": "Sarah Brooks",
-        "phone": "(206) 500-1000"
-      },
-      "backup": {
-        "name": "Grandma Rose",
-        "phone": "(425) 200-2000"
-      },
       "preCamp": false,
-      "postCamp": true
+      "postCamp": true,
+      "age": 6,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Sarah Brooks",
+        "homePhone": "",
+        "cellPhone": "(206) 500-1000"
+      },
+      "secondary": {
+        "name": "Grandma Rose",
+        "homePhone": "",
+        "cellPhone": "(425) 200-2000"
+      },
+      "emergency": {
+        "name": "Dr. Karen Brooks",
+        "homePhone": "(206) 555-0101",
+        "cellPhone": "(206) 555-0102"
+      }
     },
     {
       "id": "s02",
@@ -24,16 +36,28 @@
       "lastName": "Carter",
       "gender": "male",
       "safetyCode": "1037",
-      "emergency": {
-        "name": "Michael Carter",
-        "phone": "(207) 501-1017"
-      },
-      "backup": {
-        "name": "Uncle Tom",
-        "phone": "(426) 201-2023"
-      },
       "preCamp": false,
-      "postCamp": false
+      "postCamp": false,
+      "age": 7,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Michael Carter",
+        "homePhone": "",
+        "cellPhone": "(207) 501-1017"
+      },
+      "secondary": {
+        "name": "Uncle Tom",
+        "homePhone": "",
+        "cellPhone": "(426) 201-2023"
+      },
+      "emergency": {
+        "name": "Uncle Ben Carter",
+        "homePhone": "(207) 555-0103",
+        "cellPhone": "(207) 555-0104"
+      }
     },
     {
       "id": "s03",
@@ -41,16 +65,28 @@
       "lastName": "Davis",
       "gender": "male",
       "safetyCode": "1074",
-      "emergency": {
-        "name": "Jessica Davis",
-        "phone": "(208) 502-1034"
-      },
-      "backup": {
-        "name": "Aunt Karen",
-        "phone": "(427) 202-2046"
-      },
       "preCamp": false,
-      "postCamp": true
+      "postCamp": true,
+      "age": 8,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Jessica Davis",
+        "homePhone": "",
+        "cellPhone": "(208) 502-1034"
+      },
+      "secondary": {
+        "name": "Aunt Karen",
+        "homePhone": "",
+        "cellPhone": "(427) 202-2046"
+      },
+      "emergency": {
+        "name": "Grandpa Frank Davis",
+        "homePhone": "(208) 555-0105",
+        "cellPhone": "(208) 555-0106"
+      }
     },
     {
       "id": "s04",
@@ -58,16 +94,28 @@
       "lastName": "Evans",
       "gender": "male",
       "safetyCode": "1111",
-      "emergency": {
-        "name": "David Evans",
-        "phone": "(209) 503-1051"
-      },
-      "backup": {
-        "name": "Grandpa Joe",
-        "phone": "(428) 203-2069"
-      },
       "preCamp": true,
-      "postCamp": false
+      "postCamp": false,
+      "age": 9,
+      "custody": "Father",
+      "photo": false,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "David Evans",
+        "homePhone": "",
+        "cellPhone": "(209) 503-1051"
+      },
+      "secondary": {
+        "name": "Grandpa Joe",
+        "homePhone": "",
+        "cellPhone": "(428) 203-2069"
+      },
+      "emergency": {
+        "name": "Aunt Carol Evans",
+        "homePhone": "(209) 555-0107",
+        "cellPhone": "(209) 555-0108"
+      }
     },
     {
       "id": "s05",
@@ -75,16 +123,28 @@
       "lastName": "Foster",
       "gender": "male",
       "safetyCode": "1148",
-      "emergency": {
-        "name": "Amanda Foster",
-        "phone": "(210) 504-1068"
-      },
-      "backup": {
-        "name": "Aunt Emily",
-        "phone": "(429) 204-2092"
-      },
       "preCamp": false,
-      "postCamp": true
+      "postCamp": true,
+      "age": 10,
+      "custody": "Mother",
+      "photo": false,
+      "specialRequest": "Needs extra bathroom breaks",
+      "medicalIssues": "Peanut allergy - epipen in bag",
+      "primary": {
+        "name": "Amanda Foster",
+        "homePhone": "",
+        "cellPhone": "(210) 504-1068"
+      },
+      "secondary": {
+        "name": "Aunt Emily",
+        "homePhone": "",
+        "cellPhone": "(429) 204-2092"
+      },
+      "emergency": {
+        "name": "Dr. Paul Foster",
+        "homePhone": "(210) 555-0109",
+        "cellPhone": "(210) 555-0110"
+      }
     },
     {
       "id": "s06",
@@ -92,16 +152,28 @@
       "lastName": "Grant",
       "gender": "male",
       "safetyCode": "1185",
-      "emergency": {
-        "name": "James Grant",
-        "phone": "(211) 505-1085"
-      },
-      "backup": {
-        "name": "Uncle Mark",
-        "phone": "(430) 205-2115"
-      },
       "preCamp": true,
-      "postCamp": false
+      "postCamp": false,
+      "age": 11,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "Vegetarian meal preference",
+      "medicalIssues": "Asthma - inhaler required",
+      "primary": {
+        "name": "James Grant",
+        "homePhone": "",
+        "cellPhone": "(211) 505-1085"
+      },
+      "secondary": {
+        "name": "Uncle Mark",
+        "homePhone": "",
+        "cellPhone": "(430) 205-2115"
+      },
+      "emergency": {
+        "name": "Grandma Helen Grant",
+        "homePhone": "(211) 555-0111",
+        "cellPhone": "(211) 555-0112"
+      }
     },
     {
       "id": "s07",
@@ -109,16 +181,28 @@
       "lastName": "Harris",
       "gender": "male",
       "safetyCode": "1222",
-      "emergency": {
-        "name": "Jennifer Harris",
-        "phone": "(212) 506-1102"
-      },
-      "backup": {
-        "name": "Grandma Mary",
-        "phone": "(431) 206-2138"
-      },
       "preCamp": true,
-      "postCamp": true
+      "postCamp": true,
+      "age": 12,
+      "custody": "Both",
+      "photo": false,
+      "specialRequest": "",
+      "medicalIssues": "Diabetes - monitor glucose",
+      "primary": {
+        "name": "Jennifer Harris",
+        "homePhone": "",
+        "cellPhone": "(212) 506-1102"
+      },
+      "secondary": {
+        "name": "Grandma Mary",
+        "homePhone": "",
+        "cellPhone": "(431) 206-2138"
+      },
+      "emergency": {
+        "name": "Uncle Dan Harris",
+        "homePhone": "(212) 555-0113",
+        "cellPhone": "(212) 555-0114"
+      }
     },
     {
       "id": "s08",
@@ -126,16 +210,28 @@
       "lastName": "Irving",
       "gender": "male",
       "safetyCode": "1259",
-      "emergency": {
-        "name": "Robert Irving",
-        "phone": "(213) 507-1119"
-      },
-      "backup": {
-        "name": "Uncle Chris",
-        "phone": "(432) 207-2161"
-      },
       "preCamp": false,
-      "postCamp": true
+      "postCamp": true,
+      "age": 13,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "Shy - needs encouragement to participate",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Robert Irving",
+        "homePhone": "",
+        "cellPhone": "(213) 507-1119"
+      },
+      "secondary": {
+        "name": "Uncle Chris",
+        "homePhone": "",
+        "cellPhone": "(432) 207-2161"
+      },
+      "emergency": {
+        "name": "Aunt Ruth Irving",
+        "homePhone": "(213) 555-0115",
+        "cellPhone": "(213) 555-0116"
+      }
     },
     {
       "id": "s09",
@@ -143,16 +239,28 @@
       "lastName": "Jensen",
       "gender": "male",
       "safetyCode": "1296",
-      "emergency": {
-        "name": "Lisa Jensen",
-        "phone": "(214) 508-1136"
-      },
-      "backup": {
-        "name": "Aunt Nicole",
-        "phone": "(433) 208-2184"
-      },
       "preCamp": true,
-      "postCamp": true
+      "postCamp": true,
+      "age": 14,
+      "custody": "Father",
+      "photo": false,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Lisa Jensen",
+        "homePhone": "",
+        "cellPhone": "(214) 508-1136"
+      },
+      "secondary": {
+        "name": "Aunt Nicole",
+        "homePhone": "",
+        "cellPhone": "(433) 208-2184"
+      },
+      "emergency": {
+        "name": "Grandpa Carl Jensen",
+        "homePhone": "(214) 555-0117",
+        "cellPhone": "(214) 555-0118"
+      }
     },
     {
       "id": "s10",
@@ -160,16 +268,28 @@
       "lastName": "Kim",
       "gender": "male",
       "safetyCode": "1333",
-      "emergency": {
-        "name": "William Kim",
-        "phone": "(215) 509-1153"
-      },
-      "backup": {
-        "name": "Grandpa Bill",
-        "phone": "(434) 209-2207"
-      },
       "preCamp": true,
-      "postCamp": true
+      "postCamp": true,
+      "age": 6,
+      "custody": "Mother",
+      "photo": false,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "William Kim",
+        "homePhone": "",
+        "cellPhone": "(215) 509-1153"
+      },
+      "secondary": {
+        "name": "Grandpa Bill",
+        "homePhone": "",
+        "cellPhone": "(434) 209-2207"
+      },
+      "emergency": {
+        "name": "Dr. Alice Kim",
+        "homePhone": "(215) 555-0119",
+        "cellPhone": "(215) 555-0120"
+      }
     },
     {
       "id": "s11",
@@ -177,16 +297,28 @@
       "lastName": "Lewis",
       "gender": "male",
       "safetyCode": "1370",
-      "emergency": {
-        "name": "Mary Lewis",
-        "phone": "(206) 510-1170"
-      },
-      "backup": {
-        "name": "Aunt Susan",
-        "phone": "(425) 210-2230"
-      },
       "preCamp": false,
-      "postCamp": false
+      "postCamp": false,
+      "age": 7,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Mary Lewis",
+        "homePhone": "",
+        "cellPhone": "(206) 510-1170"
+      },
+      "secondary": {
+        "name": "Aunt Susan",
+        "homePhone": "",
+        "cellPhone": "(425) 210-2230"
+      },
+      "emergency": {
+        "name": "Uncle Phil Lewis",
+        "homePhone": "(206) 555-0121",
+        "cellPhone": "(206) 555-0122"
+      }
     },
     {
       "id": "s12",
@@ -194,16 +326,28 @@
       "lastName": "Morgan",
       "gender": "male",
       "safetyCode": "1407",
-      "emergency": {
-        "name": "Richard Morgan",
-        "phone": "(207) 511-1187"
-      },
-      "backup": {
-        "name": "Uncle Steve",
-        "phone": "(426) 211-2253"
-      },
       "preCamp": false,
-      "postCamp": true
+      "postCamp": true,
+      "age": 8,
+      "custody": "Both",
+      "photo": false,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Richard Morgan",
+        "homePhone": "",
+        "cellPhone": "(207) 511-1187"
+      },
+      "secondary": {
+        "name": "Uncle Steve",
+        "homePhone": "",
+        "cellPhone": "(426) 211-2253"
+      },
+      "emergency": {
+        "name": "Grandma Edna Morgan",
+        "homePhone": "(207) 555-0123",
+        "cellPhone": "(207) 555-0124"
+      }
     },
     {
       "id": "s13",
@@ -211,16 +355,28 @@
       "lastName": "Nelson",
       "gender": "male",
       "safetyCode": "1444",
-      "emergency": {
-        "name": "Patricia Nelson",
-        "phone": "(208) 512-1204"
-      },
-      "backup": {
-        "name": "Grandma Ann",
-        "phone": "(427) 212-2276"
-      },
       "preCamp": true,
-      "postCamp": false
+      "postCamp": false,
+      "age": 9,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Patricia Nelson",
+        "homePhone": "",
+        "cellPhone": "(208) 512-1204"
+      },
+      "secondary": {
+        "name": "Grandma Ann",
+        "homePhone": "",
+        "cellPhone": "(427) 212-2276"
+      },
+      "emergency": {
+        "name": "Aunt Diane Nelson",
+        "homePhone": "(208) 555-0125",
+        "cellPhone": "(208) 555-0126"
+      }
     },
     {
       "id": "s14",
@@ -228,16 +384,28 @@
       "lastName": "Ortiz",
       "gender": "male",
       "safetyCode": "1481",
-      "emergency": {
-        "name": "Thomas Ortiz",
-        "phone": "(209) 513-1221"
-      },
-      "backup": {
-        "name": "Uncle Kevin",
-        "phone": "(428) 213-2299"
-      },
       "preCamp": false,
-      "postCamp": false
+      "postCamp": false,
+      "age": 10,
+      "custody": "Father",
+      "photo": false,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Thomas Ortiz",
+        "homePhone": "",
+        "cellPhone": "(209) 513-1221"
+      },
+      "secondary": {
+        "name": "Uncle Kevin",
+        "homePhone": "",
+        "cellPhone": "(428) 213-2299"
+      },
+      "emergency": {
+        "name": "Dr. Ray Ortiz",
+        "homePhone": "(209) 555-0127",
+        "cellPhone": "(209) 555-0128"
+      }
     },
     {
       "id": "s15",
@@ -245,16 +413,28 @@
       "lastName": "Patel",
       "gender": "male",
       "safetyCode": "1518",
-      "emergency": {
-        "name": "Barbara Patel",
-        "phone": "(210) 514-1238"
-      },
-      "backup": {
-        "name": "Aunt Linda",
-        "phone": "(429) 214-2322"
-      },
       "preCamp": false,
-      "postCamp": false
+      "postCamp": false,
+      "age": 11,
+      "custody": "Mother",
+      "photo": false,
+      "specialRequest": "Needs extra bathroom breaks",
+      "medicalIssues": "Peanut allergy - epipen in bag",
+      "primary": {
+        "name": "Barbara Patel",
+        "homePhone": "",
+        "cellPhone": "(210) 514-1238"
+      },
+      "secondary": {
+        "name": "Aunt Linda",
+        "homePhone": "",
+        "cellPhone": "(429) 214-2322"
+      },
+      "emergency": {
+        "name": "Uncle Hank Patel",
+        "homePhone": "(210) 555-0129",
+        "cellPhone": "(210) 555-0130"
+      }
     },
     {
       "id": "s16",
@@ -262,16 +442,28 @@
       "lastName": "Quinn",
       "gender": "female",
       "safetyCode": "1555",
-      "emergency": {
-        "name": "Sarah Quinn",
-        "phone": "(211) 515-1255"
-      },
-      "backup": {
-        "name": "Grandma Rose",
-        "phone": "(430) 215-2345"
-      },
       "preCamp": true,
-      "postCamp": false
+      "postCamp": false,
+      "age": 12,
+      "custody": "Both",
+      "photo": false,
+      "specialRequest": "Vegetarian meal preference",
+      "medicalIssues": "Asthma - inhaler required",
+      "primary": {
+        "name": "Sarah Quinn",
+        "homePhone": "",
+        "cellPhone": "(211) 515-1255"
+      },
+      "secondary": {
+        "name": "Grandma Rose",
+        "homePhone": "",
+        "cellPhone": "(430) 215-2345"
+      },
+      "emergency": {
+        "name": "Grandpa Lou Quinn",
+        "homePhone": "(211) 555-0131",
+        "cellPhone": "(211) 555-0132"
+      }
     },
     {
       "id": "s17",
@@ -279,16 +471,28 @@
       "lastName": "Reed",
       "gender": "female",
       "safetyCode": "1592",
-      "emergency": {
-        "name": "Michael Reed",
-        "phone": "(212) 516-1272"
-      },
-      "backup": {
-        "name": "Uncle Tom",
-        "phone": "(431) 216-2368"
-      },
       "preCamp": true,
-      "postCamp": true
+      "postCamp": true,
+      "age": 13,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "Diabetes - monitor glucose",
+      "primary": {
+        "name": "Michael Reed",
+        "homePhone": "",
+        "cellPhone": "(212) 516-1272"
+      },
+      "secondary": {
+        "name": "Uncle Tom",
+        "homePhone": "",
+        "cellPhone": "(431) 216-2368"
+      },
+      "emergency": {
+        "name": "Aunt Vera Reed",
+        "homePhone": "(212) 555-0133",
+        "cellPhone": "(212) 555-0134"
+      }
     },
     {
       "id": "s18",
@@ -296,16 +500,28 @@
       "lastName": "Scott",
       "gender": "female",
       "safetyCode": "1629",
-      "emergency": {
-        "name": "Jessica Scott",
-        "phone": "(213) 517-1289"
-      },
-      "backup": {
-        "name": "Aunt Karen",
-        "phone": "(432) 217-2391"
-      },
       "preCamp": true,
-      "postCamp": true
+      "postCamp": true,
+      "age": 14,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "Shy - needs encouragement to participate",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Jessica Scott",
+        "homePhone": "",
+        "cellPhone": "(213) 517-1289"
+      },
+      "secondary": {
+        "name": "Aunt Karen",
+        "homePhone": "",
+        "cellPhone": "(432) 217-2391"
+      },
+      "emergency": {
+        "name": "Dr. Norm Scott",
+        "homePhone": "(213) 555-0135",
+        "cellPhone": "(213) 555-0136"
+      }
     },
     {
       "id": "s19",
@@ -313,16 +529,28 @@
       "lastName": "Torres",
       "gender": "female",
       "safetyCode": "1666",
-      "emergency": {
-        "name": "David Torres",
-        "phone": "(214) 518-1306"
-      },
-      "backup": {
-        "name": "Grandpa Joe",
-        "phone": "(433) 218-2414"
-      },
       "preCamp": true,
-      "postCamp": false
+      "postCamp": false,
+      "age": 6,
+      "custody": "Father",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "David Torres",
+        "homePhone": "",
+        "cellPhone": "(214) 518-1306"
+      },
+      "secondary": {
+        "name": "Grandpa Joe",
+        "homePhone": "",
+        "cellPhone": "(433) 218-2414"
+      },
+      "emergency": {
+        "name": "Uncle Walt Torres",
+        "homePhone": "(214) 555-0137",
+        "cellPhone": "(214) 555-0138"
+      }
     },
     {
       "id": "s20",
@@ -330,16 +558,28 @@
       "lastName": "Upton",
       "gender": "female",
       "safetyCode": "1703",
-      "emergency": {
-        "name": "Amanda Upton",
-        "phone": "(215) 519-1323"
-      },
-      "backup": {
-        "name": "Aunt Emily",
-        "phone": "(434) 219-2437"
-      },
       "preCamp": true,
-      "postCamp": false
+      "postCamp": false,
+      "age": 7,
+      "custody": "Mother",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Amanda Upton",
+        "homePhone": "",
+        "cellPhone": "(215) 519-1323"
+      },
+      "secondary": {
+        "name": "Aunt Emily",
+        "homePhone": "",
+        "cellPhone": "(434) 219-2437"
+      },
+      "emergency": {
+        "name": "Grandma Flo Upton",
+        "homePhone": "(215) 555-0139",
+        "cellPhone": "(215) 555-0140"
+      }
     },
     {
       "id": "s21",
@@ -347,16 +587,28 @@
       "lastName": "Vargas",
       "gender": "female",
       "safetyCode": "1740",
-      "emergency": {
-        "name": "James Vargas",
-        "phone": "(206) 520-1340"
-      },
-      "backup": {
-        "name": "Uncle Mark",
-        "phone": "(425) 220-2460"
-      },
       "preCamp": true,
-      "postCamp": true
+      "postCamp": true,
+      "age": 8,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "James Vargas",
+        "homePhone": "",
+        "cellPhone": "(206) 520-1340"
+      },
+      "secondary": {
+        "name": "Uncle Mark",
+        "homePhone": "",
+        "cellPhone": "(425) 220-2460"
+      },
+      "emergency": {
+        "name": "Aunt Greta Vargas",
+        "homePhone": "(206) 555-0141",
+        "cellPhone": "(206) 555-0142"
+      }
     },
     {
       "id": "s22",
@@ -364,16 +616,28 @@
       "lastName": "Walker",
       "gender": "female",
       "safetyCode": "1777",
-      "emergency": {
-        "name": "Jennifer Walker",
-        "phone": "(207) 521-1357"
-      },
-      "backup": {
-        "name": "Grandma Mary",
-        "phone": "(426) 221-2483"
-      },
       "preCamp": true,
-      "postCamp": true
+      "postCamp": true,
+      "age": 9,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Jennifer Walker",
+        "homePhone": "",
+        "cellPhone": "(207) 521-1357"
+      },
+      "secondary": {
+        "name": "Grandma Mary",
+        "homePhone": "",
+        "cellPhone": "(426) 221-2483"
+      },
+      "emergency": {
+        "name": "Dr. Clint Walker",
+        "homePhone": "(207) 555-0143",
+        "cellPhone": "(207) 555-0144"
+      }
     },
     {
       "id": "s23",
@@ -381,16 +645,28 @@
       "lastName": "Xavier",
       "gender": "female",
       "safetyCode": "1814",
-      "emergency": {
-        "name": "Robert Xavier",
-        "phone": "(208) 522-1374"
-      },
-      "backup": {
-        "name": "Uncle Chris",
-        "phone": "(427) 222-2506"
-      },
       "preCamp": false,
-      "postCamp": false
+      "postCamp": false,
+      "age": 10,
+      "custody": "Both",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Robert Xavier",
+        "homePhone": "",
+        "cellPhone": "(208) 522-1374"
+      },
+      "secondary": {
+        "name": "Uncle Chris",
+        "homePhone": "",
+        "cellPhone": "(427) 222-2506"
+      },
+      "emergency": {
+        "name": "Grandpa Earl Xavier",
+        "homePhone": "(208) 555-0145",
+        "cellPhone": "(208) 555-0146"
+      }
     },
     {
       "id": "s24",
@@ -398,16 +674,28 @@
       "lastName": "Young",
       "gender": "female",
       "safetyCode": "1851",
-      "emergency": {
-        "name": "Lisa Young",
-        "phone": "(209) 523-1391"
-      },
-      "backup": {
-        "name": "Aunt Nicole",
-        "phone": "(428) 223-2529"
-      },
       "preCamp": true,
-      "postCamp": false
+      "postCamp": false,
+      "age": 11,
+      "custody": "Father",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Lisa Young",
+        "homePhone": "",
+        "cellPhone": "(209) 523-1391"
+      },
+      "secondary": {
+        "name": "Aunt Nicole",
+        "homePhone": "",
+        "cellPhone": "(428) 223-2529"
+      },
+      "emergency": {
+        "name": "Uncle Roy Young",
+        "homePhone": "(209) 555-0147",
+        "cellPhone": "(209) 555-0148"
+      }
     },
     {
       "id": "s25",
@@ -415,16 +703,28 @@
       "lastName": "Zhang",
       "gender": "female",
       "safetyCode": "1888",
-      "emergency": {
-        "name": "William Zhang",
-        "phone": "(210) 524-1408"
-      },
-      "backup": {
-        "name": "Grandpa Bill",
-        "phone": "(429) 224-2552"
-      },
       "preCamp": false,
-      "postCamp": true
+      "postCamp": true,
+      "age": 12,
+      "custody": "Mother",
+      "photo": false,
+      "specialRequest": "Needs extra bathroom breaks",
+      "medicalIssues": "Peanut allergy - epipen in bag",
+      "primary": {
+        "name": "William Zhang",
+        "homePhone": "",
+        "cellPhone": "(210) 524-1408"
+      },
+      "secondary": {
+        "name": "Grandpa Bill",
+        "homePhone": "",
+        "cellPhone": "(429) 224-2552"
+      },
+      "emergency": {
+        "name": "Aunt Mae Zhang",
+        "homePhone": "(210) 555-0149",
+        "cellPhone": "(210) 555-0150"
+      }
     },
     {
       "id": "s26",
@@ -432,16 +732,28 @@
       "lastName": "Adams",
       "gender": "female",
       "safetyCode": "1925",
-      "emergency": {
-        "name": "Mary Adams",
-        "phone": "(211) 525-1425"
-      },
-      "backup": {
-        "name": "Aunt Susan",
-        "phone": "(430) 225-2575"
-      },
       "preCamp": true,
-      "postCamp": false
+      "postCamp": false,
+      "age": 13,
+      "custody": "Both",
+      "photo": false,
+      "specialRequest": "Vegetarian meal preference",
+      "medicalIssues": "Asthma - inhaler required",
+      "primary": {
+        "name": "Mary Adams",
+        "homePhone": "",
+        "cellPhone": "(211) 525-1425"
+      },
+      "secondary": {
+        "name": "Aunt Susan",
+        "homePhone": "",
+        "cellPhone": "(430) 225-2575"
+      },
+      "emergency": {
+        "name": "Grandma Bea Adams",
+        "homePhone": "(211) 555-0151",
+        "cellPhone": "(211) 555-0152"
+      }
     },
     {
       "id": "s27",
@@ -449,16 +761,28 @@
       "lastName": "Baker",
       "gender": "female",
       "safetyCode": "1962",
-      "emergency": {
-        "name": "Richard Baker",
-        "phone": "(212) 526-1442"
-      },
-      "backup": {
-        "name": "Uncle Steve",
-        "phone": "(431) 226-2598"
-      },
       "preCamp": false,
-      "postCamp": false
+      "postCamp": false,
+      "age": 14,
+      "custody": "Both",
+      "photo": false,
+      "specialRequest": "",
+      "medicalIssues": "Diabetes - monitor glucose",
+      "primary": {
+        "name": "Richard Baker",
+        "homePhone": "",
+        "cellPhone": "(212) 526-1442"
+      },
+      "secondary": {
+        "name": "Uncle Steve",
+        "homePhone": "",
+        "cellPhone": "(431) 226-2598"
+      },
+      "emergency": {
+        "name": "Dr. Glen Baker",
+        "homePhone": "(212) 555-0153",
+        "cellPhone": "(212) 555-0154"
+      }
     },
     {
       "id": "s28",
@@ -466,16 +790,28 @@
       "lastName": "Cole",
       "gender": "female",
       "safetyCode": "1999",
-      "emergency": {
-        "name": "Patricia Cole",
-        "phone": "(213) 527-1459"
-      },
-      "backup": {
-        "name": "Grandma Ann",
-        "phone": "(432) 227-2621"
-      },
       "preCamp": true,
-      "postCamp": true
+      "postCamp": true,
+      "age": 6,
+      "custody": "Both",
+      "photo": false,
+      "specialRequest": "Shy - needs encouragement to participate",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Patricia Cole",
+        "homePhone": "",
+        "cellPhone": "(213) 527-1459"
+      },
+      "secondary": {
+        "name": "Grandma Ann",
+        "homePhone": "",
+        "cellPhone": "(432) 227-2621"
+      },
+      "emergency": {
+        "name": "Uncle Chet Cole",
+        "homePhone": "(213) 555-0155",
+        "cellPhone": "(213) 555-0156"
+      }
     },
     {
       "id": "s29",
@@ -483,16 +819,28 @@
       "lastName": "Diaz",
       "gender": "female",
       "safetyCode": "2036",
-      "emergency": {
-        "name": "Thomas Diaz",
-        "phone": "(214) 528-1476"
-      },
-      "backup": {
-        "name": "Uncle Kevin",
-        "phone": "(433) 228-2644"
-      },
       "preCamp": false,
-      "postCamp": true
+      "postCamp": true,
+      "age": 7,
+      "custody": "Father",
+      "photo": false,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Thomas Diaz",
+        "homePhone": "",
+        "cellPhone": "(214) 528-1476"
+      },
+      "secondary": {
+        "name": "Uncle Kevin",
+        "homePhone": "",
+        "cellPhone": "(433) 228-2644"
+      },
+      "emergency": {
+        "name": "Aunt Irma Diaz",
+        "homePhone": "(214) 555-0157",
+        "cellPhone": "(214) 555-0158"
+      }
     },
     {
       "id": "s30",
@@ -500,16 +848,28 @@
       "lastName": "Edwards",
       "gender": "female",
       "safetyCode": "2073",
-      "emergency": {
-        "name": "Barbara Edwards",
-        "phone": "(215) 529-1493"
-      },
-      "backup": {
-        "name": "Aunt Linda",
-        "phone": "(434) 229-2667"
-      },
       "preCamp": false,
-      "postCamp": true
+      "postCamp": true,
+      "age": 8,
+      "custody": "Mother",
+      "photo": true,
+      "specialRequest": "",
+      "medicalIssues": "",
+      "primary": {
+        "name": "Barbara Edwards",
+        "homePhone": "",
+        "cellPhone": "(215) 529-1493"
+      },
+      "secondary": {
+        "name": "Aunt Linda",
+        "homePhone": "",
+        "cellPhone": "(434) 229-2667"
+      },
+      "emergency": {
+        "name": "Grandpa Ned Edwards",
+        "homePhone": "(215) 555-0159",
+        "cellPhone": "(215) 555-0160"
+      }
     }
   ],
   "camps": [

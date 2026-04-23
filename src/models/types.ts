@@ -1,8 +1,10 @@
 export type Gender = 'male' | 'female' | 'other';
+export type Custody = 'Both' | 'Father' | 'Mother';
 
-export interface EmergencyContact {
+export interface Contact {
   name: string;
-  phone: string;
+  homePhone: string;
+  cellPhone: string;
 }
 
 export interface Student {
@@ -10,11 +12,17 @@ export interface Student {
   firstName: string;
   lastName: string;
   gender: Gender;
+  age: number;
+  custody: Custody;
   safetyCode: string;
+  photo: boolean;
   preCamp: boolean;
   postCamp: boolean;
-  emergency: EmergencyContact;
-  backup: EmergencyContact;
+  specialRequest: string;
+  medicalIssues: string;
+  primary: Contact;
+  secondary: Contact;
+  emergency: Contact;
 }
 
 export interface Camp {

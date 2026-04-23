@@ -7,11 +7,17 @@ const makeStudent = (id: string, gender: 'male' | 'female' | 'other') => ({
   firstName: id,
   lastName: 'Test',
   gender,
+  age: 10,
+  custody: 'Both' as const,
   safetyCode: '0000',
+  photo: false,
   preCamp: false,
   postCamp: false,
-  emergency: { name: 'Emergency Contact', phone: '555-0000' },
-  backup: { name: 'Backup Contact', phone: '555-0001' },
+  specialRequest: '',
+  medicalIssues: '',
+  primary: { name: 'Primary Contact', homePhone: '', cellPhone: '555-0000' },
+  secondary: { name: 'Secondary Contact', homePhone: '', cellPhone: '555-0001' },
+  emergency: { name: '', homePhone: '', cellPhone: '' },
 });
 
 describe('generateSchedule', () => {
