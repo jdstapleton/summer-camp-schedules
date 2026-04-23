@@ -4,7 +4,7 @@ import { Link, Outlet } from '@tanstack/react-router';
 const NAV_LINKS = [
   { to: '/', label: 'Dashboard' },
   { to: '/students', label: 'Students' },
-  { to: '/classes', label: 'Classes' },
+  { to: '/classes', label: 'Camps' },
   { to: '/registrations', label: 'Registrations' },
   { to: '/schedule', label: 'Schedule' },
 ] as const;
