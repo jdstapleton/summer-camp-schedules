@@ -8,7 +8,7 @@ import { ScheduleProvider } from '@/contexts/ScheduleProvider';
 import { Layout } from '@/components/layout/Layout';
 import { DashboardPage } from '@/components/dashboard/DashboardPage';
 import { StudentsPage } from '@/components/students/StudentsPage';
-import { ClassesPage } from '@/components/classes/ClassesPage';
+import { CampsPage } from '@/components/camps/CampsPage';
 import { RegistrationsPage } from '@/components/registrations/RegistrationsPage';
 import { SchedulePage } from '@/components/schedule/SchedulePage';
 
@@ -26,10 +26,10 @@ const studentsRoute = createRoute({
   component: StudentsPage,
 });
 
-const classesRoute = createRoute({
+const campsRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/classes',
-  component: ClassesPage,
+  path: '/camps',
+  component: CampsPage,
 });
 
 const registrationsRoute = createRoute({
@@ -47,7 +47,7 @@ const scheduleRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   studentsRoute,
-  classesRoute,
+  campsRoute,
   registrationsRoute,
   scheduleRoute,
 ]);

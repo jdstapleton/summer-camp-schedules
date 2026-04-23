@@ -19,18 +19,18 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { Camp } from '@/models/types';
-import { CampDialog } from './ClassTypeDialog';
+import { CampDialog } from './CampDialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
   MutedBody2,
   WeekHeading,
   WeekSection,
-} from './ClassesPage.styles';
+} from './CampsPage.styles';
 
 dayjs.extend(customParseFormat);
 
-export function ClassesPage() {
+export function CampsPage() {
   const { data, addCamp, updateCamp, deleteCamp } = useSchedule();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCamp, setEditingCamp] = useState<Camp | null>(null);

@@ -5,7 +5,7 @@ import { AppShell, BrandTypography, PageContainer } from './Layout.styles';
 const NAV_LINKS = [
   { to: '/', label: 'Dashboard' },
   { to: '/students', label: 'Students' },
-  { to: '/classes', label: 'Camps' },
+  { to: '/camps', label: 'Camps' },
   { to: '/registrations', label: 'Registrations' },
   { to: '/schedule', label: 'Schedule' },
 ] as const;
