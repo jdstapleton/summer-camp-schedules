@@ -17,6 +17,11 @@ export interface ScheduleContextValue {
   updateCamp: (camp: Camp) => void;
   deleteCamp: (id: string) => void;
   updateRegistration: (registration: CampRegistration) => void;
+  moveStudentBetweenInstances: (
+    studentId: string,
+    fromInstanceId: string,
+    toInstanceId: string
+  ) => void;
   refreshSchedule: () => void;
   loadFromFile: () => Promise<void>;
   saveToFile: () => void;

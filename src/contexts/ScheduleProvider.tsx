@@ -128,6 +128,33 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const moveStudentBetweenInstances = useCallback(
+    (studentId: string, fromInstanceId: string, toInstanceId: string) => {
+      setGeneratedSchedule((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          instances: prev.instances.map((inst) => {
+            if (inst.id === fromInstanceId) {
+              return {
+                ...inst,
+                studentIds: inst.studentIds.filter((id) => id !== studentId),
+              };
+            }
+            if (inst.id === toInstanceId) {
+              return {
+                ...inst,
+                studentIds: [...inst.studentIds, studentId],
+              };
+            }
+            return inst;
+          }),
+        };
+      });
+    },
+    []
+  );
+
   const refreshSchedule = useCallback(() => {
     setGeneratedSchedule(generateSchedule(data));
   }, [data]);
@@ -163,6 +190,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         updateCamp,
         deleteCamp,
         updateRegistration,
+        moveStudentBetweenInstances,
         refreshSchedule,
         loadFromFile,
         saveToFile,

@@ -40,14 +40,26 @@ import {
 
 dayjs.extend(customParseFormat);
 
+interface DragPayload {
+  studentId: string;
+  fromInstanceId: string;
+  campId: string;
+}
+
 interface CampBlockProps {
   campId: string;
   instances: CampInstance[];
   getCampName: (id: string) => string;
   getCampMaxSize: (id: string) => number;
   getStudentName: (id: string) => string;
+  getStudentSortKey: (id: string) => string;
   getStudentGender: (id: string) => Gender;
   getStudentFriendGroup: (campId: string, studentId: string) => number | null;
+  onMoveStudent: (
+    studentId: string,
+    fromInstanceId: string,
+    toInstanceId: string
+  ) => void;
 }
 
 function CampBlock({
@@ -56,9 +68,68 @@ function CampBlock({
   getCampName,
   getCampMaxSize,
   getStudentName,
+  getStudentSortKey,
   getStudentGender,
   getStudentFriendGroup,
+  onMoveStudent,
 }: CampBlockProps) {
+  const [dragging, setDragging] = useState<DragPayload | null>(null);
+  const [dragOverInstanceId, setDragOverInstanceId] = useState<string | null>(
+    null
+  );
+
+  const handleDragStart = (
+    e: React.DragEvent,
+    studentId: string,
+    fromInstanceId: string
+  ) => {
+    const payload: DragPayload = { studentId, fromInstanceId, campId };
+    e.dataTransfer.setData('text/plain', JSON.stringify(payload));
+    e.dataTransfer.effectAllowed = 'move';
+    setDragging(payload);
+  };
+
+  const handleDragEnd = () => {
+    setDragging(null);
+    setDragOverInstanceId(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDragEnter = (instanceId: string) => {
+    setDragOverInstanceId(instanceId);
+  };
+
+  const handleDragLeave = (e: React.DragEvent, instanceId: string) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setDragOverInstanceId((prev) => (prev === instanceId ? null : prev));
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, toInstanceId: string) => {
+    e.preventDefault();
+    setDragOverInstanceId(null);
+    setDragging(null);
+    try {
+      const payload: DragPayload = JSON.parse(
+        e.dataTransfer.getData('text/plain')
+      );
+      if (
+        payload.campId === campId &&
+        payload.fromInstanceId !== toInstanceId
+      ) {
+        onMoveStudent(payload.studentId, payload.fromInstanceId, toInstanceId);
+      }
+    } catch {
+      // ignore malformed drag data
+    }
+  };
+
+  const isDragging = dragging !== null;
+
   return (
     <CampSection>
       <CampHeaderRow>
@@ -76,62 +147,108 @@ function CampBlock({
       </CampHeaderRow>
 
       <InstanceCardsRow>
-        {instances.map((inst) => (
-          <InstanceCard key={inst.id} variant="outlined">
-            <CardContent>
-              <Typography variant="subtitle2" gutterBottom>
-                Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
-                student
-                {inst.studentIds.length !== 1 ? 's' : ''}
-              </Typography>
-              <StudentList>
-                {inst.studentIds.map((id) => {
-                  const friendGroup = getStudentFriendGroup(campId, id);
-                  return (
-                    <StudentPill key={id} gender={getStudentGender(id)}>
-                      <span>{getStudentName(id)}</span>
-                      {friendGroup && (
-                        <Tooltip
-                          title={`Friend Group ${friendGroup}`}
-                          placement="right"
-                        >
-                          <Badge
-                            badgeContent={friendGroup}
-                            color="primary"
-                            sx={{
-                              '& .MuiBadge-badge': {
-                                bottom: 12,
-                              },
-                              marginRight: 1.25,
-                            }}
-                            anchorOrigin={{
-                              vertical: 'bottom',
-                              horizontal: 'right',
-                            }}
+        {instances.map((inst) => {
+          const isOver =
+            dragOverInstanceId === inst.id &&
+            dragging?.fromInstanceId !== inst.id;
+          const isSource = dragging?.fromInstanceId === inst.id;
+
+          return (
+            <InstanceCard
+              key={inst.id}
+              variant="outlined"
+              onDragOver={handleDragOver}
+              onDragEnter={() => handleDragEnter(inst.id)}
+              onDragLeave={(e) => handleDragLeave(e, inst.id)}
+              onDrop={(e) => handleDrop(e, inst.id)}
+              sx={
+                isOver
+                  ? {
+                      outline: '2px dashed',
+                      outlineColor: 'primary.main',
+                      bgcolor: 'primary.50',
+                    }
+                  : isDragging && !isSource
+                    ? { outline: '1px dashed', outlineColor: 'divider' }
+                    : {}
+              }
+            >
+              <CardContent>
+                <Typography variant="subtitle2" gutterBottom>
+                  Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
+                  student
+                  {inst.studentIds.length !== 1 ? 's' : ''}
+                </Typography>
+                <StudentList>
+                  {[...inst.studentIds]
+                    .sort((a, b) =>
+                      getStudentSortKey(a).localeCompare(getStudentSortKey(b))
+                    )
+                    .map((id) => {
+                    const friendGroup = getStudentFriendGroup(campId, id);
+                    const isPillDragging =
+                      dragging?.studentId === id &&
+                      dragging?.fromInstanceId === inst.id;
+                    return (
+                      <StudentPill
+                        key={id}
+                        gender={getStudentGender(id)}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, id, inst.id)}
+                        onDragEnd={handleDragEnd}
+                        sx={{
+                          cursor: 'grab',
+                          opacity: isPillDragging ? 0.4 : 1,
+                          '&:active': { cursor: 'grabbing' },
+                        }}
+                      >
+                        <span>{getStudentName(id)}</span>
+                        {friendGroup && (
+                          <Tooltip
+                            title={`Friend Group ${friendGroup}`}
+                            placement="right"
                           >
-                            <GroupsIcon color="secondary" />
-                          </Badge>
-                        </Tooltip>
-                      )}
-                    </StudentPill>
-                  );
-                })}
-                {inst.studentIds.length === 0 && (
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    No students assigned
-                  </Typography>
-                )}
-              </StudentList>
-            </CardContent>
-          </InstanceCard>
-        ))}
+                            <Badge
+                              badgeContent={friendGroup}
+                              color="primary"
+                              sx={{
+                                '& .MuiBadge-badge': {
+                                  bottom: 12,
+                                },
+                                marginRight: 1.25,
+                              }}
+                              anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                              }}
+                            >
+                              <GroupsIcon color="secondary" />
+                            </Badge>
+                          </Tooltip>
+                        )}
+                      </StudentPill>
+                    );
+                  })}
+                  {inst.studentIds.length === 0 && (
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      No students assigned
+                    </Typography>
+                  )}
+                </StudentList>
+              </CardContent>
+            </InstanceCard>
+          );
+        })}
       </InstanceCardsRow>
     </CampSection>
   );
 }
 
 export function SchedulePage() {
-  const { data, generatedSchedule, refreshSchedule, saveToFile } =
+  const { data, generatedSchedule, moveStudentBetweenInstances, refreshSchedule, saveToFile } =
     useSchedule();
   const [selectedWeek, setSelectedWeek] = useState<string>('');
 
@@ -143,7 +260,12 @@ export function SchedulePage() {
 
   const getStudentName = (studentId: string) => {
     const s = data.students.find((st) => st.id === studentId);
-    return s ? `${s.firstName} ${s.lastName}` : studentId;
+    return s ? `${s.lastName}, ${s.firstName}` : studentId;
+  };
+
+  const getStudentSortKey = (studentId: string) => {
+    const s = data.students.find((st) => st.id === studentId);
+    return s ? `${s.lastName}\t${s.firstName}` : studentId;
   };
 
   const getStudentGender = (studentId: string) =>
@@ -184,6 +306,18 @@ export function SchedulePage() {
       campsInSelectedWeek.has(campId)
     )
   );
+
+  const campBlockProps = (campId: string, instances: CampInstance[]) => ({
+    campId,
+    instances,
+    getCampName,
+    getCampMaxSize,
+    getStudentName,
+    getStudentSortKey,
+    getStudentGender,
+    getStudentFriendGroup,
+    onMoveStudent: moveStudentBetweenInstances,
+  });
 
   return (
     <div>
@@ -272,31 +406,13 @@ export function SchedulePage() {
               <WeekSection key={week}>
                 <WeekHeading variant="h5">{week}</WeekHeading>
                 {campsInWeek.map(([campId, instances]) => (
-                  <CampBlock
-                    key={campId}
-                    campId={campId}
-                    instances={instances}
-                    getCampName={getCampName}
-                    getCampMaxSize={getCampMaxSize}
-                    getStudentName={getStudentName}
-                    getStudentGender={getStudentGender}
-                    getStudentFriendGroup={getStudentFriendGroup}
-                  />
+                  <CampBlock key={campId} {...campBlockProps(campId, instances)} />
                 ))}
               </WeekSection>
             );
           })
         : Object.entries(instancesByCamp).map(([campId, instances]) => (
-            <CampBlock
-              key={campId}
-              campId={campId}
-              instances={instances}
-              getCampName={getCampName}
-              getCampMaxSize={getCampMaxSize}
-              getStudentName={getStudentName}
-              getStudentGender={getStudentGender}
-              getStudentFriendGroup={getStudentFriendGroup}
-            />
+            <CampBlock key={campId} {...campBlockProps(campId, instances)} />
           ))}
     </div>
   );
