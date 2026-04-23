@@ -29,6 +29,17 @@ export function SchedulePage() {
   const getStudentGender = (studentId: string) =>
     data.students.find((s) => s.id === studentId)?.gender ?? 'other';
 
+  const getStudentFriendGroup = (classTypeId: string, studentId: string) => {
+    const registration = data.registrations.find(
+      (r) => r.classTypeId === classTypeId
+    );
+    if (!registration) return null;
+    const groupIndex = registration.friendGroups.findIndex((g) =>
+      g.includes(studentId)
+    );
+    return groupIndex >= 0 ? groupIndex + 1 : null;
+  };
+
   const genderColor = (gender: string) => {
     if (gender === 'male') return '#bbdefb';
     if (gender === 'female') return '#f8bbd0';
@@ -129,20 +140,38 @@ export function SchedulePage() {
                     student{inst.studentIds.length !== 1 ? 's' : ''}
                   </Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                    {inst.studentIds.map((id) => (
-                      <Box
-                        key={id}
-                        sx={{
-                          px: 1,
-                          py: 0.25,
-                          borderRadius: 1,
-                          bgcolor: genderColor(getStudentGender(id)),
-                          fontSize: '0.875rem',
-                        }}
-                      >
-                        {getStudentName(id)}
-                      </Box>
-                    ))}
+                    {inst.studentIds.map((id) => {
+                      const friendGroup = getStudentFriendGroup(
+                        inst.classTypeId,
+                        id
+                      );
+                      return (
+                        <Box
+                          key={id}
+                          sx={{
+                            px: 1,
+                            py: 0.25,
+                            borderRadius: 1,
+                            bgcolor: genderColor(getStudentGender(id)),
+                            fontSize: '0.875rem',
+                          }}
+                        >
+                          {getStudentName(id)}
+                          {friendGroup && (
+                            <Typography
+                              component="span"
+                              sx={{
+                                ml: 0.5,
+                                fontWeight: 500,
+                                color: 'rgba(0,0,0,0.6)',
+                              }}
+                            >
+                              (Friend Group {friendGroup})
+                            </Typography>
+                          )}
+                        </Box>
+                      );
+                    })}
                     {inst.studentIds.length === 0 && (
                       <Typography variant="body2" color="text.secondary">
                         No students assigned
