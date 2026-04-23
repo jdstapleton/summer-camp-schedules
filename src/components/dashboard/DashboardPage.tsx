@@ -15,9 +15,7 @@ function StatCard({ title, value }: { title: string; value: number }) {
     <StatCardRoot>
       <StatCardContent>
         <Typography variant="h3">{value}</Typography>
-        <StatCardSubtitle variant="subtitle1">
-          {title}
-        </StatCardSubtitle>
+        <StatCardSubtitle variant="subtitle1">{title}</StatCardSubtitle>
       </StatCardContent>
     </StatCardRoot>
   );

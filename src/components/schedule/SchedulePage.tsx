@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Box,
   Button,
   CardContent,
   Chip,
@@ -76,14 +75,11 @@ function CampBlock({
 
       <InstanceCardsRow>
         {instances.map((inst) => (
-          <InstanceCard
-            key={inst.id}
-            variant="outlined"
-          >
+          <InstanceCard key={inst.id} variant="outlined">
             <CardContent>
               <Typography variant="subtitle2" gutterBottom>
-                Instance {inst.instanceNumber} —{' '}
-                {inst.studentIds.length} student
+                Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
+                student
                 {inst.studentIds.length !== 1 ? 's' : ''}
               </Typography>
               <StudentList>
@@ -93,11 +89,26 @@ function CampBlock({
                     <StudentPill key={id} gender={getStudentGender(id)}>
                       <span>{getStudentName(id)}</span>
                       {friendGroup && (
-                        <Tooltip title={`Friend Group ${friendGroup}`} placement="right">
-                          <Badge badgeContent={friendGroup} color="primary" sx={{ '& .MuiBadge-badge': {
-                            bottom: 12,
-                          }, marginRight: 1.25 }} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                          ><GroupsIcon color="secondary" /></Badge>
+                        <Tooltip
+                          title={`Friend Group ${friendGroup}`}
+                          placement="right"
+                        >
+                          <Badge
+                            badgeContent={friendGroup}
+                            color="primary"
+                            sx={{
+                              '& .MuiBadge-badge': {
+                                bottom: 12,
+                              },
+                              marginRight: 1.25,
+                            }}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'right',
+                            }}
+                          >
+                            <GroupsIcon color="secondary" />
+                          </Badge>
                         </Tooltip>
                       )}
                     </StudentPill>
@@ -207,10 +218,7 @@ export function SchedulePage() {
             disabled={!generatedSchedule}
             onClick={() =>
               generatedSchedule &&
-              exportScheduleToExcel(
-                data,
-                Object.values(instancesByCamp).flat()
-              )
+              exportScheduleToExcel(data, Object.values(instancesByCamp).flat())
             }
           >
             Export Excel
@@ -249,9 +257,7 @@ export function SchedulePage() {
             if (campsInWeek.length === 0) return null;
             return (
               <WeekSection key={week}>
-                <WeekHeading variant="h5">
-                  {week}
-                </WeekHeading>
+                <WeekHeading variant="h5">{week}</WeekHeading>
                 {campsInWeek.map(([campId, instances]) => (
                   <CampBlock
                     key={campId}

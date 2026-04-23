@@ -1,4 +1,10 @@
-import { ScheduleData, GeneratedSchedule, Student, Camp, CampRegistration } from "./types";
+import {
+  ScheduleData,
+  GeneratedSchedule,
+  Student,
+  Camp,
+  CampRegistration,
+} from './types';
 
 export interface ScheduleContextValue {
   data: ScheduleData;

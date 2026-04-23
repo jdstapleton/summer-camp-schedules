@@ -1,9 +1,9 @@
 import ExcelJS from 'exceljs';
-import type { ScheduleData, GeneratedSchedule } from '@/models/types';
+import type { ScheduleData, CampInstance } from '@/models/types';
 
 export async function exportScheduleToExcel(
   data: ScheduleData,
-  schedule: GeneratedSchedule
+  instances: CampInstance[]
 ): Promise<void> {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = 'Summer Camp Schedules';
@@ -12,12 +12,13 @@ export async function exportScheduleToExcel(
   const campMap = new Map(data.camps.map((c) => [c.id, c]));
   const studentMap = new Map(data.students.map((s) => [s.id, s]));
 
-  const instancesByCamp = schedule.instances.reduce<
-    Record<string, typeof schedule.instances>
-  >((acc, inst) => {
-    (acc[inst.campId] ??= []).push(inst);
-    return acc;
-  }, {});
+  const instancesByCamp = instances.reduce<Record<string, CampInstance[]>>(
+    (acc, inst) => {
+      (acc[inst.campId] ??= []).push(inst);
+      return acc;
+    },
+    {}
+  );
 
   for (const [campId, instances] of Object.entries(instancesByCamp)) {
     const camp = campMap.get(campId);

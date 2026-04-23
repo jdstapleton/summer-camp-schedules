@@ -31,7 +31,6 @@ const isValidScheduleData = (data: unknown): data is ScheduleData => {
   );
 };
 
-
 export function ScheduleProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<ScheduleData>(() => {
     try {

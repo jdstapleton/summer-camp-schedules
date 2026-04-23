@@ -70,6 +70,7 @@ The app uses a versioning system for the `ScheduleData` model to handle backward
 5. Update `sample-data.json` with the new fields
 
 Example migration:
+
 ```ts
 const migrateV2toV3 = (data: any): ScheduleData => {
   const migratedStudents = data.students.map((student: any) => ({
@@ -81,6 +82,7 @@ const migrateV2toV3 = (data: any): ScheduleData => {
 ```
 
 Data is automatically migrated when:
+
 - Loading from localStorage on app startup
 - Importing a saved schedule file
 

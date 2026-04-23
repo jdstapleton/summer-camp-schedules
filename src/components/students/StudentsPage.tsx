@@ -102,12 +102,8 @@ export function StudentsPage() {
                 <TableCell>
                   {student.firstName} {student.lastName}
                 </TableCell>
-                <CapitalizedTableCell>
-                  {student.gender}
-                </CapitalizedTableCell>
-                <MonospaceTableCell>
-                  {student.safetyCode}
-                </MonospaceTableCell>
+                <CapitalizedTableCell>{student.gender}</CapitalizedTableCell>
+                <MonospaceTableCell>{student.safetyCode}</MonospaceTableCell>
                 <TableCell align="right">
                   <IconButton size="small" onClick={() => handleEdit(student)}>
                     <EditIcon fontSize="small" />

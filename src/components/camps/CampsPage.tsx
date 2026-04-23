@@ -22,11 +22,7 @@ import type { Camp } from '@/models/types';
 import { CampDialog } from './CampDialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
-import {
-  MutedBody2,
-  WeekHeading,
-  WeekSection,
-} from './CampsPage.styles';
+import { MutedBody2, WeekHeading, WeekSection } from './CampsPage.styles';
 
 dayjs.extend(customParseFormat);
 
@@ -82,15 +78,11 @@ export function CampsPage() {
         </Button>
       </PageHeaderRow>
       {data.camps.length === 0 && (
-        <MutedBody2 variant="body2">
-          No camps added yet.
-        </MutedBody2>
+        <MutedBody2 variant="body2">No camps added yet.</MutedBody2>
       )}
       {sortedWeeks.map((week) => (
         <WeekSection key={week}>
-          <WeekHeading variant="h6">
-            {week}
-          </WeekHeading>
+          <WeekHeading variant="h6">{week}</WeekHeading>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>

@@ -21,7 +21,12 @@ const migrateV1toV2 = (data: any): ScheduleData => {
 
 export const migrateData = (data: any): ScheduleData => {
   if (!data || typeof data !== 'object') {
-    return { version: CURRENT_VERSION, students: [], camps: [], registrations: [] };
+    return {
+      version: CURRENT_VERSION,
+      students: [],
+      camps: [],
+      registrations: [],
+    };
   }
 
   let currentData = { ...data };

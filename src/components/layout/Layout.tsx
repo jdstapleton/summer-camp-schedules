@@ -15,9 +15,7 @@ export function Layout() {
     <AppShell>
       <AppBar position="static">
         <Toolbar>
-          <BrandTypography variant="h6">
-            ☀️ Summer Camp
-          </BrandTypography>
+          <BrandTypography variant="h6">☀️ Summer Camp</BrandTypography>
           {NAV_LINKS.map((link) => (
             <Button key={link.to} component={Link} to={link.to} color="inherit">
               {link.label}
