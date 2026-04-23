@@ -91,7 +91,7 @@ describe('generateSchedule', () => {
     });
   });
 
-  it('separates genders into different instances when possible', () => {
+  it('distributes genders evenly across instances', () => {
     const males = Array.from({ length: 8 }, (_, i) =>
       makeStudent(`m${i}`, 'male')
     );
@@ -120,14 +120,93 @@ describe('generateSchedule', () => {
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(2);
-    const inst1MaleCount = result.instances[0].studentIds.filter((id) =>
-      id.startsWith('m')
-    ).length;
-    const inst2FemaleCount = result.instances[1].studentIds.filter((id) =>
-      id.startsWith('f')
-    ).length;
-    expect(inst1MaleCount).toBe(8);
-    expect(inst2FemaleCount).toBe(8);
+    result.instances.forEach((inst) => {
+      const maleCount = inst.studentIds.filter((id) =>
+        id.startsWith('m')
+      ).length;
+      const femaleCount = inst.studentIds.filter((id) =>
+        id.startsWith('f')
+      ).length;
+      expect(maleCount).toBe(4);
+      expect(femaleCount).toBe(4);
+    });
+  });
+
+  it('consolidates girls when count falls below minimum per instance', () => {
+    // 5 girls, 2 instances (maxSize 10 → numInstances 1 for ≤10, need >10)
+    // Use 21 students total to force 2 instances, only 5 of whom are female
+    const males = Array.from({ length: 16 }, (_, i) =>
+      makeStudent(`m${i}`, 'male')
+    );
+    const females = Array.from({ length: 5 }, (_, i) =>
+      makeStudent(`f${i}`, 'female')
+    );
+    const data: ScheduleData = {
+      version: 2,
+      students: [...males, ...females],
+      camps: [
+        {
+          id: 'c1',
+          name: 'Archery',
+          gradeRange: 'Grades 4-7',
+          week: 'June 22',
+          maxSize: 16,
+        },
+      ],
+      registrations: [
+        {
+          campId: 'c1',
+          studentIds: [...males, ...females].map((s) => s.id),
+          friendGroups: [],
+        },
+      ],
+    };
+    const result = generateSchedule(data);
+    expect(result.instances).toHaveLength(2);
+    const femaleCounts = result.instances.map(
+      (inst) => inst.studentIds.filter((id) => id.startsWith('f')).length
+    );
+    // All 5 girls should be in one instance; the other should have 0
+    expect(femaleCounts).toContain(0);
+    expect(femaleCounts).toContain(5);
+  });
+
+  it('consolidates boys when count falls below minimum per instance', () => {
+    // 3 boys across 2 instances — should consolidate into 1 instance (min is 2)
+    const females = Array.from({ length: 18 }, (_, i) =>
+      makeStudent(`f${i}`, 'female')
+    );
+    const males = Array.from({ length: 3 }, (_, i) =>
+      makeStudent(`m${i}`, 'male')
+    );
+    const data: ScheduleData = {
+      version: 2,
+      students: [...females, ...males],
+      camps: [
+        {
+          id: 'c1',
+          name: 'Coding',
+          gradeRange: 'Grades 1-3',
+          week: 'June 22',
+          maxSize: 16,
+        },
+      ],
+      registrations: [
+        {
+          campId: 'c1',
+          studentIds: [...females, ...males].map((s) => s.id),
+          friendGroups: [],
+        },
+      ],
+    };
+    const result = generateSchedule(data);
+    expect(result.instances).toHaveLength(2);
+    const maleCounts = result.instances.map(
+      (inst) => inst.studentIds.filter((id) => id.startsWith('m')).length
+    );
+    // All 3 boys should be in one instance (3/2 = 1 instance)
+    expect(maleCounts).toContain(0);
+    expect(maleCounts).toContain(3);
   });
 
   it('keeps friend groups together in the same instance', () => {

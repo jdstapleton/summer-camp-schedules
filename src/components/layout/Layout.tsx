@@ -15,8 +15,16 @@ export function Layout() {
     <AppShell>
       <AppBar position="static">
         <Toolbar>
-          <BrandTypography variant="h6" sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box component="img" src="/logo.webp" alt="" sx={{ height: 32, mr: 1 }} />
+          <BrandTypography
+            variant="h6"
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            <Box
+              component="img"
+              src="/logo.webp"
+              alt=""
+              sx={{ height: 32, mr: 1 }}
+            />
           </BrandTypography>
           {NAV_LINKS.map((link) => (
             <Button key={link.to} component={Link} to={link.to} color="inherit">
