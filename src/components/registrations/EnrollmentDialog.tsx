@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -11,9 +12,17 @@ import {
   Divider,
   FormControlLabel,
   IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
   Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import type { ClassRegistration, ClassType, Student } from '@/models/types';
 
 interface EnrollmentDialogProps {
@@ -37,6 +46,8 @@ export function EnrollmentDialog({
   const [friendGroups, setFriendGroups] = useState<string[][]>([]);
   const [addingGroup, setAddingGroup] = useState(false);
   const [newGroupIds, setNewGroupIds] = useState<string[]>([]);
+  const [autocompleteValue, setAutocompleteValue] = useState<Student | null>(null);
+  const [editingStudentId, setEditingStudentId] = useState<string | null>(null);
 
   useEffect(() => {
     if (open) {
@@ -44,12 +55,24 @@ export function EnrollmentDialog({
       setFriendGroups(registration.friendGroups.map((g) => [...g]));
       setAddingGroup(false);
       setNewGroupIds([]);
+      setAutocompleteValue(null);
+      setEditingStudentId(null);
     }
   }, [open, registration]);
 
-  const toggleEnroll = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
+  const addStudent = (student: Student) => {
+    if (student && !selectedIds.includes(student.id)) {
+      setSelectedIds((prev) => [...prev, student.id]);
+      setAutocompleteValue(null);
+    }
+  };
+
+  const removeStudent = (id: string) => {
+    setSelectedIds((prev) => prev.filter((s) => s !== id));
+    setFriendGroups((prev) =>
+      prev
+        .map((g) => g.filter((sid) => sid !== id))
+        .filter((g) => g.length >= 2)
     );
   };
 
@@ -57,6 +80,22 @@ export function EnrollmentDialog({
     setNewGroupIds((prev) =>
       prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
     );
+  };
+
+  const toggleStudentGroup = (studentId: string, groupIndex: number) => {
+    setFriendGroups((prev) => {
+      const newGroups = [...prev];
+      const group = newGroups[groupIndex];
+      if (group.includes(studentId)) {
+        newGroups[groupIndex] = group.filter((id) => id !== studentId);
+        if (newGroups[groupIndex].length < 2) {
+          newGroups.splice(groupIndex, 1);
+        }
+      } else {
+        newGroups[groupIndex] = [...group, studentId];
+      }
+      return newGroups;
+    });
   };
 
   const confirmAddGroup = () => {
@@ -106,47 +145,84 @@ export function EnrollmentDialog({
 
       <DialogContent dividers>
         <Typography variant="subtitle2" gutterBottom>
-          Students
+          Add Students
         </Typography>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-            maxHeight: 240,
-            overflowY: 'auto',
-            mb: 2,
-          }}
-        >
-          {students.length === 0 && (
-            <Typography variant="body2" color="text.secondary">
-              No students added yet. Go to the Students page first.
-            </Typography>
-          )}
-          {students.map((student) => (
-            <FormControlLabel
-              key={student.id}
-              control={
-                <Checkbox
-                  size="small"
-                  checked={selectedIds.includes(student.id)}
-                  onChange={() => toggleEnroll(student.id)}
-                />
-              }
-              label={
-                <Typography variant="body2">
-                  {student.firstName} {student.lastName}{' '}
-                  <Typography
-                    component="span"
-                    variant="caption"
-                    color="text.secondary"
-                  >
-                    ({student.gender})
-                  </Typography>
-                </Typography>
-              }
-            />
-          ))}
+        <Box sx={{ mb: 3 }}>
+          <Autocomplete
+            options={students.filter((s) => !selectedIds.includes(s.id))}
+            getOptionLabel={(s) =>
+              `${s.firstName} ${s.lastName} (${s.gender})`
+            }
+            value={autocompleteValue}
+            onChange={(_, value) => {
+              if (value) addStudent(value);
+            }}
+            renderInput={(params) => (
+              <TextField {...params} placeholder="Search and add student" />
+            )}
+            noOptionsText="All students already added"
+          />
         </Box>
+
+        <Typography variant="subtitle2" gutterBottom>
+          Enrolled Students ({selectedIds.length})
+        </Typography>
+        {selectedIds.length === 0 && (
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            {students.length === 0
+              ? 'No students added yet. Go to the Students page first.'
+              : 'Add students using the search box above.'}
+          </Typography>
+        )}
+        {selectedIds.length > 0 && (
+          <TableContainer sx={{ mb: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+            <Table size="small">
+              <TableHead>
+                <TableRow sx={{ bgcolor: 'action.hover' }}>
+                  <TableCell>Name</TableCell>
+                  <TableCell align="right">Gender</TableCell>
+                  <TableCell align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {students
+                  .filter((s) => selectedIds.includes(s.id))
+                  .sort((a, b) =>
+                    `${a.firstName} ${a.lastName}`.localeCompare(
+                      `${b.firstName} ${b.lastName}`
+                    )
+                  )
+                  .map((student) => (
+                    <TableRow key={student.id}>
+                      <TableCell>
+                        {student.firstName} {student.lastName}
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography variant="body2">{student.gender}</Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          size="small"
+                          onClick={() => setEditingStudentId(student.id)}
+                          title="Edit friend groups"
+                        >
+                          <EditIcon fontSize="small" />
+                        </IconButton>
+                        <IconButton
+                          size="small"
+                          onClick={() => removeStudent(student.id)}
+                          color="error"
+                          title="Remove from class"
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
 
         <Divider sx={{ my: 2 }} />
 
@@ -261,6 +337,49 @@ export function EnrollmentDialog({
               </Button>
             </Box>
           </Box>
+        )}
+
+        {editingStudentId && (
+          <Dialog open={true} onClose={() => setEditingStudentId(null)}>
+            <DialogTitle>
+              Edit Friend Groups for{' '}
+              {students.find((s) => s.id === editingStudentId)?.firstName}
+            </DialogTitle>
+            <DialogContent>
+              <Box sx={{ pt: 2, minWidth: 300 }}>
+                {friendGroups.length === 0 ? (
+                  <Typography variant="body2" color="text.secondary">
+                    No friend groups yet. Create one above.
+                  </Typography>
+                ) : (
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                    {friendGroups.map((group, i) => (
+                      <FormControlLabel
+                        key={i}
+                        control={
+                          <Checkbox
+                            checked={group.includes(editingStudentId)}
+                            onChange={() =>
+                              toggleStudentGroup(editingStudentId, i)
+                            }
+                          />
+                        }
+                        label={
+                          <Typography variant="body2">
+                            Group {i + 1}:{' '}
+                            {group.map((id) => studentName(id)).join(', ')}
+                          </Typography>
+                        }
+                      />
+                    ))}
+                  </Box>
+                )}
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setEditingStudentId(null)}>Done</Button>
+            </DialogActions>
+          </Dialog>
         )}
       </DialogContent>
 
