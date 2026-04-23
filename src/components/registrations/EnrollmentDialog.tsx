@@ -137,12 +137,13 @@ export function EnrollmentDialog({
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>
         Manage Enrollment: {camp.name}
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" sx={{
+          color: "text.secondary"
+        }}>
           Max size: {camp.maxSize} · Enrolled: {selectedIds.length}
           {instancesNeeded > 1 && ` · ${instancesNeeded} instances will be created`}
         </Typography>
       </DialogTitle>
-
       <DialogContent dividers>
         <Typography variant="subtitle2" gutterBottom>
           Add Students
@@ -168,7 +169,12 @@ export function EnrollmentDialog({
           Enrolled Students ({selectedIds.length})
         </Typography>
         {selectedIds.length === 0 && (
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "text.secondary",
+              mb: 2
+            }}>
             {students.length === 0
               ? 'No students added yet. Go to the Students page first.'
               : 'Add students using the search box above.'}
@@ -259,7 +265,12 @@ export function EnrollmentDialog({
               flexWrap: 'wrap',
             }}
           >
-            <Typography variant="caption" color="text.secondary" sx={{ mr: 0.5 }}>
+            <Typography
+              variant="caption"
+              sx={{
+                color: "text.secondary",
+                mr: 0.5
+              }}>
               Group {i + 1}:
             </Typography>
             {group.map((id) => (
@@ -272,7 +283,9 @@ export function EnrollmentDialog({
         ))}
 
         {friendGroups.length === 0 && !addingGroup && (
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{
+            color: "text.secondary"
+          }}>
             No friend groups defined. Students in a group will be kept in the
             same instance.
           </Typography>
@@ -348,7 +361,9 @@ export function EnrollmentDialog({
             <DialogContent>
               <Box sx={{ pt: 2, minWidth: 300 }}>
                 {friendGroups.length === 0 ? (
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" sx={{
+                    color: "text.secondary"
+                  }}>
                     No friend groups yet. Create one above.
                   </Typography>
                 ) : (
@@ -382,7 +397,6 @@ export function EnrollmentDialog({
           </Dialog>
         )}
       </DialogContent>
-
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSave} variant="contained">

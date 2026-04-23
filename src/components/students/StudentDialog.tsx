@@ -110,21 +110,23 @@ export function StudentDialog({
           fullWidth
           margin="normal"
           required
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 4 }}
           helperText="4-digit code used to verify student identity"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <Tooltip title="Generate random code">
-                  <IconButton
-                    onClick={() => setSafetyCode(generateSafetyCode())}
-                    edge="end"
-                  >
-                    <CasinoIcon />
-                  </IconButton>
-                </Tooltip>
-              </InputAdornment>
-            ),
+          slotProps={{
+            htmlInput: { inputMode: 'numeric', pattern: '[0-9]*', maxLength: 4 },
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="Generate random code">
+                    <IconButton
+                      onClick={() => setSafetyCode(generateSafetyCode())}
+                      edge="end"
+                    >
+                      <CasinoIcon />
+                    </IconButton>
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            },
           }}
         />
       </DialogContent>

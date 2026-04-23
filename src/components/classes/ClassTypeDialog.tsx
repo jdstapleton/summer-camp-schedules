@@ -128,7 +128,7 @@ export function CampDialog({
           margin="normal"
           required
           type="number"
-          inputProps={{ min: 1 }}
+          slotProps={{ htmlInput: { min: 1 } }}
           helperText="If enrollment exceeds this, multiple instances will be created."
         />
       </DialogContent>

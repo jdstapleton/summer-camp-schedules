@@ -84,13 +84,13 @@ export function ClassesPage() {
           Add Camp
         </Button>
       </Box>
-
       {data.camps.length === 0 && (
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" sx={{
+          color: "text.secondary"
+        }}>
           No camps added yet.
         </Typography>
       )}
-
       {sortedWeeks.map((week) => (
         <Box key={week} sx={{ mb: 4 }}>
           <Typography variant="h6" sx={{ mb: 1.5 }}>
@@ -150,7 +150,6 @@ export function ClassesPage() {
           </TableContainer>
         </Box>
       ))}
-
       <CampDialog
         open={dialogOpen}
         camp={editingCamp}
@@ -158,7 +157,6 @@ export function ClassesPage() {
         onSave={handleSave}
         onClose={() => setDialogOpen(false)}
       />
-
       <ConfirmDialog
         open={deletingId !== null}
         title="Delete Camp"

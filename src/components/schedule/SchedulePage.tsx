@@ -128,7 +128,6 @@ export function SchedulePage() {
           </Button>
         </Box>
       </Box>
-
       {!generatedSchedule && (
         <Box
           sx={{
@@ -146,13 +145,13 @@ export function SchedulePage() {
           </Typography>
         </Box>
       )}
-
       {generatedSchedule && Object.keys(instancesByCamp).length === 0 && (
-        <Typography color="text.secondary">
+        <Typography sx={{
+          color: "text.secondary"
+        }}>
           No camps have any enrolled students. Add registrations first.
         </Typography>
       )}
-
       {!selectedWeek && generatedSchedule
         ? uniqueWeeks.map((week) => {
             const campsInWeek = Object.entries(instancesByCamp).filter(
@@ -189,9 +188,10 @@ export function SchedulePage() {
                         <Typography
                           component="span"
                           variant="body2"
-                          color="text.secondary"
-                          sx={{ ml: 1 }}
-                        >
+                          sx={{
+                            color: "text.secondary",
+                            ml: 1
+                          }}>
                           (max {getCampMaxSize(campId)})
                         </Typography>
                       </Typography>
@@ -248,7 +248,9 @@ export function SchedulePage() {
                                 );
                               })}
                               {inst.studentIds.length === 0 && (
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body2" sx={{
+                                  color: "text.secondary"
+                                }}>
                                   No students assigned
                                 </Typography>
                               )}
@@ -270,9 +272,10 @@ export function SchedulePage() {
                   <Typography
                     component="span"
                     variant="body2"
-                    color="text.secondary"
-                    sx={{ ml: 1 }}
-                  >
+                    sx={{
+                      color: "text.secondary",
+                      ml: 1
+                    }}>
                     (max {getCampMaxSize(campId)})
                   </Typography>
                 </Typography>
@@ -329,7 +332,9 @@ export function SchedulePage() {
                           );
                         })}
                         {inst.studentIds.length === 0 && (
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="body2" sx={{
+                            color: "text.secondary"
+                          }}>
                             No students assigned
                           </Typography>
                         )}

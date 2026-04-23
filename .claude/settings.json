@@ -55,5 +55,6 @@
       }
     ]
   },
-  "codeFormatter": "prettier"
+  "codeFormatter": "prettier",
+  "enabledMcpjsonServers": ["mui-mcp"]
 }

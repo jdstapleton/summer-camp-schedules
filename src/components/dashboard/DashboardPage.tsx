@@ -8,7 +8,9 @@ function StatCard({ title, value }: { title: string; value: number }) {
     <Card sx={{ minWidth: 160 }}>
       <CardContent sx={{ textAlign: 'center' }}>
         <Typography variant="h3">{value}</Typography>
-        <Typography variant="subtitle1" color="text.secondary">
+        <Typography variant="subtitle1" sx={{
+          color: "text.secondary"
+        }}>
           {title}
         </Typography>
       </CardContent>
