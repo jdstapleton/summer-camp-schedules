@@ -34,6 +34,7 @@ interface ScheduleContextValue {
   addStudent: (student: Omit<Student, 'id'>) => void;
   updateStudent: (student: Student) => void;
   deleteStudent: (id: string) => void;
+  randomizeAllSafetyCodes: () => void;
   addCamp: (camp: Omit<Camp, 'id'>) => void;
   updateCamp: (camp: Camp) => void;
   deleteCamp: (id: string) => void;
@@ -43,6 +44,11 @@ interface ScheduleContextValue {
   saveToFile: () => void;
   clearData: () => void;
 }
+
+const randomSafetyCode = () =>
+  Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, '0');
 
 const ScheduleContext = createContext<ScheduleContextValue | null>(null);
 
@@ -93,6 +99,16 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         friendGroups: r.friendGroups
           .map((g) => g.filter((sid) => sid !== id))
           .filter((g) => g.length >= 2),
+      })),
+    }));
+  }, []);
+
+  const randomizeAllSafetyCodes = useCallback(() => {
+    setData((prev) => ({
+      ...prev,
+      students: prev.students.map((s) => ({
+        ...s,
+        safetyCode: randomSafetyCode(),
       })),
     }));
   }, []);
@@ -165,6 +181,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         addStudent,
         updateStudent,
         deleteStudent,
+        randomizeAllSafetyCodes,
         addCamp,
         updateCamp,
         deleteCamp,

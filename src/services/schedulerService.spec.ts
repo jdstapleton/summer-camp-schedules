@@ -5,7 +5,7 @@ import type { ScheduleData } from '@/models/types';
 const makeStudent = (
   id: string,
   gender: 'male' | 'female' | 'other'
-) => ({ id, firstName: id, lastName: 'Test', gender });
+) => ({ id, firstName: id, lastName: 'Test', gender, safetyCode: '0000' });
 
 describe('generateSchedule', () => {
   it('returns no instances for empty registrations', () => {

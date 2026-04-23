@@ -6,11 +6,15 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   TextField,
+  Tooltip,
 } from '@mui/material';
+import CasinoIcon from '@mui/icons-material/Casino';
 import type { SelectChangeEvent } from '@mui/material';
 import type { Gender, Student } from '@/models/types';
 
@@ -21,6 +25,11 @@ interface StudentDialogProps {
   onClose: () => void;
 }
 
+const generateSafetyCode = () =>
+  Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, '0');
+
 export function StudentDialog({
   open,
   student,
@@ -30,12 +39,14 @@ export function StudentDialog({
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState<Gender>('male');
+  const [safetyCode, setSafetyCode] = useState('');
 
   useEffect(() => {
     if (open) {
       setFirstName(student?.firstName ?? '');
       setLastName(student?.lastName ?? '');
       setGender(student?.gender ?? 'male');
+      setSafetyCode(student?.safetyCode ?? generateSafetyCode());
     }
   }, [open, student]);
 
@@ -43,12 +54,25 @@ export function StudentDialog({
     setGender(e.target.value as Gender);
   };
 
-  const handleSubmit = () => {
-    if (!firstName.trim() || !lastName.trim()) return;
-    onSave({ firstName: firstName.trim(), lastName: lastName.trim(), gender });
+  const handleSafetyCodeChange = (value: string) => {
+    const digitsOnly = value.replace(/\D/g, '').slice(0, 4);
+    setSafetyCode(digitsOnly);
   };
 
-  const isValid = firstName.trim().length > 0 && lastName.trim().length > 0;
+  const handleSubmit = () => {
+    if (!isValid) return;
+    onSave({
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      gender,
+      safetyCode,
+    });
+  };
+
+  const isValid =
+    firstName.trim().length > 0 &&
+    lastName.trim().length > 0 &&
+    safetyCode.length === 4;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -79,6 +103,30 @@ export function StudentDialog({
             <MenuItem value="other">Other</MenuItem>
           </Select>
         </FormControl>
+        <TextField
+          label="Safety Code"
+          value={safetyCode}
+          onChange={(e) => handleSafetyCodeChange(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 4 }}
+          helperText="4-digit code used to verify student identity"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Tooltip title="Generate random code">
+                  <IconButton
+                    onClick={() => setSafetyCode(generateSafetyCode())}
+                    edge="end"
+                  >
+                    <CasinoIcon />
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>
+            ),
+          }}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

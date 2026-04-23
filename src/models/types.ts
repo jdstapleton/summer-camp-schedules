@@ -5,6 +5,7 @@ export interface Student {
   firstName: string;
   lastName: string;
   gender: Gender;
+  safetyCode: string;
 }
 
 export interface Camp {
