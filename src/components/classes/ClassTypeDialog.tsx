@@ -7,48 +7,61 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import type { ClassType } from '@/models/types';
+import type { Camp } from '@/models/types';
 
-interface ClassTypeDialogProps {
+interface CampDialogProps {
   open: boolean;
-  classType: ClassType | null;
-  onSave: (data: Omit<ClassType, 'id'>) => void;
+  camp: Camp | null;
+  onSave: (data: Omit<Camp, 'id'>) => void;
   onClose: () => void;
 }
 
-export function ClassTypeDialog({
+export function CampDialog({
   open,
-  classType,
+  camp,
   onSave,
   onClose,
-}: ClassTypeDialogProps) {
+}: CampDialogProps) {
   const [name, setName] = useState('');
+  const [gradeRange, setGradeRange] = useState('');
+  const [week, setWeek] = useState('');
   const [maxSize, setMaxSize] = useState('16');
 
   useEffect(() => {
     if (open) {
-      setName(classType?.name ?? '');
-      setMaxSize(String(classType?.maxSize ?? 16));
+      setName(camp?.name ?? '');
+      setGradeRange(camp?.gradeRange ?? '');
+      setWeek(camp?.week ?? '');
+      setMaxSize(String(camp?.maxSize ?? 16));
     }
-  }, [open, classType]);
+  }, [open, camp]);
 
   const parsedMax = parseInt(maxSize, 10);
   const isValid =
-    name.trim().length > 0 && !isNaN(parsedMax) && parsedMax >= 1;
+    name.trim().length > 0 &&
+    gradeRange.trim().length > 0 &&
+    week.trim().length > 0 &&
+    !isNaN(parsedMax) &&
+    parsedMax >= 1;
 
   const handleSubmit = () => {
     if (!isValid) return;
-    onSave({ name: name.trim(), maxSize: parsedMax });
+    onSave({
+      name: name.trim(),
+      gradeRange: gradeRange.trim(),
+      week: week.trim(),
+      maxSize: parsedMax,
+    });
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {classType ? 'Edit Class Type' : 'Add Class Type'}
+        {camp ? 'Edit Camp' : 'Add Camp'}
       </DialogTitle>
       <DialogContent>
         <TextField
-          label="Class Name"
+          label="Camp Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           fullWidth
@@ -58,7 +71,25 @@ export function ClassTypeDialog({
           placeholder="e.g. Minecraft Programming"
         />
         <TextField
-          label="Max Class Size"
+          label="Grade Range"
+          value={gradeRange}
+          onChange={(e) => setGradeRange(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+          placeholder="e.g. Grades 4-7, PreK-K"
+        />
+        <TextField
+          label="Week"
+          value={week}
+          onChange={(e) => setWeek(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+          placeholder="e.g. June 8, June 15"
+        />
+        <TextField
+          label="Max Camp Size"
           value={maxSize}
           onChange={(e) => setMaxSize(e.target.value)}
           fullWidth
@@ -72,7 +103,7 @@ export function ClassTypeDialog({
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSubmit} variant="contained" disabled={!isValid}>
-          {classType ? 'Save' : 'Add'}
+          {camp ? 'Save' : 'Add'}
         </Button>
       </DialogActions>
     </Dialog>

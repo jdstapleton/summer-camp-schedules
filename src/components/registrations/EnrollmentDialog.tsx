@@ -23,20 +23,20 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import type { ClassRegistration, ClassType, Student } from '@/models/types';
+import type { CampRegistration, Camp, Student } from '@/models/types';
 
 interface EnrollmentDialogProps {
   open: boolean;
-  classType: ClassType;
-  registration: ClassRegistration;
+  camp: Camp;
+  registration: CampRegistration;
   students: Student[];
-  onSave: (registration: ClassRegistration) => void;
+  onSave: (registration: CampRegistration) => void;
   onClose: () => void;
 }
 
 export function EnrollmentDialog({
   open,
-  classType,
+  camp,
   registration,
   students,
   onSave,
@@ -115,7 +115,7 @@ export function EnrollmentDialog({
       .map((g) => g.filter((id) => selectedIds.includes(id)))
       .filter((g) => g.length >= 2);
     onSave({
-      classTypeId: registration.classTypeId,
+      campId: registration.campId,
       studentIds: selectedIds,
       friendGroups: validGroups,
     });
@@ -126,7 +126,7 @@ export function EnrollmentDialog({
   const availableForGroup = enrolledStudents.filter((s) => !inAGroup.has(s.id));
 
   const instancesNeeded =
-    selectedIds.length > 0 ? Math.ceil(selectedIds.length / classType.maxSize) : 0;
+    selectedIds.length > 0 ? Math.ceil(selectedIds.length / camp.maxSize) : 0;
 
   const studentName = (id: string) => {
     const s = students.find((st) => st.id === id);
@@ -136,9 +136,9 @@ export function EnrollmentDialog({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>
-        Manage Enrollment: {classType.name}
+        Manage Enrollment: {camp.name}
         <Typography variant="body2" color="text.secondary">
-          Max size: {classType.maxSize} · Enrolled: {selectedIds.length}
+          Max size: {camp.maxSize} · Enrolled: {selectedIds.length}
           {instancesNeeded > 1 && ` · ${instancesNeeded} instances will be created`}
         </Typography>
       </DialogTitle>

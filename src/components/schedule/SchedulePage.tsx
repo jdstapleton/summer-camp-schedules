@@ -9,17 +9,17 @@ import {
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { useSchedule } from '@/contexts/ScheduleContext';
-import type { ClassInstance } from '@/models/types';
+import type { CampInstance } from '@/models/types';
 
 export function SchedulePage() {
   const { data, generatedSchedule, refreshSchedule, saveToFile } =
     useSchedule();
 
-  const getClassName = (classTypeId: string) =>
-    data.classTypes.find((ct) => ct.id === classTypeId)?.name ?? classTypeId;
+  const getCampName = (campId: string) =>
+    data.camps.find((c) => c.id === campId)?.name ?? campId;
 
-  const getClassMaxSize = (classTypeId: string) =>
-    data.classTypes.find((ct) => ct.id === classTypeId)?.maxSize ?? 0;
+  const getCampMaxSize = (campId: string) =>
+    data.camps.find((c) => c.id === campId)?.maxSize ?? 0;
 
   const getStudentName = (studentId: string) => {
     const s = data.students.find((st) => st.id === studentId);
@@ -29,9 +29,9 @@ export function SchedulePage() {
   const getStudentGender = (studentId: string) =>
     data.students.find((s) => s.id === studentId)?.gender ?? 'other';
 
-  const getStudentFriendGroup = (classTypeId: string, studentId: string) => {
+  const getStudentFriendGroup = (campId: string, studentId: string) => {
     const registration = data.registrations.find(
-      (r) => r.classTypeId === classTypeId
+      (r) => r.campId === campId
     );
     if (!registration) return null;
     const groupIndex = registration.friendGroups.findIndex((g) =>
@@ -46,10 +46,10 @@ export function SchedulePage() {
     return '#e8f5e9';
   };
 
-  const instancesByClass = (generatedSchedule?.instances ?? []).reduce<
-    Record<string, ClassInstance[]>
+  const instancesByCamp = (generatedSchedule?.instances ?? []).reduce<
+    Record<string, CampInstance[]>
   >((acc, inst) => {
-    (acc[inst.classTypeId] ??= []).push(inst);
+    (acc[inst.campId] ??= []).push(inst);
     return acc;
   }, {});
 
@@ -94,30 +94,30 @@ export function SchedulePage() {
             No schedule generated yet
           </Typography>
           <Typography variant="body2">
-            Click "Generate Schedule" to automatically create class instances
+            Click "Generate Schedule" to automatically create camp instances
             from current registrations.
           </Typography>
         </Box>
       )}
 
-      {generatedSchedule && Object.keys(instancesByClass).length === 0 && (
+      {generatedSchedule && Object.keys(instancesByCamp).length === 0 && (
         <Typography color="text.secondary">
-          No classes have any enrolled students. Add registrations first.
+          No camps have any enrolled students. Add registrations first.
         </Typography>
       )}
 
-      {Object.entries(instancesByClass).map(([classTypeId, instances]) => (
-        <Box key={classTypeId} sx={{ mb: 4 }}>
+      {Object.entries(instancesByCamp).map(([campId, instances]) => (
+        <Box key={campId} sx={{ mb: 4 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
             <Typography variant="h6">
-              {getClassName(classTypeId)}
+              {getCampName(campId)}
               <Typography
                 component="span"
                 variant="body2"
                 color="text.secondary"
                 sx={{ ml: 1 }}
               >
-                (max {getClassMaxSize(classTypeId)})
+                (max {getCampMaxSize(campId)})
               </Typography>
             </Typography>
             <Chip
@@ -142,7 +142,7 @@ export function SchedulePage() {
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                     {inst.studentIds.map((id) => {
                       const friendGroup = getStudentFriendGroup(
-                        inst.classTypeId,
+                        inst.campId,
                         id
                       );
                       return (

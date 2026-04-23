@@ -1,7 +1,7 @@
 import type {
-  ClassInstance,
-  ClassRegistration,
-  ClassType,
+  Camp,
+  CampInstance,
+  CampRegistration,
   GeneratedSchedule,
   ScheduleData,
   Student,
@@ -9,25 +9,25 @@ import type {
 
 export function generateSchedule(data: ScheduleData): GeneratedSchedule {
   const studentMap = new Map(data.students.map((s) => [s.id, s]));
-  const classTypeMap = new Map(data.classTypes.map((ct) => [ct.id, ct]));
-  const instances: ClassInstance[] = [];
+  const campMap = new Map(data.camps.map((c) => [c.id, c]));
+  const instances: CampInstance[] = [];
 
   for (const registration of data.registrations) {
-    const classType = classTypeMap.get(registration.classTypeId);
-    if (!classType) continue;
-    instances.push(...splitIntoInstances(registration, classType, studentMap));
+    const camp = campMap.get(registration.campId);
+    if (!camp) continue;
+    instances.push(...splitIntoInstances(registration, camp, studentMap));
   }
 
   return { instances };
 }
 
 function splitIntoInstances(
-  registration: ClassRegistration,
-  classType: ClassType,
+  registration: CampRegistration,
+  camp: Camp,
   studentMap: Map<string, Student>
-): ClassInstance[] {
-  const { classTypeId, studentIds, friendGroups } = registration;
-  const { maxSize } = classType;
+): CampInstance[] {
+  const { campId, studentIds, friendGroups } = registration;
+  const { maxSize } = camp;
 
   if (studentIds.length === 0) return [];
 
@@ -36,7 +36,7 @@ function splitIntoInstances(
 
   if (numInstances === 1) {
     buckets[0] = [...studentIds];
-    return makeClassInstances(classTypeId, buckets);
+    return makeCampInstances(campId, buckets);
   }
 
   const studentSet = new Set(studentIds);
@@ -81,7 +81,7 @@ function splitIntoInstances(
     }
   }
 
-  return makeClassInstances(classTypeId, buckets);
+  return makeCampInstances(campId, buckets);
 }
 
 function smallestBucketIndex(buckets: string[][]): number {
@@ -91,13 +91,13 @@ function smallestBucketIndex(buckets: string[][]): number {
   );
 }
 
-function makeClassInstances(
-  classTypeId: string,
+function makeCampInstances(
+  campId: string,
   buckets: string[][]
-): ClassInstance[] {
+): CampInstance[] {
   return buckets.map((studentIds, i) => ({
-    id: `${classTypeId}-${i + 1}`,
-    classTypeId,
+    id: `${campId}-${i + 1}`,
+    campId,
     instanceNumber: i + 1,
     studentIds,
   }));

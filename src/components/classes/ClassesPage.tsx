@@ -17,38 +17,38 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSchedule } from '@/contexts/ScheduleContext';
-import type { ClassType } from '@/models/types';
-import { ClassTypeDialog } from './ClassTypeDialog';
+import type { Camp } from '@/models/types';
+import { CampDialog } from './ClassTypeDialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 
 export function ClassesPage() {
-  const { data, addClassType, updateClassType, deleteClassType } =
+  const { data, addCamp, updateCamp, deleteCamp } =
     useSchedule();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingClass, setEditingClass] = useState<ClassType | null>(null);
+  const [editingCamp, setEditingCamp] = useState<Camp | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleAdd = () => {
-    setEditingClass(null);
+    setEditingCamp(null);
     setDialogOpen(true);
   };
 
-  const handleEdit = (classType: ClassType) => {
-    setEditingClass(classType);
+  const handleEdit = (camp: Camp) => {
+    setEditingCamp(camp);
     setDialogOpen(true);
   };
 
-  const handleSave = (classTypeData: Omit<ClassType, 'id'>) => {
-    if (editingClass) {
-      updateClassType({ ...classTypeData, id: editingClass.id });
+  const handleSave = (campData: Omit<Camp, 'id'>) => {
+    if (editingCamp) {
+      updateCamp({ ...campData, id: editingCamp.id });
     } else {
-      addClassType(classTypeData);
+      addCamp(campData);
     }
     setDialogOpen(false);
   };
 
-  const getEnrollmentCount = (classTypeId: string) =>
-    data.registrations.find((r) => r.classTypeId === classTypeId)?.studentIds
+  const getEnrollmentCount = (campId: string) =>
+    data.registrations.find((r) => r.campId === campId)?.studentIds
       .length ?? 0;
 
   return (
@@ -62,10 +62,10 @@ export function ClassesPage() {
         }}
       >
         <Typography variant="h4">
-          Class Types ({data.classTypes.length})
+          Camps ({data.camps.length})
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
-          Add Class Type
+          Add Camp
         </Button>
       </Box>
 
@@ -73,7 +73,9 @@ export function ClassesPage() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Class Name</TableCell>
+              <TableCell>Camp Name</TableCell>
+              <TableCell>Grade Range</TableCell>
+              <TableCell>Week</TableCell>
               <TableCell>Max Size</TableCell>
               <TableCell>Enrolled</TableCell>
               <TableCell>Instances Needed</TableCell>
@@ -81,14 +83,16 @@ export function ClassesPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.classTypes.map((ct) => {
-              const enrolled = getEnrollmentCount(ct.id);
+            {data.camps.map((camp) => {
+              const enrolled = getEnrollmentCount(camp.id);
               const instances =
-                enrolled > 0 ? Math.ceil(enrolled / ct.maxSize) : 0;
+                enrolled > 0 ? Math.ceil(enrolled / camp.maxSize) : 0;
               return (
-                <TableRow key={ct.id}>
-                  <TableCell>{ct.name}</TableCell>
-                  <TableCell>{ct.maxSize}</TableCell>
+                <TableRow key={camp.id}>
+                  <TableCell>{camp.name}</TableCell>
+                  <TableCell>{camp.gradeRange}</TableCell>
+                  <TableCell>{camp.week}</TableCell>
+                  <TableCell>{camp.maxSize}</TableCell>
                   <TableCell>{enrolled}</TableCell>
                   <TableCell>
                     {instances > 0 ? (
@@ -102,13 +106,13 @@ export function ClassesPage() {
                     )}
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton size="small" onClick={() => handleEdit(ct)}>
+                    <IconButton size="small" onClick={() => handleEdit(camp)}>
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton
                       size="small"
                       color="error"
-                      onClick={() => setDeletingId(ct.id)}
+                      onClick={() => setDeletingId(camp.id)}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -116,14 +120,14 @@ export function ClassesPage() {
                 </TableRow>
               );
             })}
-            {data.classTypes.length === 0 && (
+            {data.camps.length === 0 && (
               <TableRow>
                 <TableCell
-                  colSpan={5}
+                  colSpan={7}
                   align="center"
                   sx={{ color: 'text.secondary' }}
                 >
-                  No class types added yet.
+                  No camps added yet.
                 </TableCell>
               </TableRow>
             )}
@@ -131,19 +135,19 @@ export function ClassesPage() {
         </Table>
       </TableContainer>
 
-      <ClassTypeDialog
+      <CampDialog
         open={dialogOpen}
-        classType={editingClass}
+        camp={editingCamp}
         onSave={handleSave}
         onClose={() => setDialogOpen(false)}
       />
 
       <ConfirmDialog
         open={deletingId !== null}
-        title="Delete Class Type"
-        message="Are you sure? All enrollment data for this class will also be deleted."
+        title="Delete Camp"
+        message="Are you sure? All enrollment data for this camp will also be deleted."
         onConfirm={() => {
-          if (deletingId) deleteClassType(deletingId);
+          if (deletingId) deleteCamp(deletingId);
         }}
         onClose={() => setDeletingId(null)}
       />

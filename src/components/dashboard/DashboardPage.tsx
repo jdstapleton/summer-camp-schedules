@@ -42,7 +42,7 @@ export function DashboardPage() {
       </Box>
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         <StatCard title="Students" value={data.students.length} />
-        <StatCard title="Class Types" value={data.classTypes.length} />
+        <StatCard title="Camps" value={data.camps.length} />
         <StatCard title="Active Registrations" value={activeRegistrations} />
       </Box>
 

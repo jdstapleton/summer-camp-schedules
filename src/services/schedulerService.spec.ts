@@ -11,8 +11,8 @@ describe('generateSchedule', () => {
   it('returns no instances for empty registrations', () => {
     const data: ScheduleData = {
       students: [],
-      classTypes: [{ id: 'c1', name: 'Art', maxSize: 10 }],
-      registrations: [{ classTypeId: 'c1', studentIds: [], friendGroups: [] }],
+      camps: [{ id: 'c1', name: 'Art', gradeRange: 'Grades 1-3', week: 'June 8', maxSize: 10 }],
+      registrations: [{ campId: 'c1', studentIds: [], friendGroups: [] }],
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(0);
@@ -22,9 +22,9 @@ describe('generateSchedule', () => {
     const students = ['s1', 's2', 's3'].map((id) => makeStudent(id, 'male'));
     const data: ScheduleData = {
       students,
-      classTypes: [{ id: 'c1', name: 'Art', maxSize: 10 }],
+      camps: [{ id: 'c1', name: 'Art', gradeRange: 'Grades 1-3', week: 'June 8', maxSize: 10 }],
       registrations: [
-        { classTypeId: 'c1', studentIds: ['s1', 's2', 's3'], friendGroups: [] },
+        { campId: 'c1', studentIds: ['s1', 's2', 's3'], friendGroups: [] },
       ],
     };
     const result = generateSchedule(data);
@@ -38,10 +38,10 @@ describe('generateSchedule', () => {
     );
     const data: ScheduleData = {
       students,
-      classTypes: [{ id: 'c1', name: 'Chemistry', maxSize: 16 }],
+      camps: [{ id: 'c1', name: 'Chemistry', gradeRange: 'Grades 4-7', week: 'June 15', maxSize: 16 }],
       registrations: [
         {
-          classTypeId: 'c1',
+          campId: 'c1',
           studentIds: students.map((s) => s.id),
           friendGroups: [],
         },
@@ -68,10 +68,10 @@ describe('generateSchedule', () => {
     );
     const data: ScheduleData = {
       students: [...males, ...females],
-      classTypes: [{ id: 'c1', name: 'Science', maxSize: 10 }],
+      camps: [{ id: 'c1', name: 'Science', gradeRange: 'Grades 1-3', week: 'June 22', maxSize: 10 }],
       registrations: [
         {
-          classTypeId: 'c1',
+          campId: 'c1',
           studentIds: [...males, ...females].map((s) => s.id),
           friendGroups: [],
         },
@@ -96,10 +96,10 @@ describe('generateSchedule', () => {
     const friendGroup = ['s0', 's1', 's2'];
     const data: ScheduleData = {
       students,
-      classTypes: [{ id: 'c1', name: 'Coding', maxSize: 16 }],
+      camps: [{ id: 'c1', name: 'Coding', gradeRange: 'Grades 4-7', week: 'July 6', maxSize: 16 }],
       registrations: [
         {
-          classTypeId: 'c1',
+          campId: 'c1',
           studentIds: students.map((s) => s.id),
           friendGroups: [friendGroup],
         },
@@ -112,16 +112,16 @@ describe('generateSchedule', () => {
     expect(instanceWithFriends).toBeDefined();
   });
 
-  it('assigns correct instanceNumber and classTypeId', () => {
+  it('assigns correct instanceNumber and campId', () => {
     const students = Array.from({ length: 5 }, (_, i) =>
       makeStudent(`s${i}`, 'male')
     );
     const data: ScheduleData = {
       students,
-      classTypes: [{ id: 'cls1', name: 'Art', maxSize: 3 }],
+      camps: [{ id: 'cls1', name: 'Art', gradeRange: 'Grades 1-3', week: 'June 8', maxSize: 3 }],
       registrations: [
         {
-          classTypeId: 'cls1',
+          campId: 'cls1',
           studentIds: students.map((s) => s.id),
           friendGroups: [],
         },
@@ -130,7 +130,7 @@ describe('generateSchedule', () => {
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(2);
     result.instances.forEach((inst, i) => {
-      expect(inst.classTypeId).toBe('cls1');
+      expect(inst.campId).toBe('cls1');
       expect(inst.instanceNumber).toBe(i + 1);
     });
   });

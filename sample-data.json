@@ -31,16 +31,16 @@
     { "id": "s29", "firstName": "Ella",      "lastName": "Diaz",      "gender": "female" },
     { "id": "s30", "firstName": "Scarlett",  "lastName": "Edwards",   "gender": "female" }
   ],
-  "classTypes": [
-    { "id": "c01", "name": "Minecraft Programming", "maxSize": 12 },
-    { "id": "c02", "name": "Little Chemist",        "maxSize": 16 },
-    { "id": "c03", "name": "Eco Explorer",          "maxSize": 14 },
-    { "id": "c04", "name": "Coding with Roblox",    "maxSize": 12 },
-    { "id": "c05", "name": "Jr Space Explorer",     "maxSize": 15 }
+  "camps": [
+    { "id": "c01", "name": "Minecraft Programming", "gradeRange": "Grades 4-7",  "week": "June 8",  "maxSize": 12 },
+    { "id": "c02", "name": "Little Chemist",        "gradeRange": "PreK-K",       "week": "June 8",  "maxSize": 16 },
+    { "id": "c03", "name": "Eco Explorer",          "gradeRange": "Grades 1-3",  "week": "June 15", "maxSize": 14 },
+    { "id": "c04", "name": "Coding with Roblox",    "gradeRange": "Grades 6-8",  "week": "June 22", "maxSize": 12 },
+    { "id": "c05", "name": "Jr Space Explorer",     "gradeRange": "Grades 4-7",  "week": "July 6",  "maxSize": 15 }
   ],
   "registrations": [
     {
-      "classTypeId": "c01",
+      "campId": "c01",
       "studentIds": [
         "s01","s02","s03","s04","s05","s06","s07",
         "s16","s17","s18","s19","s20","s21","s22","s23","s24","s25","s26","s27","s28"
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "classTypeId": "c02",
+      "campId": "c02",
       "studentIds": [
         "s08","s09","s10","s11","s12","s13","s14","s15",
         "s17","s18","s22","s23","s24","s25","s26","s27","s28","s29"
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "classTypeId": "c03",
+      "campId": "c03",
       "studentIds": [
         "s01","s04","s07","s10","s13",
         "s16","s19","s22","s25","s28"
@@ -70,7 +70,7 @@
       "friendGroups": []
     },
     {
-      "classTypeId": "c04",
+      "campId": "c04",
       "studentIds": [
         "s02","s03","s05","s06","s08","s11","s12","s14","s15",
         "s17","s18","s20","s21","s23","s29","s30"
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "classTypeId": "c05",
+      "campId": "c05",
       "studentIds": [
         "s04","s06","s09","s13",
         "s16","s18","s23","s27","s30"

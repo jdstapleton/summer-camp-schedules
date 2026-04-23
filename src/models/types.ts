@@ -7,31 +7,38 @@ export interface Student {
   gender: Gender;
 }
 
-export interface ClassType {
+export interface Camp {
   id: string;
   name: string;
+  gradeRange: string;
+  week: string;
   maxSize: number;
 }
 
-export interface ClassRegistration {
-  classTypeId: string;
+export interface CampRegistration {
+  campId: string;
   studentIds: string[];
   friendGroups: string[][];
 }
 
-export interface ClassInstance {
+export interface CampInstance {
   id: string;
-  classTypeId: string;
+  campId: string;
   instanceNumber: number;
   studentIds: string[];
 }
 
 export interface ScheduleData {
   students: Student[];
-  classTypes: ClassType[];
-  registrations: ClassRegistration[];
+  camps: Camp[];
+  registrations: CampRegistration[];
 }
 
 export interface GeneratedSchedule {
-  instances: ClassInstance[];
+  instances: CampInstance[];
 }
+
+// Legacy type aliases for backwards compatibility during migration
+export type ClassType = Camp;
+export type ClassRegistration = CampRegistration;
+export type ClassInstance = CampInstance;

@@ -13,22 +13,22 @@ import {
   Typography,
 } from '@mui/material';
 import { useSchedule } from '@/contexts/ScheduleContext';
-import type { ClassType } from '@/models/types';
+import type { Camp } from '@/models/types';
 import { EnrollmentDialog } from './EnrollmentDialog';
 
 export function RegistrationsPage() {
   const { data, updateRegistration } = useSchedule();
-  const [managingClass, setManagingClass] = useState<ClassType | null>(null);
+  const [managingCamp, setManagingCamp] = useState<Camp | null>(null);
 
-  const getRegistration = (classTypeId: string) =>
-    data.registrations.find((r) => r.classTypeId === classTypeId) ?? {
-      classTypeId,
+  const getRegistration = (campId: string) =>
+    data.registrations.find((r) => r.campId === campId) ?? {
+      campId,
       studentIds: [],
       friendGroups: [],
     };
 
-  const activeRegistration = managingClass
-    ? getRegistration(managingClass.id)
+  const activeRegistration = managingCamp
+    ? getRegistration(managingCamp.id)
     : null;
 
   return (
@@ -37,14 +37,16 @@ export function RegistrationsPage() {
         Registrations
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        Assign students to classes and define friend groups to keep together.
+        Assign students to camps and define friend groups to keep together.
       </Typography>
 
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Class</TableCell>
+              <TableCell>Camp</TableCell>
+              <TableCell>Grade Range</TableCell>
+              <TableCell>Week</TableCell>
               <TableCell>Max Size</TableCell>
               <TableCell>Enrolled</TableCell>
               <TableCell>Instances</TableCell>
@@ -53,16 +55,18 @@ export function RegistrationsPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.classTypes.map((ct) => {
-              const reg = getRegistration(ct.id);
+            {data.camps.map((camp) => {
+              const reg = getRegistration(camp.id);
               const instances =
                 reg.studentIds.length > 0
-                  ? Math.ceil(reg.studentIds.length / ct.maxSize)
+                  ? Math.ceil(reg.studentIds.length / camp.maxSize)
                   : 0;
               return (
-                <TableRow key={ct.id}>
-                  <TableCell>{ct.name}</TableCell>
-                  <TableCell>{ct.maxSize}</TableCell>
+                <TableRow key={camp.id}>
+                  <TableCell>{camp.name}</TableCell>
+                  <TableCell>{camp.gradeRange}</TableCell>
+                  <TableCell>{camp.week}</TableCell>
+                  <TableCell>{camp.maxSize}</TableCell>
                   <TableCell>{reg.studentIds.length}</TableCell>
                   <TableCell>
                     {instances > 1 ? (
@@ -85,22 +89,21 @@ export function RegistrationsPage() {
                       : '—'}
                   </TableCell>
                   <TableCell align="right">
-                    <Button size="small" onClick={() => setManagingClass(ct)}>
+                    <Button size="small" onClick={() => setManagingCamp(camp)}>
                       Manage
                     </Button>
                   </TableCell>
                 </TableRow>
               );
             })}
-            {data.classTypes.length === 0 && (
+            {data.camps.length === 0 && (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={8}
                   align="center"
                   sx={{ color: 'text.secondary' }}
                 >
-                  No class types defined. Add class types on the Classes page
-                  first.
+                  No camps defined. Add camps on the Camps page first.
                 </TableCell>
               </TableRow>
             )}
@@ -108,17 +111,17 @@ export function RegistrationsPage() {
         </Table>
       </TableContainer>
 
-      {managingClass && activeRegistration && (
+      {managingCamp && activeRegistration && (
         <EnrollmentDialog
           open={true}
-          classType={managingClass}
+          camp={managingCamp}
           registration={activeRegistration}
           students={data.students}
           onSave={(reg) => {
             updateRegistration(reg);
-            setManagingClass(null);
+            setManagingCamp(null);
           }}
-          onClose={() => setManagingClass(null)}
+          onClose={() => setManagingCamp(null)}
         />
       )}
     </Box>

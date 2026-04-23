@@ -1,8 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type {
-  ClassRegistration,
-  ClassType,
+  Camp,
+  CampRegistration,
   GeneratedSchedule,
   ScheduleData,
   Student,
@@ -14,7 +14,7 @@ const STORAGE_KEY = 'summer-camp-schedules';
 
 const emptyData: ScheduleData = {
   students: [],
-  classTypes: [],
+  camps: [],
   registrations: [],
 };
 
@@ -24,10 +24,10 @@ interface ScheduleContextValue {
   addStudent: (student: Omit<Student, 'id'>) => void;
   updateStudent: (student: Student) => void;
   deleteStudent: (id: string) => void;
-  addClassType: (classType: Omit<ClassType, 'id'>) => void;
-  updateClassType: (classType: ClassType) => void;
-  deleteClassType: (id: string) => void;
-  updateRegistration: (registration: ClassRegistration) => void;
+  addCamp: (camp: Omit<Camp, 'id'>) => void;
+  updateCamp: (camp: Camp) => void;
+  deleteCamp: (id: string) => void;
+  updateRegistration: (registration: CampRegistration) => void;
   refreshSchedule: () => void;
   loadFromFile: () => Promise<void>;
   saveToFile: () => void;
@@ -81,40 +81,40 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
-  const addClassType = useCallback((classType: Omit<ClassType, 'id'>) => {
+  const addCamp = useCallback((camp: Omit<Camp, 'id'>) => {
     const id = crypto.randomUUID();
     setData((prev) => ({
       ...prev,
-      classTypes: [...prev.classTypes, { ...classType, id }],
+      camps: [...prev.camps, { ...camp, id }],
       registrations: [
         ...prev.registrations,
-        { classTypeId: id, studentIds: [], friendGroups: [] },
+        { campId: id, studentIds: [], friendGroups: [] },
       ],
     }));
   }, []);
 
-  const updateClassType = useCallback((classType: ClassType) => {
+  const updateCamp = useCallback((camp: Camp) => {
     setData((prev) => ({
       ...prev,
-      classTypes: prev.classTypes.map((ct) =>
-        ct.id === classType.id ? classType : ct
+      camps: prev.camps.map((c) =>
+        c.id === camp.id ? camp : c
       ),
     }));
   }, []);
 
-  const deleteClassType = useCallback((id: string) => {
+  const deleteCamp = useCallback((id: string) => {
     setData((prev) => ({
       ...prev,
-      classTypes: prev.classTypes.filter((ct) => ct.id !== id),
-      registrations: prev.registrations.filter((r) => r.classTypeId !== id),
+      camps: prev.camps.filter((c) => c.id !== id),
+      registrations: prev.registrations.filter((r) => r.campId !== id),
     }));
   }, []);
 
-  const updateRegistration = useCallback((registration: ClassRegistration) => {
+  const updateRegistration = useCallback((registration: CampRegistration) => {
     setData((prev) => ({
       ...prev,
       registrations: prev.registrations.map((r) =>
-        r.classTypeId === registration.classTypeId ? registration : r
+        r.campId === registration.campId ? registration : r
       ),
     }));
   }, []);
@@ -149,9 +149,9 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         addStudent,
         updateStudent,
         deleteStudent,
-        addClassType,
-        updateClassType,
-        deleteClassType,
+        addCamp,
+        updateCamp,
+        deleteCamp,
         updateRegistration,
         refreshSchedule,
         loadFromFile,
