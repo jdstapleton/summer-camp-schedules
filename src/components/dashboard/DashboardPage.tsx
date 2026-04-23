@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import { useSchedule } from '@/contexts/ScheduleContext';
+import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 
 function StatCard({ title, value }: { title: string; value: number }) {
   return (
@@ -15,7 +17,8 @@ function StatCard({ title, value }: { title: string; value: number }) {
 }
 
 export function DashboardPage() {
-  const { data, loadFromFile, saveToFile } = useSchedule();
+  const { data, loadFromFile, saveToFile, clearData } = useSchedule();
+  const [confirmClear, setConfirmClear] = useState(false);
 
   const activeRegistrations = data.registrations.filter(
     (r) => r.studentIds.length > 0
@@ -33,12 +36,23 @@ export function DashboardPage() {
         <Button variant="outlined" onClick={saveToFile}>
           Save Schedule File
         </Button>
+        <Button variant="outlined" color="error" onClick={() => setConfirmClear(true)}>
+          New Schedule
+        </Button>
       </Box>
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         <StatCard title="Students" value={data.students.length} />
         <StatCard title="Class Types" value={data.classTypes.length} />
         <StatCard title="Active Registrations" value={activeRegistrations} />
       </Box>
+
+      <ConfirmDialog
+        open={confirmClear}
+        title="Start New Schedule"
+        message="Clear all data and start fresh? This cannot be undone. (Your browser's saved data will also be cleared.)"
+        onConfirm={clearData}
+        onClose={() => setConfirmClear(false)}
+      />
     </Box>
   );
 }

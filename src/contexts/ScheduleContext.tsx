@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type {
   ClassRegistration,
@@ -9,6 +9,8 @@ import type {
 } from '@/models/types';
 import { fileService } from '@/services/fileService';
 import { generateSchedule } from '@/services/schedulerService';
+
+const STORAGE_KEY = 'summer-camp-schedules';
 
 const emptyData: ScheduleData = {
   students: [],
@@ -29,14 +31,27 @@ interface ScheduleContextValue {
   refreshSchedule: () => void;
   loadFromFile: () => Promise<void>;
   saveToFile: () => void;
+  clearData: () => void;
 }
 
 const ScheduleContext = createContext<ScheduleContextValue | null>(null);
 
 export function ScheduleProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<ScheduleData>(emptyData);
+  const [data, setData] = useState<ScheduleData>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) return JSON.parse(saved) as ScheduleData;
+    } catch {
+      // corrupted data, fall back to empty
+    }
+    return emptyData;
+  });
   const [generatedSchedule, setGeneratedSchedule] =
     useState<GeneratedSchedule | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }, [data]);
 
   const addStudent = useCallback((student: Omit<Student, 'id'>) => {
     setData((prev) => ({
@@ -120,6 +135,12 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     fileService.saveFile(data, 'summer-camp-schedules.json');
   }, [data]);
 
+  const clearData = useCallback(() => {
+    setData(emptyData);
+    setGeneratedSchedule(null);
+    localStorage.removeItem(STORAGE_KEY);
+  }, []);
+
   return (
     <ScheduleContext.Provider
       value={{
@@ -135,6 +156,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         refreshSchedule,
         loadFromFile,
         saveToFile,
+        clearData,
       }}
     >
       {children}
