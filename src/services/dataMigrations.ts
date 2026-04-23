@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ScheduleData } from '@/models/types';
 
 const CURRENT_VERSION = 2;
