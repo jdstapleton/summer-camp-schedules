@@ -154,6 +154,7 @@ export function ClassesPage() {
       <CampDialog
         open={dialogOpen}
         camp={editingCamp}
+        existingCamps={data.camps}
         onSave={handleSave}
         onClose={() => setDialogOpen(false)}
       />

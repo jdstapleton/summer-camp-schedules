@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  Autocomplete,
   Button,
   Dialog,
   DialogActions,
@@ -12,6 +13,7 @@ import type { Camp } from '@/models/types';
 interface CampDialogProps {
   open: boolean;
   camp: Camp | null;
+  existingCamps: Camp[];
   onSave: (data: Omit<Camp, 'id'>) => void;
   onClose: () => void;
 }
@@ -19,6 +21,7 @@ interface CampDialogProps {
 export function CampDialog({
   open,
   camp,
+  existingCamps,
   onSave,
   onClose,
 }: CampDialogProps) {
@@ -26,6 +29,14 @@ export function CampDialog({
   const [gradeRange, setGradeRange] = useState('');
   const [week, setWeek] = useState('');
   const [maxSize, setMaxSize] = useState('16');
+
+  const existingNames = Array.from(new Set(existingCamps.map((c) => c.name)))
+    .sort();
+  const existingWeeks = Array.from(new Set(existingCamps.map((c) => c.week)))
+    .sort();
+  const existingGradeRanges = Array.from(
+    new Set(existingCamps.map((c) => c.gradeRange))
+  ).sort();
 
   useEffect(() => {
     if (open) {
@@ -60,33 +71,54 @@ export function CampDialog({
         {camp ? 'Edit Camp' : 'Add Camp'}
       </DialogTitle>
       <DialogContent>
-        <TextField
-          label="Camp Name"
+        <Autocomplete
+          freeSolo
+          options={existingNames}
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(_, newValue) => setName(newValue ?? '')}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Camp Name"
+              margin="normal"
+              required
+              autoFocus
+              placeholder="e.g. Minecraft Programming"
+            />
+          )}
           fullWidth
-          margin="normal"
-          required
-          autoFocus
-          placeholder="e.g. Minecraft Programming"
         />
-        <TextField
-          label="Grade Range"
+        <Autocomplete
+          freeSolo
+          options={existingGradeRanges}
           value={gradeRange}
-          onChange={(e) => setGradeRange(e.target.value)}
+          onChange={(_, newValue) => setGradeRange(newValue ?? '')}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Grade Range"
+              margin="normal"
+              required
+              placeholder="e.g. Grades 4-7, PreK-K"
+            />
+          )}
           fullWidth
-          margin="normal"
-          required
-          placeholder="e.g. Grades 4-7, PreK-K"
         />
-        <TextField
-          label="Week"
+        <Autocomplete
+          freeSolo
+          options={existingWeeks}
           value={week}
-          onChange={(e) => setWeek(e.target.value)}
+          onChange={(_, newValue) => setWeek(newValue ?? '')}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Week"
+              margin="normal"
+              required
+              placeholder="e.g. June 8, June 15"
+            />
+          )}
           fullWidth
-          margin="normal"
-          required
-          placeholder="e.g. June 8, June 15"
         />
         <TextField
           label="Max Camp Size"
