@@ -80,14 +80,11 @@ export const StudentList = styled(Box)(({ theme }) => ({
 export const StudentPill = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'gender',
 })<{ gender: Gender }>(({ theme, gender }) => ({
-  padding: theme.spacing(0.25, 1),
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: theme.spacing(1, 1),
   borderRadius: theme.shape.borderRadius,
   backgroundColor: genderColor(gender),
   fontSize: '0.875rem',
-}));
-
-export const FriendGroupSpan = styled(Typography)(({ theme }) => ({
-  marginLeft: theme.spacing(0.5),
-  fontWeight: 500,
-  color: 'rgba(0,0,0,0.6)',
 }));

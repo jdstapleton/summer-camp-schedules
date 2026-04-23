@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import {
+  Box,
   Button,
   CardContent,
   Chip,
   InputLabel,
   Select,
   MenuItem,
+  Tooltip,
   Typography,
+  Badge,
 } from '@mui/material';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import GroupsIcon from '@mui/icons-material/Groups';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import dayjs from 'dayjs';
@@ -23,7 +27,6 @@ import {
   CampSection,
   ControlsRow,
   EmptyState,
-  FriendGroupSpan,
   InstanceCard,
   InstanceCardsRow,
   MutedTypography,
@@ -88,11 +91,14 @@ function CampBlock({
                   const friendGroup = getStudentFriendGroup(campId, id);
                   return (
                     <StudentPill key={id} gender={getStudentGender(id)}>
-                      {getStudentName(id)}
+                      <span>{getStudentName(id)}</span>
                       {friendGroup && (
-                        <FriendGroupSpan>
-                          (Friend Group {friendGroup})
-                        </FriendGroupSpan>
+                        <Tooltip title={`Friend Group ${friendGroup}`} placement="right">
+                          <Badge badgeContent={friendGroup} color="primary" sx={{ '& .MuiBadge-badge': {
+                            bottom: 12,
+                          }, marginRight: 1.25 }} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                          ><GroupsIcon color="secondary" /></Badge>
+                        </Tooltip>
                       )}
                     </StudentPill>
                   );
@@ -201,7 +207,10 @@ export function SchedulePage() {
             disabled={!generatedSchedule}
             onClick={() =>
               generatedSchedule &&
-              exportScheduleToExcel(data, generatedSchedule)
+              exportScheduleToExcel(
+                data,
+                Object.values(instancesByCamp).flat()
+              )
             }
           >
             Export Excel
