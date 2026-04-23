@@ -18,6 +18,9 @@ export function SchedulePage() {
   const getClassName = (classTypeId: string) =>
     data.classTypes.find((ct) => ct.id === classTypeId)?.name ?? classTypeId;
 
+  const getClassMaxSize = (classTypeId: string) =>
+    data.classTypes.find((ct) => ct.id === classTypeId)?.maxSize ?? 0;
+
   const getStudentName = (studentId: string) => {
     const s = data.students.find((st) => st.id === studentId);
     return s ? `${s.firstName} ${s.lastName}` : studentId;
@@ -95,7 +98,17 @@ export function SchedulePage() {
       {Object.entries(instancesByClass).map(([classTypeId, instances]) => (
         <Box key={classTypeId} sx={{ mb: 4 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-            <Typography variant="h6">{getClassName(classTypeId)}</Typography>
+            <Typography variant="h6">
+              {getClassName(classTypeId)}
+              <Typography
+                component="span"
+                variant="body2"
+                color="text.secondary"
+                sx={{ ml: 1 }}
+              >
+                (max {getClassMaxSize(classTypeId)})
+              </Typography>
+            </Typography>
             <Chip
               label={`${instances.length} instance${instances.length > 1 ? 's' : ''}`}
               size="small"

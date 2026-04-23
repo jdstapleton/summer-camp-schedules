@@ -50,6 +50,7 @@ npm run dev
 
 ## Key Technologies & Configuration
 
+- **git** - scm; should have git ignore file with the common ignores for a project of this type
 - **TypeScript** — Latest version; Strict mode enabled (`tsconfig.json`)
 - **React** — Latest version; functional components with named exports only
 - **Vite** — Fast build tool with dev server and HMR
