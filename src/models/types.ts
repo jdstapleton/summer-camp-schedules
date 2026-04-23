@@ -37,8 +37,3 @@ export interface ScheduleData {
 export interface GeneratedSchedule {
   instances: CampInstance[];
 }
-
-// Legacy type aliases for backwards compatibility during migration
-export type ClassType = Camp;
-export type ClassRegistration = CampRegistration;
-export type ClassInstance = CampInstance;
