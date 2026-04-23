@@ -10,10 +10,12 @@ import {
 } from '@mui/material';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import TableChartIcon from '@mui/icons-material/TableChart';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { CampInstance, Gender } from '@/models/types';
+import { exportScheduleToExcel } from '@/services/excelService';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
   CampHeaderRow,
@@ -192,6 +194,17 @@ export function SchedulePage() {
             onClick={saveToFile}
           >
             Export JSON
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<TableChartIcon />}
+            disabled={!generatedSchedule}
+            onClick={() =>
+              generatedSchedule &&
+              exportScheduleToExcel(data, generatedSchedule)
+            }
+          >
+            Export Excel
           </Button>
           <Button
             variant="contained"
