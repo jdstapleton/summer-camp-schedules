@@ -37,6 +37,7 @@ export interface CampInstance {
 }
 
 export interface ScheduleData {
+  version: number;
   students: Student[];
   camps: Camp[];
   registrations: CampRegistration[];

@@ -15,6 +15,7 @@ const makeStudent = (id: string, gender: 'male' | 'female' | 'other') => ({
 describe('generateSchedule', () => {
   it('returns no instances for empty registrations', () => {
     const data: ScheduleData = {
+      version: 2,
       students: [],
       camps: [
         {
@@ -34,6 +35,7 @@ describe('generateSchedule', () => {
   it('creates a single instance when enrollment is within maxSize', () => {
     const students = ['s1', 's2', 's3'].map((id) => makeStudent(id, 'male'));
     const data: ScheduleData = {
+      version: 2,
       students,
       camps: [
         {
@@ -58,6 +60,7 @@ describe('generateSchedule', () => {
       makeStudent(`s${i}`, 'male')
     );
     const data: ScheduleData = {
+      version: 2,
       students,
       camps: [
         {
@@ -96,6 +99,7 @@ describe('generateSchedule', () => {
       makeStudent(`f${i}`, 'female')
     );
     const data: ScheduleData = {
+      version: 2,
       students: [...males, ...females],
       camps: [
         {
@@ -132,6 +136,7 @@ describe('generateSchedule', () => {
     );
     const friendGroup = ['s0', 's1', 's2'];
     const data: ScheduleData = {
+      version: 2,
       students,
       camps: [
         {
@@ -162,6 +167,7 @@ describe('generateSchedule', () => {
       makeStudent(`s${i}`, 'male')
     );
     const data: ScheduleData = {
+      version: 2,
       students,
       camps: [
         {

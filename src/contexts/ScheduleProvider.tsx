@@ -9,11 +9,13 @@ import type {
 } from '@/models/types';
 import { fileService } from '@/services/fileService';
 import { generateSchedule } from '@/services/schedulerService';
+import { migrateData, randomSafetyCode } from '@/services/dataMigrations';
 import { ScheduleContext } from './ScheduleContext';
 
 const STORAGE_KEY = 'summer-camp-schedules';
 
 const emptyData: ScheduleData = {
+  version: 2,
   students: [],
   camps: [],
   registrations: [],
@@ -29,20 +31,6 @@ const isValidScheduleData = (data: unknown): data is ScheduleData => {
   );
 };
 
-const randomSafetyCode = () =>
-  Math.floor(Math.random() * 10000)
-    .toString()
-    .padStart(4, '0');
-
-const migrateStudentData = (data: ScheduleData): ScheduleData => {
-  const migratedStudents = data.students.map((student) => ({
-    ...student,
-    emergency: student.emergency ?? { name: '', phone: '' },
-    backup: student.backup ?? { name: '', phone: '' },
-    safetyCode: student.safetyCode ?? randomSafetyCode(),
-  }));
-  return { ...data, students: migratedStudents };
-};
 
 export function ScheduleProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<ScheduleData>(() => {
@@ -50,7 +38,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (isValidScheduleData(parsed)) return migrateStudentData(parsed);
+        if (isValidScheduleData(parsed)) return migrateData(parsed);
         // Schema mismatch (likely old format), clear and start fresh
         localStorage.removeItem(STORAGE_KEY);
       }
@@ -148,7 +136,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   const loadFromFile = useCallback(async () => {
     const loaded = await fileService.openFile();
     if (loaded) {
-      setData(migrateStudentData(loaded));
+      setData(migrateData(loaded));
       setGeneratedSchedule(null);
     }
   }, []);

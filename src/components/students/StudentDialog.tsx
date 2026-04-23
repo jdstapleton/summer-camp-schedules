@@ -17,6 +17,7 @@ import {
 import CasinoIcon from '@mui/icons-material/Casino';
 import type { SelectChangeEvent } from '@mui/material';
 import type { Gender, Student } from '@/models/types';
+import { randomSafetyCode } from '@/services/dataMigrations';
 
 interface StudentDialogProps {
   open: boolean;
@@ -24,11 +25,6 @@ interface StudentDialogProps {
   onSave: (data: Omit<Student, 'id'>) => void;
   onClose: () => void;
 }
-
-const generateSafetyCode = () =>
-  Math.floor(Math.random() * 10000)
-    .toString()
-    .padStart(4, '0');
 
 export function StudentDialog({
   open,
@@ -51,7 +47,7 @@ export function StudentDialog({
       setFirstName(student?.firstName ?? '');
       setLastName(student?.lastName ?? '');
       setGender(student?.gender ?? 'male');
-      setSafetyCode(student?.safetyCode ?? generateSafetyCode());
+      setSafetyCode(student?.safetyCode ?? randomSafetyCode());
       setEmergencyName(student?.emergency?.name ?? '');
       setEmergencyPhone(student?.emergency?.phone ?? '');
       setBackupName(student?.backup?.name ?? '');
@@ -143,7 +139,7 @@ export function StudentDialog({
                 <InputAdornment position="end">
                   <Tooltip title="Generate random code">
                     <IconButton
-                      onClick={() => setSafetyCode(generateSafetyCode())}
+                      onClick={() => setSafetyCode(randomSafetyCode())}
                       edge="end"
                     >
                       <CasinoIcon />
