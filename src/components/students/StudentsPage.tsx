@@ -57,11 +57,14 @@ export function StudentsPage() {
   return (
     <Box>
       <Box
-        sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, alignItems: 'center' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          mb: 2,
+          alignItems: 'center',
+        }}
       >
-        <Typography variant="h4">
-          Students ({data.students.length})
-        </Typography>
+        <Typography variant="h4">Students ({data.students.length})</Typography>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           <Tooltip title="Randomize Safety Codes">
             <span>
@@ -74,7 +77,11 @@ export function StudentsPage() {
               </IconButton>
             </span>
           </Tooltip>
-          <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={handleAdd}
+          >
             Add Student
           </Button>
         </Box>
@@ -118,7 +125,11 @@ export function StudentsPage() {
             ))}
             {data.students.length === 0 && (
               <TableRow>
-                <TableCell colSpan={4} align="center" sx={{ color: 'text.secondary' }}>
+                <TableCell
+                  colSpan={4}
+                  align="center"
+                  sx={{ color: 'text.secondary' }}
+                >
                   No students added yet.
                 </TableCell>
               </TableRow>

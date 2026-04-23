@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import type { ReactNode } from 'react';
 import type {
   Camp,
@@ -128,9 +134,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   const updateCamp = useCallback((camp: Camp) => {
     setData((prev) => ({
       ...prev,
-      camps: prev.camps.map((c) =>
-        c.id === camp.id ? camp : c
-      ),
+      camps: prev.camps.map((c) => (c.id === camp.id ? camp : c)),
     }));
   }, []);
 

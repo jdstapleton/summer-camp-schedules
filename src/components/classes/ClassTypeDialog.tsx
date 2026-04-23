@@ -30,10 +30,12 @@ export function CampDialog({
   const [week, setWeek] = useState('');
   const [maxSize, setMaxSize] = useState('16');
 
-  const existingNames = Array.from(new Set(existingCamps.map((c) => c.name)))
-    .sort();
-  const existingWeeks = Array.from(new Set(existingCamps.map((c) => c.week)))
-    .sort();
+  const existingNames = Array.from(
+    new Set(existingCamps.map((c) => c.name))
+  ).sort();
+  const existingWeeks = Array.from(
+    new Set(existingCamps.map((c) => c.week))
+  ).sort();
   const existingGradeRanges = Array.from(
     new Set(existingCamps.map((c) => c.gradeRange))
   ).sort();
@@ -67,9 +69,7 @@ export function CampDialog({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        {camp ? 'Edit Camp' : 'Add Camp'}
-      </DialogTitle>
+      <DialogTitle>{camp ? 'Edit Camp' : 'Add Camp'}</DialogTitle>
       <DialogContent>
         <Autocomplete
           freeSolo

@@ -40,9 +40,7 @@ export function SchedulePage() {
     data.students.find((s) => s.id === studentId)?.gender ?? 'other';
 
   const getStudentFriendGroup = (campId: string, studentId: string) => {
-    const registration = data.registrations.find(
-      (r) => r.campId === campId
-    );
+    const registration = data.registrations.find((r) => r.campId === campId);
     if (!registration) return null;
     const groupIndex = registration.friendGroups.findIndex((g) =>
       g.includes(studentId)
@@ -146,16 +144,19 @@ export function SchedulePage() {
         </Box>
       )}
       {generatedSchedule && Object.keys(instancesByCamp).length === 0 && (
-        <Typography sx={{
-          color: "text.secondary"
-        }}>
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           No camps have any enrolled students. Add registrations first.
         </Typography>
       )}
       {!selectedWeek && generatedSchedule
         ? uniqueWeeks.map((week) => {
             const campsInWeek = Object.entries(instancesByCamp).filter(
-              ([campId]) => data.camps.find((c) => c.id === campId)?.week === week
+              ([campId]) =>
+                data.camps.find((c) => c.id === campId)?.week === week
             );
             if (campsInWeek.length === 0) return null;
             return (
@@ -182,16 +183,24 @@ export function SchedulePage() {
                 </Typography>
                 {campsInWeek.map(([campId, instances]) => (
                   <Box key={campId} sx={{ mb: 4 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        mb: 1.5,
+                      }}
+                    >
                       <Typography variant="h6">
                         {getCampName(campId)}
                         <Typography
                           component="span"
                           variant="body2"
                           sx={{
-                            color: "text.secondary",
-                            ml: 1
-                          }}>
+                            color: 'text.secondary',
+                            ml: 1,
+                          }}
+                        >
                           (max {getCampMaxSize(campId)})
                         </Typography>
                       </Typography>
@@ -211,10 +220,17 @@ export function SchedulePage() {
                         >
                           <CardContent>
                             <Typography variant="subtitle2" gutterBottom>
-                              Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
-                              student{inst.studentIds.length !== 1 ? 's' : ''}
+                              Instance {inst.instanceNumber} —{' '}
+                              {inst.studentIds.length} student
+                              {inst.studentIds.length !== 1 ? 's' : ''}
                             </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 0.5,
+                              }}
+                            >
                               {inst.studentIds.map((id) => {
                                 const friendGroup = getStudentFriendGroup(
                                   inst.campId,
@@ -227,7 +243,9 @@ export function SchedulePage() {
                                       px: 1,
                                       py: 0.25,
                                       borderRadius: 1,
-                                      bgcolor: genderColor(getStudentGender(id)),
+                                      bgcolor: genderColor(
+                                        getStudentGender(id)
+                                      ),
                                       fontSize: '0.875rem',
                                     }}
                                   >
@@ -248,9 +266,12 @@ export function SchedulePage() {
                                 );
                               })}
                               {inst.studentIds.length === 0 && (
-                                <Typography variant="body2" sx={{
-                                  color: "text.secondary"
-                                }}>
+                                <Typography
+                                  variant="body2"
+                                  sx={{
+                                    color: 'text.secondary',
+                                  }}
+                                >
                                   No students assigned
                                 </Typography>
                               )}
@@ -266,16 +287,19 @@ export function SchedulePage() {
           })
         : Object.entries(instancesByCamp).map(([campId, instances]) => (
             <Box key={campId} sx={{ mb: 4 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+              <Box
+                sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}
+              >
                 <Typography variant="h6">
                   {getCampName(campId)}
                   <Typography
                     component="span"
                     variant="body2"
                     sx={{
-                      color: "text.secondary",
-                      ml: 1
-                    }}>
+                      color: 'text.secondary',
+                      ml: 1,
+                    }}
+                  >
                     (max {getCampMaxSize(campId)})
                   </Typography>
                 </Typography>
@@ -295,10 +319,17 @@ export function SchedulePage() {
                   >
                     <CardContent>
                       <Typography variant="subtitle2" gutterBottom>
-                        Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
-                        student{inst.studentIds.length !== 1 ? 's' : ''}
+                        Instance {inst.instanceNumber} —{' '}
+                        {inst.studentIds.length} student
+                        {inst.studentIds.length !== 1 ? 's' : ''}
                       </Typography>
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: 0.5,
+                        }}
+                      >
                         {inst.studentIds.map((id) => {
                           const friendGroup = getStudentFriendGroup(
                             inst.campId,
@@ -332,9 +363,12 @@ export function SchedulePage() {
                           );
                         })}
                         {inst.studentIds.length === 0 && (
-                          <Typography variant="body2" sx={{
-                            color: "text.secondary"
-                          }}>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              color: 'text.secondary',
+                            }}
+                          >
                             No students assigned
                           </Typography>
                         )}

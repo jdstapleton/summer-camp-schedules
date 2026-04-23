@@ -46,7 +46,9 @@ export function EnrollmentDialog({
   const [friendGroups, setFriendGroups] = useState<string[][]>([]);
   const [addingGroup, setAddingGroup] = useState(false);
   const [newGroupIds, setNewGroupIds] = useState<string[]>([]);
-  const [autocompleteValue, setAutocompleteValue] = useState<Student | null>(null);
+  const [autocompleteValue, setAutocompleteValue] = useState<Student | null>(
+    null
+  );
   const [editingStudentId, setEditingStudentId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -137,11 +139,15 @@ export function EnrollmentDialog({
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>
         Manage Enrollment: {camp.name}
-        <Typography variant="body2" sx={{
-          color: "text.secondary"
-        }}>
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           Max size: {camp.maxSize} · Enrolled: {selectedIds.length}
-          {instancesNeeded > 1 && ` · ${instancesNeeded} instances will be created`}
+          {instancesNeeded > 1 &&
+            ` · ${instancesNeeded} instances will be created`}
         </Typography>
       </DialogTitle>
       <DialogContent dividers>
@@ -151,9 +157,7 @@ export function EnrollmentDialog({
         <Box sx={{ mb: 3 }}>
           <Autocomplete
             options={students.filter((s) => !selectedIds.includes(s.id))}
-            getOptionLabel={(s) =>
-              `${s.firstName} ${s.lastName} (${s.gender})`
-            }
+            getOptionLabel={(s) => `${s.firstName} ${s.lastName} (${s.gender})`}
             value={autocompleteValue}
             onChange={(_, value) => {
               if (value) addStudent(value);
@@ -172,16 +176,24 @@ export function EnrollmentDialog({
           <Typography
             variant="body2"
             sx={{
-              color: "text.secondary",
-              mb: 2
-            }}>
+              color: 'text.secondary',
+              mb: 2,
+            }}
+          >
             {students.length === 0
               ? 'No students added yet. Go to the Students page first.'
               : 'Add students using the search box above.'}
           </Typography>
         )}
         {selectedIds.length > 0 && (
-          <TableContainer sx={{ mb: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+          <TableContainer
+            sx={{
+              mb: 2,
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 1,
+            }}
+          >
             <Table size="small">
               <TableHead>
                 <TableRow sx={{ bgcolor: 'action.hover' }}>
@@ -204,7 +216,9 @@ export function EnrollmentDialog({
                         {student.firstName} {student.lastName}
                       </TableCell>
                       <TableCell align="right">
-                        <Typography variant="body2">{student.gender}</Typography>
+                        <Typography variant="body2">
+                          {student.gender}
+                        </Typography>
                       </TableCell>
                       <TableCell align="right">
                         <IconButton
@@ -268,9 +282,10 @@ export function EnrollmentDialog({
             <Typography
               variant="caption"
               sx={{
-                color: "text.secondary",
-                mr: 0.5
-              }}>
+                color: 'text.secondary',
+                mr: 0.5,
+              }}
+            >
               Group {i + 1}:
             </Typography>
             {group.map((id) => (
@@ -283,9 +298,12 @@ export function EnrollmentDialog({
         ))}
 
         {friendGroups.length === 0 && !addingGroup && (
-          <Typography variant="body2" sx={{
-            color: "text.secondary"
-          }}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             No friend groups defined. Students in a group will be kept in the
             same instance.
           </Typography>
@@ -361,13 +379,18 @@ export function EnrollmentDialog({
             <DialogContent>
               <Box sx={{ pt: 2, minWidth: 300 }}>
                 {friendGroups.length === 0 ? (
-                  <Typography variant="body2" sx={{
-                    color: "text.secondary"
-                  }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     No friend groups yet. Create one above.
                   </Typography>
                 ) : (
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                  <Box
+                    sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
+                  >
                     {friendGroups.map((group, i) => (
                       <FormControlLabel
                         key={i}

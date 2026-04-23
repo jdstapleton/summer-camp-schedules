@@ -144,9 +144,12 @@ export function RegistrationsPage() {
           <Typography variant="h4" gutterBottom>
             Registrations
           </Typography>
-          <Typography variant="body2" sx={{
-            color: "text.secondary"
-          }}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             Assign students to camps and define friend groups to keep together.
           </Typography>
         </Box>
@@ -202,9 +205,12 @@ export function RegistrationsPage() {
                   ) : instances === 1 ? (
                     <Chip label="1 instance" size="small" color="success" />
                   ) : (
-                    <Typography variant="body2" sx={{
-                      color: "text.secondary"
-                    }}>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: 'text.secondary',
+                      }}
+                    >
                       —
                     </Typography>
                   )}

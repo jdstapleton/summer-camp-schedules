@@ -23,6 +23,7 @@ npm run dev
 ## Architecture
 
 ### Core Structure
+
 - **`src/main.tsx`** — Application entry point, mounts React app to DOM
 - **`src/App.tsx`** — Root component; contains page layout and state management
 
@@ -35,6 +36,7 @@ npm run dev
 - **`src/models/`** — TypeScript type definitions and interfaces
 
 ### Testing
+
 - Tests live beside the code they test (e.g., `Component.spec.tsx` next to `Component.tsx`)
 - Vitest for unit/component testing with jsdom for DOM simulation
 - Use `@testing-library/react` for component testing
@@ -46,7 +48,7 @@ npm run dev
 - **React** — Latest version; functional components with named exports only
 - **Vite** — Fast build tool with dev server and HMR
 - **Vitest** — Fast unit test runner with jsdom environment
-- **ESLint** — eslint V9.  Flat config format (ESLint v9+); lints TypeScript and React code
+- **ESLint** — eslint V9. Flat config format (ESLint v9+); lints TypeScript and React code
 - **Prettier** — Enforces consistent code formatting (80 char line width, single quotes)
 - **MUI** — Latest version; Material-UI for components and styling via emotion
 - **TanStack Router** — For client-side routing (setup in App.tsx as needed)

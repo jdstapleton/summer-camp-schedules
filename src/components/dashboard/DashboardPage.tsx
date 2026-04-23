@@ -8,9 +8,12 @@ function StatCard({ title, value }: { title: string; value: number }) {
     <Card sx={{ minWidth: 160 }}>
       <CardContent sx={{ textAlign: 'center' }}>
         <Typography variant="h3">{value}</Typography>
-        <Typography variant="subtitle1" sx={{
-          color: "text.secondary"
-        }}>
+        <Typography
+          variant="subtitle1"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {title}
         </Typography>
       </CardContent>
@@ -38,7 +41,11 @@ export function DashboardPage() {
         <Button variant="outlined" onClick={saveToFile}>
           Save Schedule File
         </Button>
-        <Button variant="outlined" color="error" onClick={() => setConfirmClear(true)}>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={() => setConfirmClear(true)}
+        >
           New Schedule
         </Button>
       </Box>

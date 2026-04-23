@@ -26,8 +26,7 @@ import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 dayjs.extend(customParseFormat);
 
 export function ClassesPage() {
-  const { data, addCamp, updateCamp, deleteCamp } =
-    useSchedule();
+  const { data, addCamp, updateCamp, deleteCamp } = useSchedule();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCamp, setEditingCamp] = useState<Camp | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -52,14 +51,16 @@ export function ClassesPage() {
   };
 
   const getEnrollmentCount = (campId: string) =>
-    data.registrations.find((r) => r.campId === campId)?.studentIds
-      .length ?? 0;
+    data.registrations.find((r) => r.campId === campId)?.studentIds.length ?? 0;
 
-  const groupedByWeek = data.camps.reduce<Record<string, Camp[]>>((acc, camp) => {
-    if (!acc[camp.week]) acc[camp.week] = [];
-    acc[camp.week].push(camp);
-    return acc;
-  }, {});
+  const groupedByWeek = data.camps.reduce<Record<string, Camp[]>>(
+    (acc, camp) => {
+      if (!acc[camp.week]) acc[camp.week] = [];
+      acc[camp.week].push(camp);
+      return acc;
+    },
+    {}
+  );
 
   const sortedWeeks = Object.keys(groupedByWeek).sort((a, b) => {
     const dateA = dayjs(a, ['MMMM D', 'MMM D']);
@@ -77,17 +78,18 @@ export function ClassesPage() {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h4">
-          Camps ({data.camps.length})
-        </Typography>
+        <Typography variant="h4">Camps ({data.camps.length})</Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
           Add Camp
         </Button>
       </Box>
       {data.camps.length === 0 && (
-        <Typography variant="body2" sx={{
-          color: "text.secondary"
-        }}>
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           No camps added yet.
         </Typography>
       )}
@@ -131,7 +133,10 @@ export function ClassesPage() {
                         )}
                       </TableCell>
                       <TableCell align="right">
-                        <IconButton size="small" onClick={() => handleEdit(camp)}>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleEdit(camp)}
+                        >
                           <EditIcon fontSize="small" />
                         </IconButton>
                         <IconButton

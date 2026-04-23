@@ -112,7 +112,11 @@ export function StudentDialog({
           required
           helperText="4-digit code used to verify student identity"
           slotProps={{
-            htmlInput: { inputMode: 'numeric', pattern: '[0-9]*', maxLength: 4 },
+            htmlInput: {
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+              maxLength: 4,
+            },
             input: {
               endAdornment: (
                 <InputAdornment position="end">
@@ -132,11 +136,7 @@ export function StudentDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          disabled={!isValid}
-        >
+        <Button onClick={handleSubmit} variant="contained" disabled={!isValid}>
           {student ? 'Save' : 'Add'}
         </Button>
       </DialogActions>

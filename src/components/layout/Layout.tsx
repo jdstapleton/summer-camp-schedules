@@ -1,4 +1,11 @@
-import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import { Link, Outlet } from '@tanstack/react-router';
 
 const NAV_LINKS = [
@@ -18,12 +25,7 @@ export function Layout() {
             ☀️ Summer Camp
           </Typography>
           {NAV_LINKS.map((link) => (
-            <Button
-              key={link.to}
-              component={Link}
-              to={link.to}
-              color="inherit"
-            >
+            <Button key={link.to} component={Link} to={link.to} color="inherit">
               {link.label}
             </Button>
           ))}
