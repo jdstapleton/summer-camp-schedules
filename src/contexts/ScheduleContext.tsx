@@ -18,6 +18,16 @@ const emptyData: ScheduleData = {
   registrations: [],
 };
 
+const isValidScheduleData = (data: unknown): data is ScheduleData => {
+  if (!data || typeof data !== 'object') return false;
+  const obj = data as Record<string, unknown>;
+  return (
+    Array.isArray(obj.students) &&
+    Array.isArray(obj.camps) &&
+    Array.isArray(obj.registrations)
+  );
+};
+
 interface ScheduleContextValue {
   data: ScheduleData;
   generatedSchedule: GeneratedSchedule | null;
@@ -40,9 +50,15 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<ScheduleData>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved) as ScheduleData;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (isValidScheduleData(parsed)) return parsed;
+        // Schema mismatch (likely old format), clear and start fresh
+        localStorage.removeItem(STORAGE_KEY);
+      }
     } catch {
-      // corrupted data, fall back to empty
+      // corrupted data, clear it and fall back to empty
+      localStorage.removeItem(STORAGE_KEY);
     }
     return emptyData;
   });
