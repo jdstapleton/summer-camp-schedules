@@ -4,171 +4,451 @@
       "id": "s01",
       "firstName": "Ethan",
       "lastName": "Brooks",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1000",
+      "emergency": {
+        "name": "Sarah Brooks",
+        "phone": "(206) 500-1000"
+      },
+      "backup": {
+        "name": "Grandma Rose",
+        "phone": "(425) 200-2000"
+      }
     },
     {
       "id": "s02",
       "firstName": "Noah",
       "lastName": "Carter",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1037",
+      "emergency": {
+        "name": "Michael Carter",
+        "phone": "(207) 501-1017"
+      },
+      "backup": {
+        "name": "Uncle Tom",
+        "phone": "(426) 201-2023"
+      }
     },
-    { "id": "s03", "firstName": "Liam", "lastName": "Davis", "gender": "male" },
+    {
+      "id": "s03",
+      "firstName": "Liam",
+      "lastName": "Davis",
+      "gender": "male",
+      "safetyCode": "1074",
+      "emergency": {
+        "name": "Jessica Davis",
+        "phone": "(208) 502-1034"
+      },
+      "backup": {
+        "name": "Aunt Karen",
+        "phone": "(427) 202-2046"
+      }
+    },
     {
       "id": "s04",
       "firstName": "Mason",
       "lastName": "Evans",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1111",
+      "emergency": {
+        "name": "David Evans",
+        "phone": "(209) 503-1051"
+      },
+      "backup": {
+        "name": "Grandpa Joe",
+        "phone": "(428) 203-2069"
+      }
     },
     {
       "id": "s05",
       "firstName": "Logan",
       "lastName": "Foster",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1148",
+      "emergency": {
+        "name": "Amanda Foster",
+        "phone": "(210) 504-1068"
+      },
+      "backup": {
+        "name": "Aunt Emily",
+        "phone": "(429) 204-2092"
+      }
     },
     {
       "id": "s06",
       "firstName": "Oliver",
       "lastName": "Grant",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1185",
+      "emergency": {
+        "name": "James Grant",
+        "phone": "(211) 505-1085"
+      },
+      "backup": {
+        "name": "Uncle Mark",
+        "phone": "(430) 205-2115"
+      }
     },
     {
       "id": "s07",
       "firstName": "James",
       "lastName": "Harris",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1222",
+      "emergency": {
+        "name": "Jennifer Harris",
+        "phone": "(212) 506-1102"
+      },
+      "backup": {
+        "name": "Grandma Mary",
+        "phone": "(431) 206-2138"
+      }
     },
     {
       "id": "s08",
       "firstName": "Lucas",
       "lastName": "Irving",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1259",
+      "emergency": {
+        "name": "Robert Irving",
+        "phone": "(213) 507-1119"
+      },
+      "backup": {
+        "name": "Uncle Chris",
+        "phone": "(432) 207-2161"
+      }
     },
     {
       "id": "s09",
       "firstName": "Jackson",
       "lastName": "Jensen",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1296",
+      "emergency": {
+        "name": "Lisa Jensen",
+        "phone": "(214) 508-1136"
+      },
+      "backup": {
+        "name": "Aunt Nicole",
+        "phone": "(433) 208-2184"
+      }
     },
-    { "id": "s10", "firstName": "Aiden", "lastName": "Kim", "gender": "male" },
+    {
+      "id": "s10",
+      "firstName": "Aiden",
+      "lastName": "Kim",
+      "gender": "male",
+      "safetyCode": "1333",
+      "emergency": {
+        "name": "William Kim",
+        "phone": "(215) 509-1153"
+      },
+      "backup": {
+        "name": "Grandpa Bill",
+        "phone": "(434) 209-2207"
+      }
+    },
     {
       "id": "s11",
       "firstName": "Carter",
       "lastName": "Lewis",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1370",
+      "emergency": {
+        "name": "Mary Lewis",
+        "phone": "(206) 510-1170"
+      },
+      "backup": {
+        "name": "Aunt Susan",
+        "phone": "(425) 210-2230"
+      }
     },
     {
       "id": "s12",
       "firstName": "Owen",
       "lastName": "Morgan",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1407",
+      "emergency": {
+        "name": "Richard Morgan",
+        "phone": "(207) 511-1187"
+      },
+      "backup": {
+        "name": "Uncle Steve",
+        "phone": "(426) 211-2253"
+      }
     },
     {
       "id": "s13",
       "firstName": "Henry",
       "lastName": "Nelson",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1444",
+      "emergency": {
+        "name": "Patricia Nelson",
+        "phone": "(208) 512-1204"
+      },
+      "backup": {
+        "name": "Grandma Ann",
+        "phone": "(427) 212-2276"
+      }
     },
     {
       "id": "s14",
       "firstName": "Sebastian",
       "lastName": "Ortiz",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1481",
+      "emergency": {
+        "name": "Thomas Ortiz",
+        "phone": "(209) 513-1221"
+      },
+      "backup": {
+        "name": "Uncle Kevin",
+        "phone": "(428) 213-2299"
+      }
     },
     {
       "id": "s15",
       "firstName": "Elijah",
       "lastName": "Patel",
-      "gender": "male"
+      "gender": "male",
+      "safetyCode": "1518",
+      "emergency": {
+        "name": "Barbara Patel",
+        "phone": "(210) 514-1238"
+      },
+      "backup": {
+        "name": "Aunt Linda",
+        "phone": "(429) 214-2322"
+      }
     },
     {
       "id": "s16",
       "firstName": "Emma",
       "lastName": "Quinn",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1555",
+      "emergency": {
+        "name": "Sarah Quinn",
+        "phone": "(211) 515-1255"
+      },
+      "backup": {
+        "name": "Grandma Rose",
+        "phone": "(430) 215-2345"
+      }
     },
     {
       "id": "s17",
       "firstName": "Olivia",
       "lastName": "Reed",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1592",
+      "emergency": {
+        "name": "Michael Reed",
+        "phone": "(212) 516-1272"
+      },
+      "backup": {
+        "name": "Uncle Tom",
+        "phone": "(431) 216-2368"
+      }
     },
     {
       "id": "s18",
       "firstName": "Sophia",
       "lastName": "Scott",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1629",
+      "emergency": {
+        "name": "Jessica Scott",
+        "phone": "(213) 517-1289"
+      },
+      "backup": {
+        "name": "Aunt Karen",
+        "phone": "(432) 217-2391"
+      }
     },
     {
       "id": "s19",
       "firstName": "Isabella",
       "lastName": "Torres",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1666",
+      "emergency": {
+        "name": "David Torres",
+        "phone": "(214) 518-1306"
+      },
+      "backup": {
+        "name": "Grandpa Joe",
+        "phone": "(433) 218-2414"
+      }
     },
     {
       "id": "s20",
       "firstName": "Ava",
       "lastName": "Upton",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1703",
+      "emergency": {
+        "name": "Amanda Upton",
+        "phone": "(215) 519-1323"
+      },
+      "backup": {
+        "name": "Aunt Emily",
+        "phone": "(434) 219-2437"
+      }
     },
     {
       "id": "s21",
       "firstName": "Mia",
       "lastName": "Vargas",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1740",
+      "emergency": {
+        "name": "James Vargas",
+        "phone": "(206) 520-1340"
+      },
+      "backup": {
+        "name": "Uncle Mark",
+        "phone": "(425) 220-2460"
+      }
     },
     {
       "id": "s22",
       "firstName": "Charlotte",
       "lastName": "Walker",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1777",
+      "emergency": {
+        "name": "Jennifer Walker",
+        "phone": "(207) 521-1357"
+      },
+      "backup": {
+        "name": "Grandma Mary",
+        "phone": "(426) 221-2483"
+      }
     },
     {
       "id": "s23",
       "firstName": "Amelia",
       "lastName": "Xavier",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1814",
+      "emergency": {
+        "name": "Robert Xavier",
+        "phone": "(208) 522-1374"
+      },
+      "backup": {
+        "name": "Uncle Chris",
+        "phone": "(427) 222-2506"
+      }
     },
     {
       "id": "s24",
       "firstName": "Harper",
       "lastName": "Young",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1851",
+      "emergency": {
+        "name": "Lisa Young",
+        "phone": "(209) 523-1391"
+      },
+      "backup": {
+        "name": "Aunt Nicole",
+        "phone": "(428) 223-2529"
+      }
     },
     {
       "id": "s25",
       "firstName": "Evelyn",
       "lastName": "Zhang",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1888",
+      "emergency": {
+        "name": "William Zhang",
+        "phone": "(210) 524-1408"
+      },
+      "backup": {
+        "name": "Grandpa Bill",
+        "phone": "(429) 224-2552"
+      }
     },
     {
       "id": "s26",
       "firstName": "Abigail",
       "lastName": "Adams",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1925",
+      "emergency": {
+        "name": "Mary Adams",
+        "phone": "(211) 525-1425"
+      },
+      "backup": {
+        "name": "Aunt Susan",
+        "phone": "(430) 225-2575"
+      }
     },
     {
       "id": "s27",
       "firstName": "Emily",
       "lastName": "Baker",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1962",
+      "emergency": {
+        "name": "Richard Baker",
+        "phone": "(212) 526-1442"
+      },
+      "backup": {
+        "name": "Uncle Steve",
+        "phone": "(431) 226-2598"
+      }
     },
     {
       "id": "s28",
       "firstName": "Madison",
       "lastName": "Cole",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "1999",
+      "emergency": {
+        "name": "Patricia Cole",
+        "phone": "(213) 527-1459"
+      },
+      "backup": {
+        "name": "Grandma Ann",
+        "phone": "(432) 227-2621"
+      }
     },
     {
       "id": "s29",
       "firstName": "Ella",
       "lastName": "Diaz",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "2036",
+      "emergency": {
+        "name": "Thomas Diaz",
+        "phone": "(214) 528-1476"
+      },
+      "backup": {
+        "name": "Uncle Kevin",
+        "phone": "(433) 228-2644"
+      }
     },
     {
       "id": "s30",
       "firstName": "Scarlett",
       "lastName": "Edwards",
-      "gender": "female"
+      "gender": "female",
+      "safetyCode": "2073",
+      "emergency": {
+        "name": "Barbara Edwards",
+        "phone": "(215) 529-1493"
+      },
+      "backup": {
+        "name": "Aunt Linda",
+        "phone": "(434) 229-2667"
+      }
     }
   ],
   "camps": [
@@ -234,8 +514,16 @@
         "s28"
       ],
       "friendGroups": [
-        ["s01", "s02", "s03"],
-        ["s19", "s20", "s21"]
+        [
+          "s01",
+          "s02",
+          "s03"
+        ],
+        [
+          "s19",
+          "s20",
+          "s21"
+        ]
       ]
     },
     {
@@ -261,8 +549,15 @@
         "s29"
       ],
       "friendGroups": [
-        ["s08", "s09"],
-        ["s24", "s25", "s26"]
+        [
+          "s08",
+          "s09"
+        ],
+        [
+          "s24",
+          "s25",
+          "s26"
+        ]
       ]
     },
     {
@@ -302,8 +597,14 @@
         "s30"
       ],
       "friendGroups": [
-        ["s02", "s03"],
-        ["s29", "s30"]
+        [
+          "s02",
+          "s03"
+        ],
+        [
+          "s29",
+          "s30"
+        ]
       ]
     },
     {
@@ -319,7 +620,13 @@
         "s27",
         "s30"
       ],
-      "friendGroups": [["s04", "s06", "s09"]]
+      "friendGroups": [
+        [
+          "s04",
+          "s06",
+          "s09"
+        ]
+      ]
     }
   ]
 }

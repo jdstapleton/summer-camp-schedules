@@ -1,11 +1,18 @@
 export type Gender = 'male' | 'female' | 'other';
 
+export interface EmergencyContact {
+  name: string;
+  phone: string;
+}
+
 export interface Student {
   id: string;
   firstName: string;
   lastName: string;
   gender: Gender;
   safetyCode: string;
+  emergency: EmergencyContact;
+  backup: EmergencyContact;
 }
 
 export interface Camp {

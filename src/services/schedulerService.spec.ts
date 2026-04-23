@@ -8,6 +8,8 @@ const makeStudent = (id: string, gender: 'male' | 'female' | 'other') => ({
   lastName: 'Test',
   gender,
   safetyCode: '0000',
+  emergency: { name: 'Emergency Contact', phone: '555-0000' },
+  backup: { name: 'Backup Contact', phone: '555-0001' },
 });
 
 describe('generateSchedule', () => {

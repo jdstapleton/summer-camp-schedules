@@ -1,12 +1,6 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Button, Toolbar } from '@mui/material';
 import { Link, Outlet } from '@tanstack/react-router';
+import { AppShell, BrandTypography, PageContainer } from './Layout.styles';
 
 const NAV_LINKS = [
   { to: '/', label: 'Dashboard' },
@@ -18,12 +12,12 @@ const NAV_LINKS = [
 
 export function Layout() {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <AppShell>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" sx={{ mr: 3, fontWeight: 700 }}>
+          <BrandTypography variant="h6">
             ☀️ Summer Camp
-          </Typography>
+          </BrandTypography>
           {NAV_LINKS.map((link) => (
             <Button key={link.to} component={Link} to={link.to} color="inherit">
               {link.label}
@@ -31,9 +25,9 @@ export function Layout() {
           ))}
         </Toolbar>
       </AppBar>
-      <Container maxWidth="lg" sx={{ py: 4, flex: 1 }}>
+      <PageContainer maxWidth="lg">
         <Outlet />
-      </Container>
-    </Box>
+      </PageContainer>
+    </AppShell>
   );
 }

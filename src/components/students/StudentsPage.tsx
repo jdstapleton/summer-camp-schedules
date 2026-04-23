@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Box,
   Button,
   IconButton,
   Paper,
@@ -21,6 +20,13 @@ import { useSchedule } from '@/hooks/useSchedule';
 import type { Student } from '@/models/types';
 import { StudentDialog } from './StudentDialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+import { PageHeaderRow } from '@/components/shared/shared.styles';
+import {
+  ActionButtonGroup,
+  CapitalizedTableCell,
+  MonospaceTableCell,
+  MutedTableCell,
+} from './StudentsPage.styles';
 
 export function StudentsPage() {
   const {
@@ -55,17 +61,10 @@ export function StudentsPage() {
   };
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          mb: 2,
-          alignItems: 'center',
-        }}
-      >
+    <div>
+      <PageHeaderRow mb={2}>
         <Typography variant="h4">Students ({data.students.length})</Typography>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+        <ActionButtonGroup>
           <Tooltip title="Randomize Safety Codes">
             <span>
               <IconButton
@@ -84,8 +83,8 @@ export function StudentsPage() {
           >
             Add Student
           </Button>
-        </Box>
-      </Box>
+        </ActionButtonGroup>
+      </PageHeaderRow>
 
       <TableContainer component={Paper}>
         <Table>
@@ -103,12 +102,12 @@ export function StudentsPage() {
                 <TableCell>
                   {student.firstName} {student.lastName}
                 </TableCell>
-                <TableCell sx={{ textTransform: 'capitalize' }}>
+                <CapitalizedTableCell>
                   {student.gender}
-                </TableCell>
-                <TableCell sx={{ fontFamily: 'monospace' }}>
+                </CapitalizedTableCell>
+                <MonospaceTableCell>
                   {student.safetyCode}
-                </TableCell>
+                </MonospaceTableCell>
                 <TableCell align="right">
                   <IconButton size="small" onClick={() => handleEdit(student)}>
                     <EditIcon fontSize="small" />
@@ -125,13 +124,9 @@ export function StudentsPage() {
             ))}
             {data.students.length === 0 && (
               <TableRow>
-                <TableCell
-                  colSpan={4}
-                  align="center"
-                  sx={{ color: 'text.secondary' }}
-                >
+                <MutedTableCell colSpan={4} align="center">
                   No students added yet.
-                </TableCell>
+                </MutedTableCell>
               </TableRow>
             )}
           </TableBody>
@@ -163,6 +158,6 @@ export function StudentsPage() {
         onConfirm={randomizeAllSafetyCodes}
         onClose={() => setConfirmRandomize(false)}
       />
-    </Box>
+    </div>
   );
 }

@@ -34,13 +34,23 @@ const randomSafetyCode = () =>
     .toString()
     .padStart(4, '0');
 
+const migrateStudentData = (data: ScheduleData): ScheduleData => {
+  const migratedStudents = data.students.map((student) => ({
+    ...student,
+    emergency: student.emergency ?? { name: '', phone: '' },
+    backup: student.backup ?? { name: '', phone: '' },
+    safetyCode: student.safetyCode ?? randomSafetyCode(),
+  }));
+  return { ...data, students: migratedStudents };
+};
+
 export function ScheduleProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<ScheduleData>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (isValidScheduleData(parsed)) return parsed;
+        if (isValidScheduleData(parsed)) return migrateStudentData(parsed);
         // Schema mismatch (likely old format), clear and start fresh
         localStorage.removeItem(STORAGE_KEY);
       }
@@ -138,7 +148,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   const loadFromFile = useCallback(async () => {
     const loaded = await fileService.openFile();
     if (loaded) {
-      setData(loaded);
+      setData(migrateStudentData(loaded));
       setGeneratedSchedule(null);
     }
   }, []);

@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import {
-  Box,
   Button,
-  Card,
   CardContent,
   Chip,
-  FormControl,
   InputLabel,
   Select,
   MenuItem,
@@ -16,9 +13,101 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
-import type { CampInstance } from '@/models/types';
+import type { CampInstance, Gender } from '@/models/types';
+import { PageHeaderRow } from '@/components/shared/shared.styles';
+import {
+  CampHeaderRow,
+  CampMaxSizeSpan,
+  CampSection,
+  ControlsRow,
+  EmptyState,
+  FriendGroupSpan,
+  InstanceCard,
+  InstanceCardsRow,
+  MutedTypography,
+  StudentList,
+  StudentPill,
+  WeekFilterControl,
+  WeekHeading,
+  WeekSection,
+} from './SchedulePage.styles';
 
 dayjs.extend(customParseFormat);
+
+interface CampBlockProps {
+  campId: string;
+  instances: CampInstance[];
+  getCampName: (id: string) => string;
+  getCampMaxSize: (id: string) => number;
+  getStudentName: (id: string) => string;
+  getStudentGender: (id: string) => Gender;
+  getStudentFriendGroup: (campId: string, studentId: string) => number | null;
+}
+
+function CampBlock({
+  campId,
+  instances,
+  getCampName,
+  getCampMaxSize,
+  getStudentName,
+  getStudentGender,
+  getStudentFriendGroup,
+}: CampBlockProps) {
+  return (
+    <CampSection>
+      <CampHeaderRow>
+        <Typography variant="h6">
+          {getCampName(campId)}
+          <CampMaxSizeSpan variant="body2">
+            (max {getCampMaxSize(campId)})
+          </CampMaxSizeSpan>
+        </Typography>
+        <Chip
+          label={`${instances.length} instance${instances.length > 1 ? 's' : ''}`}
+          size="small"
+          color={instances.length > 1 ? 'warning' : 'default'}
+        />
+      </CampHeaderRow>
+
+      <InstanceCardsRow>
+        {instances.map((inst) => (
+          <InstanceCard
+            key={inst.id}
+            variant="outlined"
+          >
+            <CardContent>
+              <Typography variant="subtitle2" gutterBottom>
+                Instance {inst.instanceNumber} —{' '}
+                {inst.studentIds.length} student
+                {inst.studentIds.length !== 1 ? 's' : ''}
+              </Typography>
+              <StudentList>
+                {inst.studentIds.map((id) => {
+                  const friendGroup = getStudentFriendGroup(campId, id);
+                  return (
+                    <StudentPill key={id} gender={getStudentGender(id)}>
+                      {getStudentName(id)}
+                      {friendGroup && (
+                        <FriendGroupSpan>
+                          (Friend Group {friendGroup})
+                        </FriendGroupSpan>
+                      )}
+                    </StudentPill>
+                  );
+                })}
+                {inst.studentIds.length === 0 && (
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    No students assigned
+                  </Typography>
+                )}
+              </StudentList>
+            </CardContent>
+          </InstanceCard>
+        ))}
+      </InstanceCardsRow>
+    </CampSection>
+  );
+}
 
 export function SchedulePage() {
   const { data, generatedSchedule, refreshSchedule, saveToFile } =
@@ -46,12 +135,6 @@ export function SchedulePage() {
       g.includes(studentId)
     );
     return groupIndex >= 0 ? groupIndex + 1 : null;
-  };
-
-  const genderColor = (gender: string) => {
-    if (gender === 'male') return '#bbdefb';
-    if (gender === 'female') return '#f8bbd0';
-    return '#e8f5e9';
   };
 
   const uniqueWeeks = Array.from(new Set(data.camps.map((c) => c.week))).sort(
@@ -82,19 +165,12 @@ export function SchedulePage() {
   );
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          mb: 3,
-          alignItems: 'center',
-        }}
-      >
+    <div>
+      <PageHeaderRow mb={3}>
         <Typography variant="h4">Schedule</Typography>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <ControlsRow>
           {uniqueWeeks.length > 0 && (
-            <FormControl sx={{ minWidth: 200 }}>
+            <WeekFilterControl>
               <InputLabel>Week</InputLabel>
               <Select
                 value={selectedWeek}
@@ -108,7 +184,7 @@ export function SchedulePage() {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </WeekFilterControl>
           )}
           <Button
             variant="outlined"
@@ -124,16 +200,10 @@ export function SchedulePage() {
           >
             Generate Schedule
           </Button>
-        </Box>
-      </Box>
+        </ControlsRow>
+      </PageHeaderRow>
       {!generatedSchedule && (
-        <Box
-          sx={{
-            textAlign: 'center',
-            py: 8,
-            color: 'text.secondary',
-          }}
-        >
+        <EmptyState>
           <Typography variant="h6" gutterBottom>
             No schedule generated yet
           </Typography>
@@ -141,16 +211,12 @@ export function SchedulePage() {
             Click "Generate Schedule" to automatically create camp instances
             from current registrations.
           </Typography>
-        </Box>
+        </EmptyState>
       )}
       {generatedSchedule && Object.keys(instancesByCamp).length === 0 && (
-        <Typography
-          sx={{
-            color: 'text.secondary',
-          }}
-        >
+        <MutedTypography>
           No camps have any enrolled students. Add registrations first.
-        </Typography>
+        </MutedTypography>
       )}
       {!selectedWeek && generatedSchedule
         ? uniqueWeeks.map((week) => {
@@ -160,225 +226,37 @@ export function SchedulePage() {
             );
             if (campsInWeek.length === 0) return null;
             return (
-              <Box
-                key={week}
-                sx={{
-                  mb: 6,
-                  pb: 4,
-                  borderBottom: '2px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{
-                    mb: 3,
-                    pb: 2,
-                    borderBottom: '1px solid',
-                    borderColor: 'action.hover',
-                    fontWeight: 600,
-                  }}
-                >
+              <WeekSection key={week}>
+                <WeekHeading variant="h5">
                   {week}
-                </Typography>
+                </WeekHeading>
                 {campsInWeek.map(([campId, instances]) => (
-                  <Box key={campId} sx={{ mb: 4 }}>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        mb: 1.5,
-                      }}
-                    >
-                      <Typography variant="h6">
-                        {getCampName(campId)}
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          sx={{
-                            color: 'text.secondary',
-                            ml: 1,
-                          }}
-                        >
-                          (max {getCampMaxSize(campId)})
-                        </Typography>
-                      </Typography>
-                      <Chip
-                        label={`${instances.length} instance${instances.length > 1 ? 's' : ''}`}
-                        size="small"
-                        color={instances.length > 1 ? 'warning' : 'default'}
-                      />
-                    </Box>
-
-                    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                      {instances.map((inst) => (
-                        <Card
-                          key={inst.id}
-                          variant="outlined"
-                          sx={{ flex: '1 1 200px', maxWidth: 280 }}
-                        >
-                          <CardContent>
-                            <Typography variant="subtitle2" gutterBottom>
-                              Instance {inst.instanceNumber} —{' '}
-                              {inst.studentIds.length} student
-                              {inst.studentIds.length !== 1 ? 's' : ''}
-                            </Typography>
-                            <Box
-                              sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 0.5,
-                              }}
-                            >
-                              {inst.studentIds.map((id) => {
-                                const friendGroup = getStudentFriendGroup(
-                                  inst.campId,
-                                  id
-                                );
-                                return (
-                                  <Box
-                                    key={id}
-                                    sx={{
-                                      px: 1,
-                                      py: 0.25,
-                                      borderRadius: 1,
-                                      bgcolor: genderColor(
-                                        getStudentGender(id)
-                                      ),
-                                      fontSize: '0.875rem',
-                                    }}
-                                  >
-                                    {getStudentName(id)}
-                                    {friendGroup && (
-                                      <Typography
-                                        component="span"
-                                        sx={{
-                                          ml: 0.5,
-                                          fontWeight: 500,
-                                          color: 'rgba(0,0,0,0.6)',
-                                        }}
-                                      >
-                                        (Friend Group {friendGroup})
-                                      </Typography>
-                                    )}
-                                  </Box>
-                                );
-                              })}
-                              {inst.studentIds.length === 0 && (
-                                <Typography
-                                  variant="body2"
-                                  sx={{
-                                    color: 'text.secondary',
-                                  }}
-                                >
-                                  No students assigned
-                                </Typography>
-                              )}
-                            </Box>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </Box>
-                  </Box>
+                  <CampBlock
+                    key={campId}
+                    campId={campId}
+                    instances={instances}
+                    getCampName={getCampName}
+                    getCampMaxSize={getCampMaxSize}
+                    getStudentName={getStudentName}
+                    getStudentGender={getStudentGender}
+                    getStudentFriendGroup={getStudentFriendGroup}
+                  />
                 ))}
-              </Box>
+              </WeekSection>
             );
           })
         : Object.entries(instancesByCamp).map(([campId, instances]) => (
-            <Box key={campId} sx={{ mb: 4 }}>
-              <Box
-                sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}
-              >
-                <Typography variant="h6">
-                  {getCampName(campId)}
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    sx={{
-                      color: 'text.secondary',
-                      ml: 1,
-                    }}
-                  >
-                    (max {getCampMaxSize(campId)})
-                  </Typography>
-                </Typography>
-                <Chip
-                  label={`${instances.length} instance${instances.length > 1 ? 's' : ''}`}
-                  size="small"
-                  color={instances.length > 1 ? 'warning' : 'default'}
-                />
-              </Box>
-
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                {instances.map((inst) => (
-                  <Card
-                    key={inst.id}
-                    variant="outlined"
-                    sx={{ flex: '1 1 200px', maxWidth: 280 }}
-                  >
-                    <CardContent>
-                      <Typography variant="subtitle2" gutterBottom>
-                        Instance {inst.instanceNumber} —{' '}
-                        {inst.studentIds.length} student
-                        {inst.studentIds.length !== 1 ? 's' : ''}
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: 0.5,
-                        }}
-                      >
-                        {inst.studentIds.map((id) => {
-                          const friendGroup = getStudentFriendGroup(
-                            inst.campId,
-                            id
-                          );
-                          return (
-                            <Box
-                              key={id}
-                              sx={{
-                                px: 1,
-                                py: 0.25,
-                                borderRadius: 1,
-                                bgcolor: genderColor(getStudentGender(id)),
-                                fontSize: '0.875rem',
-                              }}
-                            >
-                              {getStudentName(id)}
-                              {friendGroup && (
-                                <Typography
-                                  component="span"
-                                  sx={{
-                                    ml: 0.5,
-                                    fontWeight: 500,
-                                    color: 'rgba(0,0,0,0.6)',
-                                  }}
-                                >
-                                  (Friend Group {friendGroup})
-                                </Typography>
-                              )}
-                            </Box>
-                          );
-                        })}
-                        {inst.studentIds.length === 0 && (
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              color: 'text.secondary',
-                            }}
-                          >
-                            No students assigned
-                          </Typography>
-                        )}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                ))}
-              </Box>
-            </Box>
+            <CampBlock
+              key={campId}
+              campId={campId}
+              instances={instances}
+              getCampName={getCampName}
+              getCampMaxSize={getCampMaxSize}
+              getStudentName={getStudentName}
+              getStudentGender={getStudentGender}
+              getStudentFriendGroup={getStudentFriendGroup}
+            />
           ))}
-    </Box>
+    </div>
   );
 }

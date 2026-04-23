@@ -40,6 +40,10 @@ export function StudentDialog({
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState<Gender>('male');
   const [safetyCode, setSafetyCode] = useState('');
+  const [emergencyName, setEmergencyName] = useState('');
+  const [emergencyPhone, setEmergencyPhone] = useState('');
+  const [backupName, setBackupName] = useState('');
+  const [backupPhone, setBackupPhone] = useState('');
 
   useEffect(() => {
     if (open) {
@@ -48,6 +52,10 @@ export function StudentDialog({
       setLastName(student?.lastName ?? '');
       setGender(student?.gender ?? 'male');
       setSafetyCode(student?.safetyCode ?? generateSafetyCode());
+      setEmergencyName(student?.emergency?.name ?? '');
+      setEmergencyPhone(student?.emergency?.phone ?? '');
+      setBackupName(student?.backup?.name ?? '');
+      setBackupPhone(student?.backup?.phone ?? '');
     }
   }, [open, student]);
 
@@ -67,13 +75,25 @@ export function StudentDialog({
       lastName: lastName.trim(),
       gender,
       safetyCode,
+      emergency: {
+        name: emergencyName.trim(),
+        phone: emergencyPhone.trim(),
+      },
+      backup: {
+        name: backupName.trim(),
+        phone: backupPhone.trim(),
+      },
     });
   };
 
   const isValid =
     firstName.trim().length > 0 &&
     lastName.trim().length > 0 &&
-    safetyCode.length === 4;
+    safetyCode.length === 4 &&
+    emergencyName.trim().length > 0 &&
+    emergencyPhone.trim().length > 0 &&
+    backupName.trim().length > 0 &&
+    backupPhone.trim().length > 0;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -133,6 +153,40 @@ export function StudentDialog({
               ),
             },
           }}
+        />
+        <TextField
+          label="Emergency Contact Name"
+          value={emergencyName}
+          onChange={(e) => setEmergencyName(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <TextField
+          label="Emergency Phone"
+          value={emergencyPhone}
+          onChange={(e) => setEmergencyPhone(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+          type="tel"
+        />
+        <TextField
+          label="Backup Contact Name"
+          value={backupName}
+          onChange={(e) => setBackupName(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <TextField
+          label="Backup Phone"
+          value={backupPhone}
+          onChange={(e) => setBackupPhone(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+          type="tel"
         />
       </DialogContent>
       <DialogActions>

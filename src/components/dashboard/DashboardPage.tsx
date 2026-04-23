@@ -1,23 +1,25 @@
 import { useState } from 'react';
-import { Box, Button, Card, CardContent, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useSchedule } from '@/hooks/useSchedule';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+import {
+  ButtonRow,
+  StatCardContent,
+  StatCardRoot,
+  StatCardSubtitle,
+  StatCardsRow,
+} from './DashboardPage.styles';
 
 function StatCard({ title, value }: { title: string; value: number }) {
   return (
-    <Card sx={{ minWidth: 160 }}>
-      <CardContent sx={{ textAlign: 'center' }}>
+    <StatCardRoot>
+      <StatCardContent>
         <Typography variant="h3">{value}</Typography>
-        <Typography
-          variant="subtitle1"
-          sx={{
-            color: 'text.secondary',
-          }}
-        >
+        <StatCardSubtitle variant="subtitle1">
           {title}
-        </Typography>
-      </CardContent>
-    </Card>
+        </StatCardSubtitle>
+      </StatCardContent>
+    </StatCardRoot>
   );
 }
 
@@ -30,11 +32,11 @@ export function DashboardPage() {
   ).length;
 
   return (
-    <Box>
+    <div>
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>
-      <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+      <ButtonRow>
         <Button variant="contained" onClick={() => void loadFromFile()}>
           Open Schedule File
         </Button>
@@ -48,12 +50,12 @@ export function DashboardPage() {
         >
           New Schedule
         </Button>
-      </Box>
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      </ButtonRow>
+      <StatCardsRow>
         <StatCard title="Students" value={data.students.length} />
         <StatCard title="Camps" value={data.camps.length} />
         <StatCard title="Active Registrations" value={activeRegistrations} />
-      </Box>
+      </StatCardsRow>
 
       <ConfirmDialog
         open={confirmClear}
@@ -62,6 +64,6 @@ export function DashboardPage() {
         onConfirm={clearData}
         onClose={() => setConfirmClear(false)}
       />
-    </Box>
+    </div>
   );
 }

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Box,
   Button,
   Chip,
   IconButton,
@@ -22,6 +21,12 @@ import { useSchedule } from '@/hooks/useSchedule';
 import type { Camp } from '@/models/types';
 import { CampDialog } from './ClassTypeDialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
+import { PageHeaderRow } from '@/components/shared/shared.styles';
+import {
+  MutedBody2,
+  WeekHeading,
+  WeekSection,
+} from './ClassesPage.styles';
 
 dayjs.extend(customParseFormat);
 
@@ -69,35 +74,23 @@ export function ClassesPage() {
   });
 
   return (
-    <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          mb: 2,
-          alignItems: 'center',
-        }}
-      >
+    <div>
+      <PageHeaderRow mb={2}>
         <Typography variant="h4">Camps ({data.camps.length})</Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
           Add Camp
         </Button>
-      </Box>
+      </PageHeaderRow>
       {data.camps.length === 0 && (
-        <Typography
-          variant="body2"
-          sx={{
-            color: 'text.secondary',
-          }}
-        >
+        <MutedBody2 variant="body2">
           No camps added yet.
-        </Typography>
+        </MutedBody2>
       )}
       {sortedWeeks.map((week) => (
-        <Box key={week} sx={{ mb: 4 }}>
-          <Typography variant="h6" sx={{ mb: 1.5 }}>
+        <WeekSection key={week}>
+          <WeekHeading variant="h6">
             {week}
-          </Typography>
+          </WeekHeading>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -153,7 +146,7 @@ export function ClassesPage() {
               </TableBody>
             </Table>
           </TableContainer>
-        </Box>
+        </WeekSection>
       ))}
       <CampDialog
         open={dialogOpen}
@@ -171,6 +164,6 @@ export function ClassesPage() {
         }}
         onClose={() => setDeletingId(null)}
       />
-    </Box>
+    </div>
   );
 }
