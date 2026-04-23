@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CasinoIcon from '@mui/icons-material/Casino';
+import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSchedule } from '@/hooks/useSchedule';
@@ -93,6 +94,8 @@ export function StudentsPage() {
               <TableCell>Name</TableCell>
               <TableCell>Gender</TableCell>
               <TableCell>Safety Code</TableCell>
+              <TableCell align="center">Pre-Camp</TableCell>
+              <TableCell align="center">Post-Camp</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -104,6 +107,12 @@ export function StudentsPage() {
                 </TableCell>
                 <CapitalizedTableCell>{student.gender}</CapitalizedTableCell>
                 <MonospaceTableCell>{student.safetyCode}</MonospaceTableCell>
+                <TableCell align="center">
+                  {student.preCamp && <CheckIcon fontSize="small" />}
+                </TableCell>
+                <TableCell align="center">
+                  {student.postCamp && <CheckIcon fontSize="small" />}
+                </TableCell>
                 <TableCell align="right">
                   <IconButton size="small" onClick={() => handleEdit(student)}>
                     <EditIcon fontSize="small" />
@@ -120,7 +129,7 @@ export function StudentsPage() {
             ))}
             {data.students.length === 0 && (
               <TableRow>
-                <MutedTableCell colSpan={4} align="center">
+                <MutedTableCell colSpan={6} align="center">
                   No students added yet.
                 </MutedTableCell>
               </TableRow>

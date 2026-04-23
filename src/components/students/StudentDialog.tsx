@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -40,6 +44,8 @@ export function StudentDialog({
   const [emergencyPhone, setEmergencyPhone] = useState('');
   const [backupName, setBackupName] = useState('');
   const [backupPhone, setBackupPhone] = useState('');
+  const [preCamp, setPreCamp] = useState(false);
+  const [postCamp, setPostCamp] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -52,6 +58,8 @@ export function StudentDialog({
       setEmergencyPhone(student?.emergency?.phone ?? '');
       setBackupName(student?.backup?.name ?? '');
       setBackupPhone(student?.backup?.phone ?? '');
+      setPreCamp(student?.preCamp ?? false);
+      setPostCamp(student?.postCamp ?? false);
     }
   }, [open, student]);
 
@@ -71,6 +79,8 @@ export function StudentDialog({
       lastName: lastName.trim(),
       gender,
       safetyCode,
+      preCamp,
+      postCamp,
       emergency: {
         name: emergencyName.trim(),
         phone: emergencyPhone.trim(),
@@ -184,6 +194,29 @@ export function StudentDialog({
           required
           type="tel"
         />
+        <FormControl component="fieldset" margin="normal">
+          <FormLabel component="legend">Extended Care</FormLabel>
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={preCamp}
+                  onChange={(e) => setPreCamp(e.target.checked)}
+                />
+              }
+              label="Pre-Camp"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={postCamp}
+                  onChange={(e) => setPostCamp(e.target.checked)}
+                />
+              }
+              label="Post-Camp"
+            />
+          </FormGroup>
+        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ScheduleData } from '@/models/types';
 
-const CURRENT_VERSION = 2;
+const CURRENT_VERSION = 3;
 
 export const randomSafetyCode = () =>
   Math.floor(Math.random() * 10000)
@@ -17,6 +17,16 @@ const migrateV1toV2 = (data: any): ScheduleData => {
     backup: student.backup ?? { name: '', phone: '' },
   }));
   return { ...data, version: 2, students: migratedStudents };
+};
+
+// Version 2 → Version 3: Add preCamp and postCamp flags
+const migrateV2toV3 = (data: any): ScheduleData => {
+  const migratedStudents = data.students.map((student: any) => ({
+    ...student,
+    preCamp: student.preCamp ?? false,
+    postCamp: student.postCamp ?? false,
+  }));
+  return { ...data, version: 3, students: migratedStudents };
 };
 
 export const migrateData = (data: any): ScheduleData => {
@@ -35,6 +45,9 @@ export const migrateData = (data: any): ScheduleData => {
   // Apply migrations in sequence
   if (startVersion < 2) {
     currentData = migrateV1toV2(currentData);
+  }
+  if (startVersion < 3) {
+    currentData = migrateV2toV3(currentData);
   }
 
   // Ensure version is set

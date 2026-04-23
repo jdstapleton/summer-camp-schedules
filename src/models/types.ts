@@ -11,6 +11,8 @@ export interface Student {
   lastName: string;
   gender: Gender;
   safetyCode: string;
+  preCamp: boolean;
+  postCamp: boolean;
   emergency: EmergencyContact;
   backup: EmergencyContact;
 }

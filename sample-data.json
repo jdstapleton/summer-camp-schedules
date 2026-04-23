@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "students": [
     {
       "id": "s01",
@@ -14,7 +14,9 @@
       "backup": {
         "name": "Grandma Rose",
         "phone": "(425) 200-2000"
-      }
+      },
+      "preCamp": false,
+      "postCamp": true
     },
     {
       "id": "s02",
@@ -29,7 +31,9 @@
       "backup": {
         "name": "Uncle Tom",
         "phone": "(426) 201-2023"
-      }
+      },
+      "preCamp": false,
+      "postCamp": false
     },
     {
       "id": "s03",
@@ -44,7 +48,9 @@
       "backup": {
         "name": "Aunt Karen",
         "phone": "(427) 202-2046"
-      }
+      },
+      "preCamp": false,
+      "postCamp": true
     },
     {
       "id": "s04",
@@ -59,7 +65,9 @@
       "backup": {
         "name": "Grandpa Joe",
         "phone": "(428) 203-2069"
-      }
+      },
+      "preCamp": true,
+      "postCamp": false
     },
     {
       "id": "s05",
@@ -74,7 +82,9 @@
       "backup": {
         "name": "Aunt Emily",
         "phone": "(429) 204-2092"
-      }
+      },
+      "preCamp": false,
+      "postCamp": true
     },
     {
       "id": "s06",
@@ -89,7 +99,9 @@
       "backup": {
         "name": "Uncle Mark",
         "phone": "(430) 205-2115"
-      }
+      },
+      "preCamp": true,
+      "postCamp": false
     },
     {
       "id": "s07",
@@ -104,7 +116,9 @@
       "backup": {
         "name": "Grandma Mary",
         "phone": "(431) 206-2138"
-      }
+      },
+      "preCamp": true,
+      "postCamp": true
     },
     {
       "id": "s08",
@@ -119,7 +133,9 @@
       "backup": {
         "name": "Uncle Chris",
         "phone": "(432) 207-2161"
-      }
+      },
+      "preCamp": false,
+      "postCamp": true
     },
     {
       "id": "s09",
@@ -134,7 +150,9 @@
       "backup": {
         "name": "Aunt Nicole",
         "phone": "(433) 208-2184"
-      }
+      },
+      "preCamp": true,
+      "postCamp": true
     },
     {
       "id": "s10",
@@ -149,7 +167,9 @@
       "backup": {
         "name": "Grandpa Bill",
         "phone": "(434) 209-2207"
-      }
+      },
+      "preCamp": true,
+      "postCamp": true
     },
     {
       "id": "s11",
@@ -164,7 +184,9 @@
       "backup": {
         "name": "Aunt Susan",
         "phone": "(425) 210-2230"
-      }
+      },
+      "preCamp": false,
+      "postCamp": false
     },
     {
       "id": "s12",
@@ -179,7 +201,9 @@
       "backup": {
         "name": "Uncle Steve",
         "phone": "(426) 211-2253"
-      }
+      },
+      "preCamp": false,
+      "postCamp": true
     },
     {
       "id": "s13",
@@ -194,7 +218,9 @@
       "backup": {
         "name": "Grandma Ann",
         "phone": "(427) 212-2276"
-      }
+      },
+      "preCamp": true,
+      "postCamp": false
     },
     {
       "id": "s14",
@@ -209,7 +235,9 @@
       "backup": {
         "name": "Uncle Kevin",
         "phone": "(428) 213-2299"
-      }
+      },
+      "preCamp": false,
+      "postCamp": false
     },
     {
       "id": "s15",
@@ -224,7 +252,9 @@
       "backup": {
         "name": "Aunt Linda",
         "phone": "(429) 214-2322"
-      }
+      },
+      "preCamp": false,
+      "postCamp": false
     },
     {
       "id": "s16",
@@ -239,7 +269,9 @@
       "backup": {
         "name": "Grandma Rose",
         "phone": "(430) 215-2345"
-      }
+      },
+      "preCamp": true,
+      "postCamp": false
     },
     {
       "id": "s17",
@@ -254,7 +286,9 @@
       "backup": {
         "name": "Uncle Tom",
         "phone": "(431) 216-2368"
-      }
+      },
+      "preCamp": true,
+      "postCamp": true
     },
     {
       "id": "s18",
@@ -269,7 +303,9 @@
       "backup": {
         "name": "Aunt Karen",
         "phone": "(432) 217-2391"
-      }
+      },
+      "preCamp": true,
+      "postCamp": true
     },
     {
       "id": "s19",
@@ -284,7 +320,9 @@
       "backup": {
         "name": "Grandpa Joe",
         "phone": "(433) 218-2414"
-      }
+      },
+      "preCamp": true,
+      "postCamp": false
     },
     {
       "id": "s20",
@@ -299,7 +337,9 @@
       "backup": {
         "name": "Aunt Emily",
         "phone": "(434) 219-2437"
-      }
+      },
+      "preCamp": true,
+      "postCamp": false
     },
     {
       "id": "s21",
@@ -314,7 +354,9 @@
       "backup": {
         "name": "Uncle Mark",
         "phone": "(425) 220-2460"
-      }
+      },
+      "preCamp": true,
+      "postCamp": true
     },
     {
       "id": "s22",
@@ -329,7 +371,9 @@
       "backup": {
         "name": "Grandma Mary",
         "phone": "(426) 221-2483"
-      }
+      },
+      "preCamp": true,
+      "postCamp": true
     },
     {
       "id": "s23",
@@ -344,7 +388,9 @@
       "backup": {
         "name": "Uncle Chris",
         "phone": "(427) 222-2506"
-      }
+      },
+      "preCamp": false,
+      "postCamp": false
     },
     {
       "id": "s24",
@@ -359,7 +405,9 @@
       "backup": {
         "name": "Aunt Nicole",
         "phone": "(428) 223-2529"
-      }
+      },
+      "preCamp": true,
+      "postCamp": false
     },
     {
       "id": "s25",
@@ -374,7 +422,9 @@
       "backup": {
         "name": "Grandpa Bill",
         "phone": "(429) 224-2552"
-      }
+      },
+      "preCamp": false,
+      "postCamp": true
     },
     {
       "id": "s26",
@@ -389,7 +439,9 @@
       "backup": {
         "name": "Aunt Susan",
         "phone": "(430) 225-2575"
-      }
+      },
+      "preCamp": true,
+      "postCamp": false
     },
     {
       "id": "s27",
@@ -404,7 +456,9 @@
       "backup": {
         "name": "Uncle Steve",
         "phone": "(431) 226-2598"
-      }
+      },
+      "preCamp": false,
+      "postCamp": false
     },
     {
       "id": "s28",
@@ -419,7 +473,9 @@
       "backup": {
         "name": "Grandma Ann",
         "phone": "(432) 227-2621"
-      }
+      },
+      "preCamp": true,
+      "postCamp": true
     },
     {
       "id": "s29",
@@ -434,7 +490,9 @@
       "backup": {
         "name": "Uncle Kevin",
         "phone": "(433) 228-2644"
-      }
+      },
+      "preCamp": false,
+      "postCamp": true
     },
     {
       "id": "s30",
@@ -449,7 +507,9 @@
       "backup": {
         "name": "Aunt Linda",
         "phone": "(434) 229-2667"
-      }
+      },
+      "preCamp": false,
+      "postCamp": true
     }
   ],
   "camps": [
@@ -515,8 +575,16 @@
         "s28"
       ],
       "friendGroups": [
-        ["s01", "s02", "s03"],
-        ["s19", "s20", "s21"]
+        [
+          "s01",
+          "s02",
+          "s03"
+        ],
+        [
+          "s19",
+          "s20",
+          "s21"
+        ]
       ]
     },
     {
@@ -542,8 +610,15 @@
         "s29"
       ],
       "friendGroups": [
-        ["s08", "s09"],
-        ["s24", "s25", "s26"]
+        [
+          "s08",
+          "s09"
+        ],
+        [
+          "s24",
+          "s25",
+          "s26"
+        ]
       ]
     },
     {
@@ -583,8 +658,14 @@
         "s30"
       ],
       "friendGroups": [
-        ["s02", "s03"],
-        ["s29", "s30"]
+        [
+          "s02",
+          "s03"
+        ],
+        [
+          "s29",
+          "s30"
+        ]
       ]
     },
     {
@@ -600,7 +681,13 @@
         "s27",
         "s30"
       ],
-      "friendGroups": [["s04", "s06", "s09"]]
+      "friendGroups": [
+        [
+          "s04",
+          "s06",
+          "s09"
+        ]
+      ]
     }
   ]
 }
