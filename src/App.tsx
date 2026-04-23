@@ -4,7 +4,7 @@ import {
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
-import { ScheduleProvider } from '@/contexts/ScheduleContext';
+import { ScheduleProvider } from '@/contexts/ScheduleProvider';
 import { Layout } from '@/components/layout/Layout';
 import { DashboardPage } from '@/components/dashboard/DashboardPage';
 import { StudentsPage } from '@/components/students/StudentsPage';

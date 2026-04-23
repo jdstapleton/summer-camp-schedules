@@ -17,7 +17,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CasinoIcon from '@mui/icons-material/Casino';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useSchedule } from '@/contexts/ScheduleContext';
+import { useSchedule } from '@/hooks/useSchedule';
 import type { Student } from '@/models/types';
 import { StudentDialog } from './StudentDialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';

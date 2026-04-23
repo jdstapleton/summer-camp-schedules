@@ -18,7 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { useSchedule } from '@/contexts/ScheduleContext';
+import { useSchedule } from '@/hooks/useSchedule';
 import type { Camp } from '@/models/types';
 import { CampDialog } from './ClassTypeDialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';

@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { useSchedule } from '@/contexts/ScheduleContext';
+import { useSchedule } from '@/hooks/useSchedule';
 import type { Camp } from '@/models/types';
 import { EnrollmentDialog } from './EnrollmentDialog';
 

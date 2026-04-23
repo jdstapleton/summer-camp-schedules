@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
-import { useSchedule } from '@/contexts/ScheduleContext';
+import { useSchedule } from '@/hooks/useSchedule';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 
 function StatCard({ title, value }: { title: string; value: number }) {

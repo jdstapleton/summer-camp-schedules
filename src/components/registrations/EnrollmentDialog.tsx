@@ -53,6 +53,7 @@ export function EnrollmentDialog({
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedIds([...registration.studentIds]);
       setFriendGroups(registration.friendGroups.map((g) => [...g]));
       setAddingGroup(false);

@@ -15,7 +15,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { useSchedule } from '@/contexts/ScheduleContext';
+import { useSchedule } from '@/hooks/useSchedule';
 import type { CampInstance } from '@/models/types';
 
 dayjs.extend(customParseFormat);

@@ -43,6 +43,7 @@ export function StudentDialog({
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFirstName(student?.firstName ?? '');
       setLastName(student?.lastName ?? '');
       setGender(student?.gender ?? 'male');
