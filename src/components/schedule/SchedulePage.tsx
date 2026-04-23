@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import GroupsIcon from '@mui/icons-material/Groups';
+import PrintIcon from '@mui/icons-material/Print';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import dayjs from 'dayjs';
@@ -19,6 +20,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { CampInstance, Gender } from '@/models/types';
 import { exportScheduleToExcel } from '@/services/excelService';
+import { printLabels } from '@/services/labelService';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
   CampHeaderRow,
@@ -222,6 +224,17 @@ export function SchedulePage() {
             }
           >
             Export Excel
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<PrintIcon />}
+            disabled={!generatedSchedule}
+            onClick={() =>
+              generatedSchedule &&
+              printLabels(data, Object.values(instancesByCamp).flat())
+            }
+          >
+            Print Labels
           </Button>
           <Button
             variant="contained"

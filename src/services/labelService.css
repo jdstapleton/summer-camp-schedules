@@ -1,0 +1,65 @@
+@page {
+  size: letter;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: white;
+}
+
+.sheet {
+  width: 8.5in;
+  height: 11in;
+  padding: 0.5in 0.1875in 0;
+  display: grid;
+  grid-template-columns: repeat(3, 2.625in);
+  grid-auto-rows: 1in;
+  column-gap: 0.125in;
+  row-gap: 0;
+  overflow: hidden;
+  break-after: page;
+}
+
+.sheet:last-child {
+  break-after: auto;
+}
+
+.label {
+  width: 2.625in;
+  height: 1in;
+  padding: 0.1in 0.15in;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.04in;
+  border: 0.25px solid #bbb;
+  overflow: hidden;
+}
+
+.name {
+  font-size: 13pt;
+  font-weight: bold;
+  line-height: 1.15;
+}
+
+.camp {
+  font-size: 8.5pt;
+}
+
+.code {
+  font-size: 8pt;
+  color: #555;
+}
+
+@media print {
+  .label {
+    border-color: #ccc;
+  }
+}
