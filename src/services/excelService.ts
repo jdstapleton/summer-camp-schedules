@@ -49,7 +49,7 @@ export async function exportScheduleToExcel(
         const student = studentMap.get(studentId);
         if (!student) continue;
         sheet.addRow({
-          name: `${student.firstName} ${student.lastName}`,
+          name: `${student.lastName}, ${student.firstName}`,
           gender: student.gender,
           securityCode: student.safetyCode,
           instance: inst.instanceNumber,
