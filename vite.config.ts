@@ -9,6 +9,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 15000,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (warning.code === 'EVAL' && warning.id?.includes('exceljs')) return;
+        warn(warning);
+      },
+    },
+  },
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test-setup.ts'],
