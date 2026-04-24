@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   Button,
@@ -68,6 +68,11 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
   const { data, importBatch } = useSchedule();
   const [phase, setPhase] = useState<Phase>({ kind: 'parsing' });
 
+  const campsRef = useRef(data.camps);
+  useEffect(() => {
+    campsRef.current = data.camps;
+  }, [data.camps]);
+
   useEffect(() => {
     if (!file) return;
     let cancelled = false;
@@ -81,7 +86,7 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
         if (cancelled) return;
 
         const existingCampNames = new Set(
-          data.camps.map((c) => c.name.trim().toLowerCase())
+          campsRef.current.map((c) => c.name.trim().toLowerCase())
         );
         const newCampNames = parsed.campNames.filter(
           (n) => !existingCampNames.has(n.trim().toLowerCase())
@@ -100,7 +105,7 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
     return () => {
       cancelled = true;
     };
-  }, [file, data.camps]);
+  }, [file]);
 
   const commit = (
     parsed: ParsedImport,
@@ -164,15 +169,22 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
 
   const isOpen = file !== null;
 
-  if (phase.kind === 'collectingCampInfo') {
-    const campName = phase.newCampNames[phase.index];
-    const stubCamp: Camp = {
+  const currentCampName =
+    phase.kind === 'collectingCampInfo'
+      ? phase.newCampNames[phase.index]
+      : '';
+  const stubCamp = useMemo<Camp>(
+    () => ({
       id: '',
-      name: campName,
+      name: currentCampName,
       gradeRange: '',
       week: '',
       maxSize: 16,
-    };
+    }),
+    [currentCampName]
+  );
+
+  if (phase.kind === 'collectingCampInfo') {
     return (
       <CampDialog
         open={isOpen}
@@ -180,9 +192,11 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
         existingCamps={data.camps}
         onSave={handleCampSaved}
         onClose={onClose}
-        titleOverride={`Import Camp ${phase.index + 1} of ${phase.newCampNames.length}: ${campName}`}
+        titleOverride={`Import Camp ${phase.index + 1} of ${phase.newCampNames.length}: ${currentCampName}`}
         saveLabelOverride={
-          phase.index + 1 === phase.newCampNames.length ? 'Finish Import' : 'Next'
+          phase.index + 1 === phase.newCampNames.length
+            ? 'Finish Import'
+            : 'Next'
         }
       />
     );
