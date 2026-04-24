@@ -7,10 +7,14 @@ import type {
   ScheduleData,
   Student,
 } from '@/models/types';
+import type { ImportBatchPayload } from '@/models/contexts';
 import { fileService } from '@/services/fileService';
 import { generateSchedule } from '@/services/schedulerService';
 import { migrateData, randomSafetyCode } from '@/services/dataMigrations';
 import { ScheduleContext } from './ScheduleContext';
+
+const existingStudentKey = (s: Student): string =>
+  `${s.lastName.trim().toLowerCase()}|${s.firstName.trim().toLowerCase()}|${s.age}`;
 
 const STORAGE_KEY = 'summer-camp-schedules';
 
@@ -177,6 +181,67 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
+  const importBatch = useCallback((payload: ImportBatchPayload) => {
+    setData((prev) => {
+      const keyToStudentId = new Map<string, string>();
+      for (const existing of prev.students) {
+        keyToStudentId.set(existingStudentKey(existing), existing.id);
+      }
+
+      const mergedStudents = [...prev.students];
+      for (const parsed of payload.newStudents) {
+        const { dedupeKey, ...studentFields } = parsed;
+        if (keyToStudentId.has(dedupeKey)) continue;
+        const id = crypto.randomUUID();
+        mergedStudents.push({ ...studentFields, id });
+        keyToStudentId.set(dedupeKey, id);
+      }
+
+      const nameToCampId = new Map<string, string>();
+      for (const existing of prev.camps) {
+        nameToCampId.set(existing.name.trim().toLowerCase(), existing.id);
+      }
+
+      const mergedCamps = [...prev.camps];
+      const mergedRegistrations = [...prev.registrations];
+      for (const newCamp of payload.newCamps) {
+        const canonical = newCamp.name.trim().toLowerCase();
+        if (nameToCampId.has(canonical)) continue;
+        const id = crypto.randomUUID();
+        mergedCamps.push({ ...newCamp, id });
+        mergedRegistrations.push({
+          campId: id,
+          studentIds: [],
+          friendGroups: [],
+        });
+        nameToCampId.set(canonical, id);
+      }
+
+      const registrationByCampId = new Map<string, CampRegistration>();
+      for (const r of mergedRegistrations) {
+        registrationByCampId.set(r.campId, { ...r, studentIds: [...r.studentIds] });
+      }
+
+      for (const row of payload.registrationRows) {
+        const campId = nameToCampId.get(row.campName.trim().toLowerCase());
+        const studentId = keyToStudentId.get(row.dedupeKey);
+        if (!campId || !studentId) continue;
+        const reg = registrationByCampId.get(campId);
+        if (!reg) continue;
+        if (!reg.studentIds.includes(studentId)) {
+          reg.studentIds.push(studentId);
+        }
+      }
+
+      return {
+        ...prev,
+        students: mergedStudents,
+        camps: mergedCamps,
+        registrations: Array.from(registrationByCampId.values()),
+      };
+    });
+  }, []);
+
   return (
     <ScheduleContext.Provider
       value={{
@@ -195,6 +260,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         loadFromFile,
         saveToFile,
         clearData,
+        importBatch,
       }}
     >
       {children}

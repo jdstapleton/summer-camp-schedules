@@ -6,6 +6,12 @@ import {
   CampRegistration,
 } from './types';
 
+export interface ImportBatchPayload {
+  newStudents: (Omit<Student, 'id'> & { dedupeKey: string })[];
+  newCamps: Omit<Camp, 'id'>[];
+  registrationRows: { campName: string; dedupeKey: string }[];
+}
+
 export interface ScheduleContextValue {
   data: ScheduleData;
   generatedSchedule: GeneratedSchedule | null;
@@ -26,4 +32,5 @@ export interface ScheduleContextValue {
   loadFromFile: () => Promise<void>;
   saveToFile: () => void;
   clearData: () => void;
+  importBatch: (payload: ImportBatchPayload) => void;
 }

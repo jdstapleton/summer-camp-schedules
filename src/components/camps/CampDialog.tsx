@@ -16,6 +16,8 @@ interface CampDialogProps {
   existingCamps: Camp[];
   onSave: (data: Omit<Camp, 'id'>) => void;
   onClose: () => void;
+  titleOverride?: string;
+  saveLabelOverride?: string;
 }
 
 export function CampDialog({
@@ -24,6 +26,8 @@ export function CampDialog({
   existingCamps,
   onSave,
   onClose,
+  titleOverride,
+  saveLabelOverride,
 }: CampDialogProps) {
   const [name, setName] = useState('');
   const [gradeRange, setGradeRange] = useState('');
@@ -70,13 +74,16 @@ export function CampDialog({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{camp ? 'Edit Camp' : 'Add Camp'}</DialogTitle>
+      <DialogTitle>
+        {titleOverride ?? (camp ? 'Edit Camp' : 'Add Camp')}
+      </DialogTitle>
       <DialogContent>
         <Autocomplete
           freeSolo
           options={existingNames}
           value={name}
           onChange={(_, newValue) => setName(newValue ?? '')}
+          onInputChange={(_, newInput) => setName(newInput)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -94,6 +101,7 @@ export function CampDialog({
           options={existingGradeRanges}
           value={gradeRange}
           onChange={(_, newValue) => setGradeRange(newValue ?? '')}
+          onInputChange={(_, newInput) => setGradeRange(newInput)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -110,6 +118,7 @@ export function CampDialog({
           options={existingWeeks}
           value={week}
           onChange={(_, newValue) => setWeek(newValue ?? '')}
+          onInputChange={(_, newInput) => setWeek(newInput)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -136,7 +145,7 @@ export function CampDialog({
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSubmit} variant="contained" disabled={!isValid}>
-          {camp ? 'Save' : 'Add'}
+          {saveLabelOverride ?? (camp ? 'Save' : 'Add')}
         </Button>
       </DialogActions>
     </Dialog>

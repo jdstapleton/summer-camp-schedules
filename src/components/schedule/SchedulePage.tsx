@@ -6,6 +6,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Menu,
   Tooltip,
   Typography,
   Badge,
@@ -15,11 +16,16 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import PrintIcon from '@mui/icons-material/Print';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TableChartIcon from '@mui/icons-material/TableChart';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { CampInstance, Gender } from '@/models/types';
-import { exportScheduleToExcel } from '@/services/excelService';
+import {
+  exportClassroomRoster,
+  exportPrintableMasterlist,
+  exportSignInOutSheet,
+} from '@/services/exports';
 import { printLabels } from '@/services/labelService';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
@@ -251,6 +257,8 @@ export function SchedulePage() {
   const { data, generatedSchedule, moveStudentBetweenInstances, refreshSchedule, saveToFile } =
     useSchedule();
   const [selectedWeek, setSelectedWeek] = useState<string>('');
+  const [exportMenuAnchor, setExportMenuAnchor] =
+    useState<HTMLElement | null>(null);
 
   const getCampName = (campId: string) =>
     data.camps.find((c) => c.id === campId)?.name ?? campId;
@@ -348,17 +356,66 @@ export function SchedulePage() {
           >
             Export JSON
           </Button>
-          <Button
-            variant="outlined"
-            startIcon={<TableChartIcon />}
-            disabled={!generatedSchedule}
-            onClick={() =>
-              generatedSchedule &&
-              exportScheduleToExcel(data, Object.values(instancesByCamp).flat())
+          <Tooltip
+            title={
+              !generatedSchedule
+                ? 'Generate the schedule first'
+                : !selectedWeek
+                  ? 'Select a week to export'
+                  : ''
             }
           >
-            Export Excel
-          </Button>
+            <span>
+              <Button
+                variant="outlined"
+                startIcon={<TableChartIcon />}
+                endIcon={<ArrowDropDownIcon />}
+                disabled={!generatedSchedule || !selectedWeek}
+                onClick={(e) => setExportMenuAnchor(e.currentTarget)}
+              >
+                Export Excel
+              </Button>
+            </span>
+          </Tooltip>
+          <Menu
+            anchorEl={exportMenuAnchor}
+            open={Boolean(exportMenuAnchor)}
+            onClose={() => setExportMenuAnchor(null)}
+          >
+            <MenuItem
+              onClick={() => {
+                setExportMenuAnchor(null);
+                void exportPrintableMasterlist(
+                  data,
+                  Object.values(instancesByCamp).flat()
+                );
+              }}
+            >
+              Printable Masterlist
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setExportMenuAnchor(null);
+                void exportClassroomRoster(
+                  data,
+                  Object.values(instancesByCamp).flat()
+                );
+              }}
+            >
+              Classroom Roster
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setExportMenuAnchor(null);
+                void exportSignInOutSheet(
+                  data,
+                  Object.values(instancesByCamp).flat()
+                );
+              }}
+            >
+              Sign In &amp; Sign Out Sheet
+            </MenuItem>
+          </Menu>
           <Button
             variant="outlined"
             startIcon={<PrintIcon />}
