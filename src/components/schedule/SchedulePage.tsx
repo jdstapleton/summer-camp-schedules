@@ -3,6 +3,7 @@ import {
   Button,
   CardContent,
   Chip,
+  Divider,
   InputLabel,
   Select,
   MenuItem,
@@ -13,10 +14,12 @@ import {
 } from '@mui/material';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import GroupsIcon from '@mui/icons-material/Groups';
-import PrintIcon from '@mui/icons-material/Print';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import TableChartIcon from '@mui/icons-material/TableChart';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import CodeIcon from '@mui/icons-material/Code';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import PrintIcon from '@mui/icons-material/Print';
+import ListIcon from '@mui/icons-material/List';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
@@ -352,37 +355,23 @@ export function SchedulePage() {
           <Button
             variant="outlined"
             startIcon={<SaveAltIcon />}
-            onClick={saveToFile}
+            endIcon={<ArrowDropDownIcon />}
+            onClick={(e) => setExportMenuAnchor(e.currentTarget)}
           >
-            Export JSON
+            Export
           </Button>
-          <Tooltip
-            title={
-              !generatedSchedule
-                ? 'Generate the schedule first'
-                : !selectedWeek
-                  ? 'Select a week to export'
-                  : ''
-            }
-          >
-            <span>
-              <Button
-                variant="outlined"
-                startIcon={<TableChartIcon />}
-                endIcon={<ArrowDropDownIcon />}
-                disabled={!generatedSchedule || !selectedWeek}
-                onClick={(e) => setExportMenuAnchor(e.currentTarget)}
-              >
-                Export Excel
-              </Button>
-            </span>
-          </Tooltip>
           <Menu
             anchorEl={exportMenuAnchor}
             open={Boolean(exportMenuAnchor)}
             onClose={() => setExportMenuAnchor(null)}
           >
+            <MenuItem onClick={() => { setExportMenuAnchor(null); saveToFile(); }}>
+              <CodeIcon sx={{ mr: 1.5 }} />
+              Export JSON
+            </MenuItem>
+            <Divider />
             <MenuItem
+              disabled={!generatedSchedule || !selectedWeek}
               onClick={() => {
                 setExportMenuAnchor(null);
                 void exportPrintableMasterlist(
@@ -391,9 +380,11 @@ export function SchedulePage() {
                 );
               }}
             >
+              <TableChartIcon sx={{ mr: 1.5 }} />
               Printable Masterlist
             </MenuItem>
             <MenuItem
+              disabled={!generatedSchedule || !selectedWeek}
               onClick={() => {
                 setExportMenuAnchor(null);
                 void exportClassroomRoster(
@@ -402,9 +393,11 @@ export function SchedulePage() {
                 );
               }}
             >
+              <ListIcon sx={{ mr: 1.5 }} />
               Classroom Roster
             </MenuItem>
             <MenuItem
+              disabled={!generatedSchedule || !selectedWeek}
               onClick={() => {
                 setExportMenuAnchor(null);
                 void exportSignInOutSheet(
@@ -413,20 +406,21 @@ export function SchedulePage() {
                 );
               }}
             >
+              <TableChartIcon sx={{ mr: 1.5 }} />
               Sign In &amp; Sign Out Sheet
             </MenuItem>
+            <Divider />
+            <MenuItem
+              disabled={!generatedSchedule}
+              onClick={() => {
+                setExportMenuAnchor(null);
+                if (generatedSchedule) printLabels(data, Object.values(instancesByCamp).flat());
+              }}
+            >
+              <PrintIcon sx={{ mr: 1.5 }} />
+              Print Labels
+            </MenuItem>
           </Menu>
-          <Button
-            variant="outlined"
-            startIcon={<PrintIcon />}
-            disabled={!generatedSchedule}
-            onClick={() =>
-              generatedSchedule &&
-              printLabels(data, Object.values(instancesByCamp).flat())
-            }
-          >
-            Print Labels
-          </Button>
           <Button
             variant="contained"
             startIcon={<AutoFixHighIcon />}
