@@ -18,7 +18,6 @@ const makeStudent = (overrides: Partial<Student> = {}): Student => ({
   gender: 'female',
   age: 9,
   custody: 'Both',
-  safetyCode: '1234',
   photo: true,
   preCamp: false,
   postCamp: false,

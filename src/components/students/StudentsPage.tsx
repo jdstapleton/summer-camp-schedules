@@ -13,7 +13,6 @@ import {
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import CasinoIcon from '@mui/icons-material/Casino';
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,7 +26,6 @@ import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
   ActionButtonGroup,
   CapitalizedTableCell,
-  MonospaceTableCell,
   MutedTableCell,
 } from './StudentsPage.styles';
 
@@ -37,12 +35,10 @@ export function StudentsPage() {
     addStudent,
     updateStudent,
     deleteStudent,
-    randomizeAllSafetyCodes,
   } = useSchedule();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [confirmRandomize, setConfirmRandomize] = useState(false);
 
   const handleAdd = () => {
     setEditingStudent(null);
@@ -68,17 +64,6 @@ export function StudentsPage() {
       <PageHeaderRow mb={2}>
         <Typography variant="h4">Students ({data.students.length})</Typography>
         <ActionButtonGroup>
-          <Tooltip title="Randomize Safety Codes">
-            <span>
-              <IconButton
-                aria-label="Randomize Safety Codes"
-                onClick={() => setConfirmRandomize(true)}
-                disabled={data.students.length === 0}
-              >
-                <CasinoIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
           <Button
             variant="contained"
             startIcon={<AddIcon />}
@@ -96,7 +81,6 @@ export function StudentsPage() {
               <TableCell>Name</TableCell>
               <TableCell>Gender</TableCell>
               <TableCell align="right">Age</TableCell>
-              <TableCell>Safety Code</TableCell>
               <TableCell>Custody</TableCell>
               <TableCell align="center">Photo</TableCell>
               <TableCell align="center">Pre-Camp</TableCell>
@@ -113,7 +97,6 @@ export function StudentsPage() {
                 </TableCell>
                 <CapitalizedTableCell>{student.gender}</CapitalizedTableCell>
                 <TableCell align="right">{student.age}</TableCell>
-                <MonospaceTableCell>{student.safetyCode}</MonospaceTableCell>
                 <TableCell>{student.custody}</TableCell>
                 <TableCell align="center">
                   {student.photo && <CheckIcon fontSize="small" />}
@@ -156,7 +139,7 @@ export function StudentsPage() {
             ))}
             {data.students.length === 0 && (
               <TableRow>
-                <MutedTableCell colSpan={10} align="center">
+                <MutedTableCell colSpan={9} align="center">
                   No students added yet.
                 </MutedTableCell>
               </TableRow>
@@ -180,15 +163,6 @@ export function StudentsPage() {
           if (deletingId) deleteStudent(deletingId);
         }}
         onClose={() => setDeletingId(null)}
-      />
-
-      <ConfirmDialog
-        open={confirmRandomize}
-        title="Randomize All Safety Codes"
-        message={`This will generate new random 4-digit safety codes for all ${data.students.length} students, replacing their existing codes. This cannot be undone. Continue?`}
-        confirmLabel="Randomize"
-        onConfirm={randomizeAllSafetyCodes}
-        onClose={() => setConfirmRandomize(false)}
       />
     </div>
   );

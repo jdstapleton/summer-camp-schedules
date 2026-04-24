@@ -9,7 +9,6 @@ const makeStudent = (id: string, gender: 'male' | 'female' | 'other') => ({
   gender,
   age: 10,
   custody: 'Both' as const,
-  safetyCode: '0000',
   photo: false,
   preCamp: false,
   postCamp: false,

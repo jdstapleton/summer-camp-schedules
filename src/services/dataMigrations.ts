@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ScheduleData } from '@/models/types';
 
-const CURRENT_VERSION = 4;
+const CURRENT_VERSION = 5;
 
-export const randomSafetyCode = () =>
+const randomSafetyCode = () =>
   Math.floor(Math.random() * 10000)
     .toString()
     .padStart(4, '0');
@@ -57,6 +57,13 @@ const migrateV3toV4 = (data: any): ScheduleData => {
   return { ...data, version: 4, students: migratedStudents };
 };
 
+// Version 4 → Version 5: Remove safetyCode field
+const migrateV4toV5 = (data: any): ScheduleData => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const migratedStudents = data.students.map(({ safetyCode, ...rest }: any) => rest);
+  return { ...data, version: 5, students: migratedStudents };
+};
+
 export const migrateData = (data: any): ScheduleData => {
   if (!data || typeof data !== 'object') {
     return {
@@ -79,6 +86,9 @@ export const migrateData = (data: any): ScheduleData => {
   }
   if (startVersion < 4) {
     currentData = migrateV3toV4(currentData);
+  }
+  if (startVersion < 5) {
+    currentData = migrateV4toV5(currentData);
   }
 
   // Ensure version is set

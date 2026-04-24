@@ -14,7 +14,6 @@ import { CampDialog } from '@/components/camps/CampDialog';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { Camp } from '@/models/types';
 import type { ImportBatchPayload } from '@/models/contexts';
-import { randomSafetyCode } from '@/services/dataMigrations';
 import {
   parseXlsx,
   type ParsedImport,
@@ -53,7 +52,6 @@ const parsedStudentToNew = (
   gender: p.gender,
   age: p.age,
   custody: p.custody,
-  safetyCode: randomSafetyCode(),
   photo: p.photo,
   preCamp: p.preCamp,
   postCamp: p.postCamp,

@@ -11,19 +11,14 @@ import {
   FormControlLabel,
   FormGroup,
   FormLabel,
-  IconButton,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Tooltip,
   Typography,
 } from '@mui/material';
-import CasinoIcon from '@mui/icons-material/Casino';
 import type { SelectChangeEvent } from '@mui/material';
 import type { Custody, Gender, Student } from '@/models/types';
-import { randomSafetyCode } from '@/services/dataMigrations';
 
 interface StudentDialogProps {
   open: boolean;
@@ -43,7 +38,6 @@ export function StudentDialog({
   const [gender, setGender] = useState<Gender>('male');
   const [age, setAge] = useState('');
   const [custody, setCustody] = useState<Custody>('Both');
-  const [safetyCode, setSafetyCode] = useState('');
   const [photo, setPhoto] = useState(false);
   const [preCamp, setPreCamp] = useState(false);
   const [postCamp, setPostCamp] = useState(false);
@@ -67,7 +61,6 @@ export function StudentDialog({
       setGender(student?.gender ?? 'male');
       setAge(student?.age != null ? String(student.age) : '');
       setCustody(student?.custody ?? 'Both');
-      setSafetyCode(student?.safetyCode ?? randomSafetyCode());
       setPhoto(student?.photo ?? false);
       setPreCamp(student?.preCamp ?? false);
       setPostCamp(student?.postCamp ?? false);
@@ -96,11 +89,6 @@ export function StudentDialog({
     setAge(digits);
   };
 
-  const handleSafetyCodeChange = (value: string) => {
-    const digitsOnly = value.replace(/\D/g, '').slice(0, 4);
-    setSafetyCode(digitsOnly);
-  };
-
   const handleSubmit = () => {
     if (!isValid) return;
     onSave({
@@ -109,7 +97,6 @@ export function StudentDialog({
       gender,
       age: parseInt(age, 10),
       custody,
-      safetyCode,
       photo,
       preCamp,
       postCamp,
@@ -137,7 +124,6 @@ export function StudentDialog({
     firstName.trim().length > 0 &&
     lastName.trim().length > 0 &&
     age.length > 0 &&
-    safetyCode.length === 4 &&
     primaryName.trim().length > 0;
 
   return (
@@ -188,36 +174,6 @@ export function StudentDialog({
             <MenuItem value="Mother">Mother</MenuItem>
           </Select>
         </FormControl>
-        <TextField
-          label="Safety Code"
-          value={safetyCode}
-          onChange={(e) => handleSafetyCodeChange(e.target.value)}
-          fullWidth
-          margin="normal"
-          required
-          helperText="4-digit code used to verify student identity"
-          slotProps={{
-            htmlInput: {
-              inputMode: 'numeric',
-              pattern: '[0-9]*',
-              maxLength: 4,
-            },
-            input: {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Tooltip title="Generate random code">
-                    <IconButton
-                      onClick={() => setSafetyCode(randomSafetyCode())}
-                      edge="end"
-                    >
-                      <CasinoIcon />
-                    </IconButton>
-                  </Tooltip>
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
 
         <Divider sx={{ mt: 2, mb: 1 }} />
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>

@@ -18,7 +18,6 @@ export interface ScheduleContextValue {
   addStudent: (student: Omit<Student, 'id'>) => void;
   updateStudent: (student: Student) => void;
   deleteStudent: (id: string) => void;
-  randomizeAllSafetyCodes: () => void;
   addCamp: (camp: Omit<Camp, 'id'>) => void;
   updateCamp: (camp: Camp) => void;
   deleteCamp: (id: string) => void;

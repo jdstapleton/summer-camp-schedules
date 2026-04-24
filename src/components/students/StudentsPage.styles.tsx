@@ -11,10 +11,6 @@ export const CapitalizedTableCell = styled(TableCell)({
   textTransform: 'capitalize',
 });
 
-export const MonospaceTableCell = styled(TableCell)({
-  fontFamily: 'monospace',
-});
-
 export const MutedTableCell = styled(TableCell)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));

@@ -22,7 +22,7 @@ export function printLabels(
     );
   }
 
-  const labels: { name: string; campLine: string; safetyCode: string }[] = [];
+  const labels: { name: string; campLine: string }[] = [];
   for (const inst of sorted) {
     const campName = campMap.get(inst.campId)?.name ?? inst.campId;
     const multiInstance = (instanceCountByCamp.get(inst.campId) ?? 1) > 1;
@@ -35,7 +35,6 @@ export function printLabels(
       labels.push({
         name: `${student.firstName} ${student.lastName}`,
         campLine,
-        safetyCode: student.safetyCode,
       });
     }
   }
@@ -73,11 +72,7 @@ export function printLabels(
       campEl.className = 'camp';
       campEl.textContent = label.campLine;
 
-      const codeEl = doc.createElement('div');
-      codeEl.className = 'code';
-      codeEl.textContent = `Code: ${label.safetyCode}`;
-
-      labelDiv.append(nameEl, campEl, codeEl);
+      labelDiv.append(nameEl, campEl);
       sheet.appendChild(labelDiv);
     }
 

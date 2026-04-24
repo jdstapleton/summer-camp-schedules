@@ -10,7 +10,7 @@ import type {
 import type { ImportBatchPayload } from '@/models/contexts';
 import { fileService } from '@/services/fileService';
 import { generateSchedule } from '@/services/schedulerService';
-import { migrateData, randomSafetyCode } from '@/services/dataMigrations';
+import { migrateData } from '@/services/dataMigrations';
 import { ScheduleContext } from './ScheduleContext';
 
 const existingStudentKey = (s: Student): string =>
@@ -19,7 +19,7 @@ const existingStudentKey = (s: Student): string =>
 const STORAGE_KEY = 'summer-camp-schedules';
 
 const emptyData: ScheduleData = {
-  version: 2,
+  version: 5,
   students: [],
   camps: [],
   registrations: [],
@@ -82,16 +82,6 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         friendGroups: r.friendGroups
           .map((g) => g.filter((sid) => sid !== id))
           .filter((g) => g.length >= 2),
-      })),
-    }));
-  }, []);
-
-  const randomizeAllSafetyCodes = useCallback(() => {
-    setData((prev) => ({
-      ...prev,
-      students: prev.students.map((s) => ({
-        ...s,
-        safetyCode: randomSafetyCode(),
       })),
     }));
   }, []);
@@ -250,7 +240,6 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         addStudent,
         updateStudent,
         deleteStudent,
-        randomizeAllSafetyCodes,
         addCamp,
         updateCamp,
         deleteCamp,

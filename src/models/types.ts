@@ -14,7 +14,6 @@ export interface Student {
   gender: Gender;
   age: number;
   custody: Custody;
-  safetyCode: string;
   photo: boolean;
   preCamp: boolean;
   postCamp: boolean;
