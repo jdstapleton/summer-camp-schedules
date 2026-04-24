@@ -19,7 +19,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CodeIcon from '@mui/icons-material/Code';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import PrintIcon from '@mui/icons-material/Print';
-import ListIcon from '@mui/icons-material/List';
+import BadgeIcon from '@mui/icons-material/Badge';
+import ChecklistIcon from '@mui/icons-material/Checklist';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
@@ -393,7 +394,7 @@ export function SchedulePage() {
                 );
               }}
             >
-              <ListIcon sx={{ mr: 1.5 }} />
+              <BadgeIcon sx={{ mr: 1.5 }} />
               Classroom Roster
             </MenuItem>
             <MenuItem
@@ -406,7 +407,7 @@ export function SchedulePage() {
                 );
               }}
             >
-              <TableChartIcon sx={{ mr: 1.5 }} />
+              <ChecklistIcon sx={{ mr: 1.5 }} />
               Sign In &amp; Sign Out Sheet
             </MenuItem>
             <Divider />
