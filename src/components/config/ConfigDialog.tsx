@@ -19,6 +19,7 @@ import {
   Chip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import { useAppConfig } from '@/contexts/AppConfigProvider';
 import type { ImportColumnConfig } from '@/models/types';
 
@@ -244,10 +245,34 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
               Configure column header mappings for Excel imports. Each field can match multiple column headers.
             </Typography>
             {Object.entries(importColumnConfig).map(([field, headers]) => (
-              <Box key={field} sx={{ mb: 3 }}>
-                <Typography variant="subtitle2" sx={{ mb: 1, textTransform: 'capitalize' }}>
-                  {field.replace(/([A-Z])/g, ' $1').trim()}
-                </Typography>
+              <Box
+                key={field}
+                sx={{
+                  mb: 2.5,
+                  p: 2,
+                  bgcolor: 'background.paper',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 1.5,
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ textTransform: 'capitalize', fontWeight: 600, flex: 1 }}
+                  >
+                    {field.replace(/([A-Z])/g, ' $1').trim()}
+                  </Typography>
+                  {editingColumnField !== field && (
+                    <IconButton
+                      size="small"
+                      onClick={() => setEditingColumnField(field as keyof ImportColumnConfig)}
+                      title="Add column header"
+                    >
+                      <AddIcon fontSize="small" />
+                    </IconButton>
+                  )}
+                </Box>
                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1 }}>
                   {headers.map((header: string, idx: number) => (
                     <Chip
@@ -260,7 +285,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                     />
                   ))}
                 </Box>
-                {editingColumnField === field ? (
+                {editingColumnField === field && (
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     <TextField
                       size="small"
@@ -291,14 +316,6 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                       Done
                     </Button>
                   </Box>
-                ) : (
-                  <Button
-                    onClick={() => setEditingColumnField(field as keyof ImportColumnConfig)}
-                    variant="outlined"
-                    size="small"
-                  >
-                    Add Header
-                  </Button>
                 )}
               </Box>
             ))}
