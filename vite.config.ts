@@ -10,8 +10,15 @@ export default defineConfig({
     },
   },
   build: {
-    chunkSizeWarningLimit: 15000,
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/exceljs')) {
+            return 'exceljs';
+          }
+        },
+      },
       onwarn(warning, warn) {
         if (warning.code === 'EVAL' && warning.id?.includes('exceljs')) return;
         warn(warning);
