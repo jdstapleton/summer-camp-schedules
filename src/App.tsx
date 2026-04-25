@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-router';
 import { AppConfigProvider } from '@/contexts/AppConfigProvider';
 import { ScheduleProvider } from '@/contexts/ScheduleProvider';
+import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { Layout } from '@/components/layout/Layout';
 import { DashboardPage } from '@/components/dashboard/DashboardPage';
 import { StudentsPage } from '@/components/students/StudentsPage';
@@ -57,10 +58,12 @@ const router = createRouter({ routeTree });
 
 export function App() {
   return (
-    <AppConfigProvider>
-      <ScheduleProvider>
-        <RouterProvider router={router} />
-      </ScheduleProvider>
-    </AppConfigProvider>
+    <ErrorBoundary>
+      <AppConfigProvider>
+        <ScheduleProvider>
+          <RouterProvider router={router} />
+        </ScheduleProvider>
+      </AppConfigProvider>
+    </ErrorBoundary>
   );
 }
