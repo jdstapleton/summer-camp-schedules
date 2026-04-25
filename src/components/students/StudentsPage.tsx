@@ -60,6 +60,8 @@ export function StudentsPage() {
     tshirtSize: [] as string[],
   });
   const [showOnlyAllergies, setShowOnlyAllergies] = useState(false);
+  const [filterMedical, setFilterMedical] = useState(false);
+  const [filterSpecialRequest, setFilterSpecialRequest] = useState(false);
 
   const uniqueCamps = Array.from(
     new Set(
@@ -163,6 +165,12 @@ export function StudentsPage() {
       }
       if (showOnlyAllergies) {
         if (!hasAllergy(student)) return false;
+      }
+      if (filterMedical) {
+        if (!student.medicalIssues) return false;
+      }
+      if (filterSpecialRequest) {
+        if (!student.specialRequest) return false;
       }
       return true;
     });
@@ -380,7 +388,32 @@ export function StudentsPage() {
               </TableCell>
               <TableCell sx={{ p: 0.5, width: 0 }} align="center" />
               <TableCell sx={{ p: 0.5, width: 0 }} align="center" />
-              <TableCell sx={{ p: 0.5, width: 0 }} align="center" />
+              <TableCell sx={{ p: 0.5, width: 0 }} align="center">
+                <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'center' }}>
+                  <Tooltip title={filterMedical ? 'Show all' : 'Show with medical issues'}>
+                    <IconButton
+                      size="small"
+                      onClick={() => setFilterMedical(!filterMedical)}
+                      sx={{
+                        color: filterMedical ? 'error.main' : 'action.disabled',
+                      }}
+                    >
+                      <LocalHospitalIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={filterSpecialRequest ? 'Show all' : 'Show with special requests'}>
+                    <IconButton
+                      size="small"
+                      onClick={() => setFilterSpecialRequest(!filterSpecialRequest)}
+                      sx={{
+                        color: filterSpecialRequest ? 'action.main' : 'action.disabled',
+                      }}
+                    >
+                      <NoteIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </TableCell>
               <TableCell sx={{ p: 0.5, width: 0 }} align="right" />
             </TableRow>
           </TableHead>
