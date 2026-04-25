@@ -24,6 +24,8 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import NoteIcon from '@mui/icons-material/Note';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
+import { PeanutIcon } from '@/components/icons/PeanutIcon';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
@@ -69,6 +71,7 @@ interface CampBlockProps {
   getStudentGender: (id: string) => Gender;
   getStudentFriendGroup: (campId: string, studentId: string) => number | null;
   getStudentNotes: (id: string) => { medical: string; special: string };
+  hasNutAllergy: (instance: CampInstance) => boolean;
   onMoveStudent: (
     studentId: string,
     fromInstanceId: string,
@@ -86,6 +89,7 @@ function CampBlock({
   getStudentGender,
   getStudentFriendGroup,
   getStudentNotes,
+  hasNutAllergy,
   onMoveStudent,
 }: CampBlockProps) {
   const [dragging, setDragging] = useState<DragPayload | null>(null);
@@ -189,11 +193,36 @@ function CampBlock({
               }
             >
               <CardContent>
-                <Typography variant="subtitle2" gutterBottom>
-                  Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
-                  student
-                  {inst.studentIds.length !== 1 ? 's' : ''}
-                </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    marginBottom: 1,
+                  }}
+                >
+                  <Typography variant="subtitle2">
+                    Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
+                    student
+                    {inst.studentIds.length !== 1 ? 's' : ''}
+                  </Typography>
+                  {hasNutAllergy(inst) && (
+                    <Tooltip title="No Nuts - Nut allergy in instance">
+                      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                        <PeanutIcon fontSize="small" color="action" />
+                        <NotInterestedIcon
+                          fontSize="small"
+                          color="error"
+                          sx={{
+                            position: 'absolute',
+                            top: -2,
+                            right: -2,
+                          }}
+                        />
+                      </Box>
+                    </Tooltip>
+                  )}
+                </Box>
                 <StudentList>
                   {[...inst.studentIds]
                     .sort((a, b) =>
@@ -326,6 +355,13 @@ export function SchedulePage() {
     };
   };
 
+  const hasNutAllergy = (instance: CampInstance): boolean => {
+    return instance.studentIds.some((studentId) => {
+      const student = data.students.find((s) => s.id === studentId);
+      return student?.medicalIssues.toLowerCase().includes('nut');
+    });
+  };
+
   const uniqueWeeks = Array.from(new Set(data.camps.map((c) => c.week))).sort(
     (a, b) => {
       const dateA = dayjs(a, ['MMMM D', 'MMM D']);
@@ -363,6 +399,7 @@ export function SchedulePage() {
     getStudentGender,
     getStudentFriendGroup,
     getStudentNotes,
+    hasNutAllergy,
     onMoveStudent: moveStudentBetweenInstances,
   });
 
