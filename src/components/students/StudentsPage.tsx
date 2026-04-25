@@ -22,6 +22,8 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { Student } from '@/models/types';
 import { studentSortCompare } from '@/services/exports/shared';
@@ -30,7 +32,6 @@ import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
   ActionButtonGroup,
-  CapitalizedTableCell,
   MutedTableCell,
 } from './StudentsPage.styles';
 
@@ -84,7 +85,7 @@ export function StudentsPage() {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell>Gender</TableCell>
+              <TableCell>Camps</TableCell>
               <TableCell align="right">Age</TableCell>
               <TableCell>Custody</TableCell>
               <TableCell>T-Shirt Size</TableCell>
@@ -95,12 +96,31 @@ export function StudentsPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[...data.students].sort(studentSortCompare).map((student) => (
+            {[...data.students].sort(studentSortCompare).map((student) => {
+              const studentCamps = data.registrations
+                .filter((reg) => reg.studentIds.includes(student.id))
+                .map((reg) => data.camps.find((c) => c.id === reg.campId)?.name)
+                .filter(Boolean)
+                .join(', ');
+
+              return (
               <TableRow key={student.id}>
                 <TableCell>
-                  {student.lastName}, {student.firstName}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <span>{student.lastName}, {student.firstName}</span>
+                    {student.gender === 'male' && (
+                      <Tooltip title="Male">
+                        <MaleIcon fontSize="small" color="action" />
+                      </Tooltip>
+                    )}
+                    {student.gender === 'female' && (
+                      <Tooltip title="Female">
+                        <FemaleIcon fontSize="small" color="action" />
+                      </Tooltip>
+                    )}
+                  </Box>
                 </TableCell>
-                <CapitalizedTableCell>{student.gender}</CapitalizedTableCell>
+                <TableCell>{studentCamps}</TableCell>
                 <TableCell align="right">{student.age}</TableCell>
                 <TableCell>{student.custody}</TableCell>
                 <TableCell>{student.tshirtSize}</TableCell>
@@ -163,7 +183,8 @@ export function StudentsPage() {
                   </IconButton>
                 </TableCell>
               </TableRow>
-            ))}
+            );
+            })}
             {data.students.length === 0 && (
               <TableRow>
                 <MutedTableCell colSpan={9} align="center">

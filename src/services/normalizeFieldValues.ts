@@ -8,6 +8,7 @@ const NEGATIVE_RESPONSES = new Set([
   'nothing',
   'nope',
   '-',
+  'none known',
 ]);
 
 export function normalizeNegativeResponses(value: string): string {
