@@ -8,6 +8,7 @@ const STORAGE_KEY = 'summerCampAppConfig';
 const defaultConfig: AppConfig = {
   gradeRanges: DEFAULT_GRADE_RANGES,
   extraWeeks: [],
+  defaultMaxSize: 10,
 };
 
 interface AppConfigContextValue {

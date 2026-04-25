@@ -32,12 +32,14 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const [newGradeRange, setNewGradeRange] = useState('');
   const [extraWeeks, setExtraWeeks] = useState<string[]>([]);
   const [newWeek, setNewWeek] = useState('');
+  const [defaultMaxSize, setDefaultMaxSize] = useState('10');
 
   useEffect(() => {
     if (open) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setGradeRanges([...config.gradeRanges]);
       setExtraWeeks([...config.extraWeeks]);
+      setDefaultMaxSize(String(config.defaultMaxSize));
       setNewGradeRange('');
       setNewWeek('');
       setTab(0);
@@ -69,8 +71,11 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   };
 
   const handleSave = () => {
-    updateConfig({ gradeRanges, extraWeeks });
-    onClose();
+    const parsedMaxSize = parseInt(defaultMaxSize, 10);
+    if (!isNaN(parsedMaxSize) && parsedMaxSize >= 1) {
+      updateConfig({ gradeRanges, extraWeeks, defaultMaxSize: parsedMaxSize });
+      onClose();
+    }
   };
 
   return (
@@ -180,6 +185,22 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                 Add
               </Button>
             </Box>
+
+            <Divider sx={{ my: 2 }} />
+
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              Default Max Camp Size
+            </Typography>
+            <TextField
+              label="Default Max Camp Size"
+              value={defaultMaxSize}
+              onChange={(e) => setDefaultMaxSize(e.target.value)}
+              type="number"
+              slotProps={{ htmlInput: { min: 1 } }}
+              fullWidth
+              size="small"
+              helperText="Default camp size when creating new camps. If enrollment exceeds this, multiple instances are created."
+            />
           </>
         )}
       </DialogContent>

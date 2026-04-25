@@ -70,9 +70,9 @@ export function CampDialog({
       setName(camp?.name ?? '');
       setGradeRange(camp?.gradeRange ?? '');
       setWeek(camp?.week ?? '');
-      setMaxSize(String(camp?.maxSize ?? 16));
+      setMaxSize(String(camp?.maxSize ?? config.defaultMaxSize));
     }
-  }, [open, camp]);
+  }, [open, camp, config.defaultMaxSize]);
 
   const parsedMax = parseInt(maxSize, 10);
   const isValid =

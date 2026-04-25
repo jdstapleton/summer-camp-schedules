@@ -4,6 +4,7 @@ export type Custody = 'Both' | 'Father' | 'Mother';
 export interface AppConfig {
   gradeRanges: string[];
   extraWeeks: string[];
+  defaultMaxSize: number;
 }
 
 export interface Contact {
