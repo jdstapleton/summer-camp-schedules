@@ -46,6 +46,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const [newColumnHeader, setNewColumnHeader] = useState('');
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [draggedItem, setDraggedItem] = useState<{ field: string; index: number } | null>(null);
 
   useEffect(() => {
     if (open) {
@@ -134,6 +135,36 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
     link.download = 'camp-schedule-config.json';
     link.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleDragStart = (field: string, index: number) => {
+    setDraggedItem({ field, index });
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (field: string, dropIndex: number) => {
+    if (!draggedItem || !importColumnConfig) return;
+    if (draggedItem.field !== field) return;
+
+    const dragIndex = draggedItem.index;
+    if (dragIndex === dropIndex) {
+      setDraggedItem(null);
+      return;
+    }
+
+    const newHeaders = [...importColumnConfig[field as keyof ImportColumnConfig]];
+    const [draggedHeader] = newHeaders.splice(dragIndex, 1);
+    newHeaders.splice(dropIndex, 0, draggedHeader);
+
+    setImportColumnConfig({
+      ...importColumnConfig,
+      [field]: newHeaders,
+    });
+    setDraggedItem(null);
   };
 
   const handleImportConfig = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -343,7 +374,15 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                     </IconButton>
                   )}
                 </Box>
-                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 1,
+                    flexWrap: 'wrap',
+                    mb: 1,
+                    minHeight: headers.length > 0 ? 'auto' : '0px',
+                  }}
+                >
                   {headers.map((header: string, idx: number) => (
                     <Chip
                       key={idx}
@@ -352,6 +391,17 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                         removeColumnHeader(field as keyof ImportColumnConfig, idx)
                       }
                       size="small"
+                      draggable
+                      onDragStart={() => handleDragStart(field, idx)}
+                      onDragOver={handleDragOver}
+                      onDrop={() => handleDrop(field, idx)}
+                      sx={{
+                        cursor: draggedItem?.field === field ? 'grabbing' : 'grab',
+                        opacity:
+                          draggedItem?.field === field && draggedItem?.index === idx
+                            ? 0.5
+                            : 1,
+                      }}
                     />
                   ))}
                 </Box>
