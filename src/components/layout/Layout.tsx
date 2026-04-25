@@ -1,5 +1,8 @@
-import { AppBar, Box, Button, Toolbar } from '@mui/material';
+import { useState } from 'react';
+import { AppBar, Box, Button, IconButton, Toolbar } from '@mui/material';
 import { Link, Outlet } from '@tanstack/react-router';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { ConfigDialog } from '@/components/config/ConfigDialog';
 import { AppShell, BrandTypography, PageContainer } from './Layout.styles';
 
 const NAV_LINKS = [
@@ -11,6 +14,8 @@ const NAV_LINKS = [
 ] as const;
 
 export function Layout() {
+  const [configOpen, setConfigOpen] = useState(false);
+
   return (
     <AppShell>
       <AppBar position="static">
@@ -31,11 +36,20 @@ export function Layout() {
               {link.label}
             </Button>
           ))}
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton
+            color="inherit"
+            onClick={() => setConfigOpen(true)}
+            title="Settings"
+          >
+            <SettingsIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <PageContainer maxWidth="lg">
         <Outlet />
       </PageContainer>
+      <ConfigDialog open={configOpen} onClose={() => setConfigOpen(false)} />
     </AppShell>
   );
 }

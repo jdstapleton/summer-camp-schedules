@@ -1,6 +1,11 @@
 export type Gender = 'male' | 'female' | 'other';
 export type Custody = 'Both' | 'Father' | 'Mother';
 
+export interface AppConfig {
+  gradeRanges: string[];
+  extraWeeks: string[];
+}
+
 export interface Contact {
   name: string;
   homePhone: string;

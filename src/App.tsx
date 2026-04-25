@@ -4,6 +4,7 @@ import {
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
+import { AppConfigProvider } from '@/contexts/AppConfigProvider';
 import { ScheduleProvider } from '@/contexts/ScheduleProvider';
 import { Layout } from '@/components/layout/Layout';
 import { DashboardPage } from '@/components/dashboard/DashboardPage';
@@ -56,8 +57,10 @@ const router = createRouter({ routeTree });
 
 export function App() {
   return (
-    <ScheduleProvider>
-      <RouterProvider router={router} />
-    </ScheduleProvider>
+    <AppConfigProvider>
+      <ScheduleProvider>
+        <RouterProvider router={router} />
+      </ScheduleProvider>
+    </AppConfigProvider>
   );
 }

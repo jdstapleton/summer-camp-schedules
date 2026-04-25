@@ -8,8 +8,8 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import { DEFAULT_GRADE_RANGES } from '@/config/defaultGradeRanges';
 import { generateDefaultWeeks } from '@/config/defaultWeeks';
+import { useAppConfig } from '@/contexts/AppConfigProvider';
 import type { Camp } from '@/models/types';
 
 interface CampDialogProps {
@@ -31,6 +31,7 @@ export function CampDialog({
   titleOverride,
   saveLabelOverride,
 }: CampDialogProps) {
+  const { config } = useAppConfig();
   const [name, setName] = useState('');
   const [gradeRange, setGradeRange] = useState('');
   const [week, setWeek] = useState('');
@@ -40,11 +41,11 @@ export function CampDialog({
     new Set(existingCamps.map((c) => c.name))
   ).sort();
   const existingWeeks = Array.from(
-    new Set(existingCamps.map((c) => c.week))
+    new Set([...config.extraWeeks, ...existingCamps.map((c) => c.week)])
   ).sort();
   const defaultWeeks = generateDefaultWeeks();
   const existingGradeRanges = Array.from(
-    new Set([...DEFAULT_GRADE_RANGES, ...existingCamps.map((c) => c.gradeRange)])
+    new Set([...config.gradeRanges, ...existingCamps.map((c) => c.gradeRange)])
   ).sort();
 
   const filterWeekOptions = (options: string[], state: { inputValue: string }) => {
