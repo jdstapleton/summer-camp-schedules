@@ -79,3 +79,11 @@ export const EmptyStateText = styled(Box)(({ theme }) => ({
   color: theme.palette.text.secondary,
   padding: theme.spacing(4, 2),
 }));
+
+export const NoteRow = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: theme.spacing(0.75),
+  cursor: 'pointer',
+  padding: theme.spacing(0.5, 0),
+}));

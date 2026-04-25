@@ -1,9 +1,13 @@
-import { Button, CardContent, CardActions, IconButton, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Box, Button, CardContent, CardActions, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import NoteIcon from '@mui/icons-material/Note';
 import { useSchedule } from '@/hooks/useSchedule';
 import { useStudentsFilters } from '@/contexts/StudentsFiltersContext';
 import type { Student } from '@/models/types';
@@ -12,7 +16,7 @@ import { StudentFlags } from './StudentFlags';
 import { StudentsMobileFilters } from './StudentsMobileFilters';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
-import { StudentCard, CardHeader, CardNameSection, CardSecondaryInfo, CardFlagsRow, EmptyStateText } from './StudentsMobilePage.styles';
+import { StudentCard, CardHeader, CardNameSection, CardSecondaryInfo, CardFlagsRow, EmptyStateText, NoteRow } from './StudentsMobilePage.styles';
 
 interface StudentsMobilePageProps {
   onEdit: (student: Student) => void;
@@ -25,6 +29,43 @@ interface StudentsMobilePageProps {
   onStartDelete: (id: string) => void;
   onDelete: (id: string) => void;
   onClosedDeleteDialog: () => void;
+}
+
+interface ExpandableNoteProps {
+  icon: React.ReactNode;
+  text: string;
+  iconColor?: string;
+}
+
+function ExpandableNote({ icon, text }: ExpandableNoteProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <NoteRow onClick={() => setExpanded(!expanded)}>
+      {icon}
+      <Typography
+        variant="body2"
+        sx={{
+          flex: 1,
+          ...(!expanded && {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }),
+        }}
+      >
+        {text}
+      </Typography>
+      <ExpandMoreIcon
+        fontSize="small"
+        sx={{
+          transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+          transition: 'transform 0.2s',
+          flexShrink: 0,
+        }}
+      />
+    </NoteRow>
+  );
 }
 
 export function StudentsMobilePage({
@@ -104,8 +145,15 @@ export function StudentsMobilePage({
                   </Typography>
                 </CardSecondaryInfo>
 
+                {(student.medicalIssues || student.specialRequest) && (
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, marginTop: 1, paddingTop: 1, borderTop: (theme) => `1px solid ${theme.palette.divider}` }}>
+                    {student.medicalIssues && <ExpandableNote icon={<LocalHospitalIcon fontSize="small" color="error" />} text={student.medicalIssues} />}
+                    {student.specialRequest && <ExpandableNote icon={<NoteIcon fontSize="small" />} text={student.specialRequest} />}
+                  </Box>
+                )}
+
                 <CardFlagsRow>
-                  <StudentFlags student={student} gap={0.5} />
+                  <StudentFlags student={student} gap={0.5} hideTextFlags />
                 </CardFlagsRow>
               </CardContent>
             </StudentCard>

@@ -12,9 +12,10 @@ interface StudentFlagsProps {
   student: Student;
   layout?: 'horizontal' | 'vertical';
   gap?: number | string;
+  hideTextFlags?: boolean;
 }
 
-export function StudentFlags({ student, layout = 'horizontal', gap = 0.25 }: StudentFlagsProps) {
+export function StudentFlags({ student, layout = 'horizontal', gap = 0.25, hideTextFlags = false }: StudentFlagsProps) {
   const flagsContent = (
     <>
       <FlagsIconContainer>
@@ -45,19 +46,23 @@ export function StudentFlags({ student, layout = 'horizontal', gap = 0.25 }: Stu
       ) : (
         <FlagsIconSpacer />
       )}
-      {student.medicalIssues ? (
-        <Tooltip title={student.medicalIssues}>
-          <LocalHospitalIcon fontSize="small" color="error" />
-        </Tooltip>
-      ) : (
-        <FlagsIconSpacer />
-      )}
-      {student.specialRequest ? (
-        <Tooltip title={student.specialRequest}>
-          <NoteIcon fontSize="small" color="action" />
-        </Tooltip>
-      ) : (
-        <FlagsIconSpacer />
+      {!hideTextFlags && (
+        <>
+          {student.medicalIssues ? (
+            <Tooltip title={student.medicalIssues}>
+              <LocalHospitalIcon fontSize="small" color="error" />
+            </Tooltip>
+          ) : (
+            <FlagsIconSpacer />
+          )}
+          {student.specialRequest ? (
+            <Tooltip title={student.specialRequest}>
+              <NoteIcon fontSize="small" color="action" />
+            </Tooltip>
+          ) : (
+            <FlagsIconSpacer />
+          )}
+        </>
       )}
     </>
   );
