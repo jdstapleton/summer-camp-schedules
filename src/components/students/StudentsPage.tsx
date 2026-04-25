@@ -2,6 +2,8 @@ import { useState } from 'react';
 import {
   Box,
   Button,
+  Checkbox,
+  FormControlLabel,
   IconButton,
   MenuItem,
   Paper,
@@ -57,6 +59,7 @@ export function StudentsPage() {
     custody: [] as string[],
     tshirtSize: [] as string[],
   });
+  const [showOnlyAllergies, setShowOnlyAllergies] = useState(false);
 
   const uniqueCamps = Array.from(
     new Set(
@@ -109,6 +112,21 @@ export function StudentsPage() {
     }
   };
 
+  const hasNutAllergy = (student: Student): boolean => {
+    return (
+      student.medicalIssues.toLowerCase().includes('nut') ||
+      student.specialRequest.toLowerCase().includes('nut')
+    );
+  };
+
+  const hasAllergy = (student: Student): boolean => {
+    return (
+      student.medicalIssues.toLowerCase().includes('allerg') ||
+      student.specialRequest.toLowerCase().includes('allerg') ||
+      hasNutAllergy(student)
+    );
+  };
+
   const compareValues = (a: unknown, b: unknown): number => {
     if (a === null || a === undefined) return 1;
     if (b === null || b === undefined) return -1;
@@ -142,6 +160,9 @@ export function StudentsPage() {
       }
       if (filters.tshirtSize.length > 0) {
         if (!filters.tshirtSize.includes(student.tshirtSize)) return false;
+      }
+      if (showOnlyAllergies) {
+        if (!hasAllergy(student)) return false;
       }
       return true;
     });
@@ -257,6 +278,21 @@ export function StudentsPage() {
               <TableCell sx={{ width: '5%' }} align="center">Pre/Post</TableCell>
               <TableCell sx={{ width: '3%' }} align="center">Notes</TableCell>
               <TableCell sx={{ width: '10%' }} align="right">Actions</TableCell>
+            </TableRow>
+            <TableRow sx={{ backgroundColor: '#fafafa' }}>
+              <TableCell colSpan={9} sx={{ p: 1 }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={showOnlyAllergies}
+                      onChange={(e) => setShowOnlyAllergies(e.target.checked)}
+                      size="small"
+                    />
+                  }
+                  label="Show only students with allergies"
+                  sx={{ m: 0 }}
+                />
+              </TableCell>
             </TableRow>
             <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
               <TableCell sx={{ p: 0.5, width: 0 }}>
