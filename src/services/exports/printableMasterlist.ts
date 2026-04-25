@@ -10,7 +10,7 @@ import {
   yesOrNo,
 } from './shared';
 
-interface MasterlistRow {
+export interface MasterlistRow {
   student: Student;
   campName: string;
   instanceNumber?: number;
@@ -60,7 +60,12 @@ export function buildMasterlistRows(
   return rows;
 }
 
-const COLUMNS: { header: string; width: number }[] = [
+interface ExportColumnDefinition {
+  header: string;
+  width: number;
+}
+
+const COLUMNS: ExportColumnDefinition[] = [
   { header: 'Last name', width: 14 },
   { header: ' First name', width: 13.55 },
   { header: 'Gender', width: 10.55 },
