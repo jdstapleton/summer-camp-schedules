@@ -1,10 +1,7 @@
 import type { ScheduleData, CampInstance } from '@/models/types';
 import PRINT_CSS from './labelService.css?raw';
 
-export function printLabels(
-  data: ScheduleData,
-  instances: CampInstance[]
-): void {
+export function printLabels(data: ScheduleData, instances: CampInstance[]): void {
   const campMap = new Map(data.camps.map((c) => [c.id, c]));
   const studentMap = new Map(data.students.map((s) => [s.id, s]));
 
@@ -16,19 +13,14 @@ export function printLabels(
 
   const instanceCountByCamp = new Map<string, number>();
   for (const inst of sorted) {
-    instanceCountByCamp.set(
-      inst.campId,
-      (instanceCountByCamp.get(inst.campId) ?? 0) + 1
-    );
+    instanceCountByCamp.set(inst.campId, (instanceCountByCamp.get(inst.campId) ?? 0) + 1);
   }
 
   const labels: { name: string; campLine: string }[] = [];
   for (const inst of sorted) {
     const campName = campMap.get(inst.campId)?.name ?? inst.campId;
     const multiInstance = (instanceCountByCamp.get(inst.campId) ?? 1) > 1;
-    const campLine = multiInstance
-      ? `${campName} ${inst.instanceNumber}`
-      : campName;
+    const campLine = multiInstance ? `${campName} ${inst.instanceNumber}` : campName;
     for (const studentId of inst.studentIds) {
       const student = studentMap.get(studentId);
       if (!student) continue;

@@ -1,17 +1,5 @@
 import { useState } from 'react';
-import {
-  Button,
-  Chip,
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -51,17 +39,13 @@ export function CampsPage() {
     setDialogOpen(false);
   };
 
-  const getEnrollmentCount = (campId: string) =>
-    data.registrations.find((r) => r.campId === campId)?.studentIds.length ?? 0;
+  const getEnrollmentCount = (campId: string) => data.registrations.find((r) => r.campId === campId)?.studentIds.length ?? 0;
 
-  const groupedByWeek = data.camps.reduce<Record<string, Camp[]>>(
-    (acc, camp) => {
-      if (!acc[camp.week]) acc[camp.week] = [];
-      acc[camp.week].push(camp);
-      return acc;
-    },
-    {}
-  );
+  const groupedByWeek = data.camps.reduce<Record<string, Camp[]>>((acc, camp) => {
+    if (!acc[camp.week]) acc[camp.week] = [];
+    acc[camp.week].push(camp);
+    return acc;
+  }, {});
 
   const sortedWeeks = Object.keys(groupedByWeek).sort((a, b) => {
     const dateA = dayjs(a, ['MMMM D', 'MMM D']);
@@ -77,9 +61,7 @@ export function CampsPage() {
           Add Camp
         </Button>
       </PageHeaderRow>
-      {data.camps.length === 0 && (
-        <MutedBody2 variant="body2">No camps added yet.</MutedBody2>
-      )}
+      {data.camps.length === 0 && <MutedBody2 variant="body2">No camps added yet.</MutedBody2>}
       {sortedWeeks.map((week) => (
         <WeekSection key={week}>
           <WeekHeading variant="h6">{week}</WeekHeading>
@@ -98,37 +80,19 @@ export function CampsPage() {
               <TableBody>
                 {groupedByWeek[week].map((camp) => {
                   const enrolled = getEnrollmentCount(camp.id);
-                  const instances =
-                    enrolled > 0 ? Math.ceil(enrolled / camp.maxSize) : 0;
+                  const instances = enrolled > 0 ? Math.ceil(enrolled / camp.maxSize) : 0;
                   return (
                     <TableRow key={camp.id}>
                       <TableCell>{camp.name}</TableCell>
                       <TableCell>{camp.gradeRange}</TableCell>
                       <TableCell>{camp.maxSize}</TableCell>
                       <TableCell>{enrolled}</TableCell>
-                      <TableCell>
-                        {instances > 0 ? (
-                          <Chip
-                            label={instances}
-                            size="small"
-                            color={instances > 1 ? 'warning' : 'default'}
-                          />
-                        ) : (
-                          '—'
-                        )}
-                      </TableCell>
+                      <TableCell>{instances > 0 ? <Chip label={instances} size="small" color={instances > 1 ? 'warning' : 'default'} /> : '—'}</TableCell>
                       <TableCell align="right">
-                        <IconButton
-                          size="small"
-                          onClick={() => handleEdit(camp)}
-                        >
+                        <IconButton size="small" onClick={() => handleEdit(camp)}>
                           <EditIcon fontSize="small" />
                         </IconButton>
-                        <IconButton
-                          size="small"
-                          color="error"
-                          onClick={() => setDeletingId(camp.id)}
-                        >
+                        <IconButton size="small" color="error" onClick={() => setDeletingId(camp.id)}>
                           <DeleteIcon fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -140,13 +104,7 @@ export function CampsPage() {
           </TableContainer>
         </WeekSection>
       ))}
-      <CampDialog
-        open={dialogOpen}
-        camp={editingCamp}
-        existingCamps={data.camps}
-        onSave={handleSave}
-        onClose={() => setDialogOpen(false)}
-      />
+      <CampDialog open={dialogOpen} camp={editingCamp} existingCamps={data.camps} onSave={handleSave} onClose={() => setDialogOpen(false)} />
       <ConfirmDialog
         open={deletingId !== null}
         title="Delete Camp"

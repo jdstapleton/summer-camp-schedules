@@ -1,15 +1,4 @@
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-  MenuItem,
-  Select,
-  TableCell,
-  TableRow,
-  TextField,
-  Tooltip,
-} from '@mui/material';
+import { Box, Checkbox, FormControlLabel, IconButton, MenuItem, Select, TableCell, TableRow, TextField, Tooltip } from '@mui/material';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
@@ -43,13 +32,7 @@ export function StudentsFilterRow() {
       <TableRow sx={{ backgroundColor: '#fafafa' }}>
         <TableCell colSpan={7} sx={{ p: 1 }}>
           <FormControlLabel
-            control={
-              <Checkbox
-                checked={showOnlyAllergies}
-                onChange={(e) => setShowOnlyAllergies(e.target.checked)}
-                size="small"
-              />
-            }
+            control={<Checkbox checked={showOnlyAllergies} onChange={(e) => setShowOnlyAllergies(e.target.checked)} size="small" />}
             label="Show only students with allergies"
             sx={{ m: 0 }}
           />
@@ -74,9 +57,7 @@ export function StudentsFilterRow() {
             value={filters.camps}
             onChange={(e) => handleMultiSelectChange('camps', e.target.value as string[])}
             displayEmpty
-            renderValue={(selected) =>
-              selected.length === 0 ? 'All Camps' : `${selected.length} selected`
-            }
+            renderValue={(selected) => (selected.length === 0 ? 'All Camps' : `${selected.length} selected`)}
             slotProps={{ input: { sx: { fontSize: '0.875rem' } } }}
           >
             <MenuItem value="">All Camps</MenuItem>
@@ -105,9 +86,7 @@ export function StudentsFilterRow() {
             value={filters.custody}
             onChange={(e) => handleMultiSelectChange('custody', e.target.value as string[])}
             displayEmpty
-            renderValue={(selected) =>
-              selected.length === 0 ? 'All Custody' : `${selected.length} selected`
-            }
+            renderValue={(selected) => (selected.length === 0 ? 'All Custody' : `${selected.length} selected`)}
             slotProps={{ input: { sx: { fontSize: '0.875rem' } } }}
           >
             <MenuItem value="">All Custody</MenuItem>
@@ -126,9 +105,7 @@ export function StudentsFilterRow() {
             value={filters.tshirtSize}
             onChange={(e) => handleMultiSelectChange('tshirtSize', e.target.value as string[])}
             displayEmpty
-            renderValue={(selected) =>
-              selected.length === 0 ? 'All Sizes' : `${selected.length} selected`
-            }
+            renderValue={(selected) => (selected.length === 0 ? 'All Sizes' : `${selected.length} selected`)}
             slotProps={{ input: { sx: { fontSize: '0.875rem' } } }}
           >
             <MenuItem value="">All Sizes</MenuItem>

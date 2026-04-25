@@ -2,7 +2,7 @@
 
 A modern web application for managing student registrations and camp activity schedules, and allow exporting to printable reports that camp directors can use during the camp. Built with React, TypeScript, and Material-UI.
 
-This was mainly an application to teach myself the general workflow of coding with CLAUDE. 
+This was mainly an application to teach myself the general workflow of coding with CLAUDE.
 
 ## Features
 

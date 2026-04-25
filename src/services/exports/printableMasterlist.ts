@@ -1,14 +1,5 @@
 import type { CampInstance, ScheduleData, Student } from '@/models/types';
-import {
-  YELLOW_FILL,
-  applyCellFill,
-  getEmergencyPhone,
-  getSecondaryCellPhone,
-  saveWorkbook,
-  studentSortCompare,
-  yesOrBlank,
-  yesOrNo,
-} from './shared';
+import { YELLOW_FILL, applyCellFill, getEmergencyPhone, getSecondaryCellPhone, saveWorkbook, studentSortCompare, yesOrBlank, yesOrNo } from './shared';
 
 export interface MasterlistRow {
   student: Student;
@@ -17,19 +8,13 @@ export interface MasterlistRow {
   totalInstances?: number;
 }
 
-export function buildMasterlistRows(
-  data: ScheduleData,
-  instances: CampInstance[]
-): MasterlistRow[] {
+export function buildMasterlistRows(data: ScheduleData, instances: CampInstance[]): MasterlistRow[] {
   const campMap = new Map(data.camps.map((c) => [c.id, c]));
   const studentMap = new Map(data.students.map((s) => [s.id, s]));
 
   const instanceCountByCamp = new Map<string, number>();
   for (const inst of instances) {
-    instanceCountByCamp.set(
-      inst.campId,
-      (instanceCountByCamp.get(inst.campId) ?? 0) + 1
-    );
+    instanceCountByCamp.set(inst.campId, (instanceCountByCamp.get(inst.campId) ?? 0) + 1);
   }
 
   const rows: MasterlistRow[] = [];
@@ -87,10 +72,7 @@ const COLUMNS: ExportColumnDefinition[] = [
   { header: 'Custody', width: 10.66 },
 ];
 
-export async function exportPrintableMasterlist(
-  data: ScheduleData,
-  instances: CampInstance[]
-): Promise<void> {
+export async function exportPrintableMasterlist(data: ScheduleData, instances: CampInstance[]): Promise<void> {
   const ExcelJS = (await import('exceljs')).default;
   const workbook = new ExcelJS.Workbook();
   workbook.creator = 'Summer Camp Schedules';
@@ -106,17 +88,12 @@ export async function exportPrintableMasterlist(
   const headerRow = sheet.getRow(1);
   headerRow.font = { name: 'Calibri', size: 12, bold: true };
 
-  const photoColumnIndex = sheet.columns.findIndex(
-    (col) => col.header === 'Photo'
-  );
+  const photoColumnIndex = sheet.columns.findIndex((col) => col.header === 'Photo');
 
   const rows = buildMasterlistRows(data, instances);
 
   for (const { student, campName, instanceNumber, totalInstances } of rows) {
-    const sessionName =
-      totalInstances && totalInstances > 1
-        ? `${campName} - Instance ${instanceNumber}`
-        : campName;
+    const sessionName = totalInstances && totalInstances > 1 ? `${campName} - Instance ${instanceNumber}` : campName;
     const row = sheet.addRow([
       student.lastName,
       student.firstName,

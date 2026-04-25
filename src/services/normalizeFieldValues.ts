@@ -1,15 +1,4 @@
-const NEGATIVE_RESPONSES = new Set([
-  'no',
-  'n',
-  'none',
-  'n/a',
-  'na',
-  'not applicable',
-  'nothing',
-  'nope',
-  '-',
-  'none known',
-]);
+const NEGATIVE_RESPONSES = new Set(['no', 'n', 'none', 'n/a', 'na', 'not applicable', 'nothing', 'nope', '-', 'none known']);
 
 export function normalizeNegativeResponses(value: string): string {
   const normalized = value

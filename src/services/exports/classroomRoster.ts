@@ -27,10 +27,7 @@ const COLUMNS: { header: string; width?: number }[] = [
 const GRAY_COLUMN_INDICES = [3, 4, 5, 6, 7, 8, 9]; // C–I
 const PICTURE_COLUMN = 7;
 
-export async function exportClassroomRoster(
-  data: ScheduleData,
-  instances: CampInstance[]
-): Promise<void> {
+export async function exportClassroomRoster(data: ScheduleData, instances: CampInstance[]): Promise<void> {
   const ExcelJS = (await import('exceljs')).default;
   const workbook = new ExcelJS.Workbook();
   workbook.creator = 'Summer Camp Schedules';
@@ -41,9 +38,7 @@ export async function exportClassroomRoster(
   const grouped = buildInstancesGroupedByCamp(instances);
   const usedSheetNames = new Set<string>();
 
-  const sortedCampIds = Array.from(grouped.keys()).sort((a, b) =>
-    (campMap.get(a)?.name ?? '').localeCompare(campMap.get(b)?.name ?? '')
-  );
+  const sortedCampIds = Array.from(grouped.keys()).sort((a, b) => (campMap.get(a)?.name ?? '').localeCompare(campMap.get(b)?.name ?? ''));
 
   for (const campId of sortedCampIds) {
     const camp = campMap.get(campId);
@@ -52,18 +47,12 @@ export async function exportClassroomRoster(
     const total = campInstances.length;
 
     for (const inst of campInstances) {
-      const sheetName = getInstanceSheetName(
-        camp.name,
-        inst.instanceNumber,
-        total,
-        usedSheetNames
-      );
+      const sheetName = getInstanceSheetName(camp.name, inst.instanceNumber, total, usedSheetNames);
       const sheet = workbook.addWorksheet(sheetName);
 
       sheet.columns = COLUMNS.map((c) => ({ width: c.width }));
 
-      const title =
-        total > 1 ? `${camp.name} ${inst.instanceNumber}` : camp.name;
+      const title = total > 1 ? `${camp.name} ${inst.instanceNumber}` : camp.name;
       const titleRow = sheet.getRow(1);
       titleRow.getCell(1).value = title;
       titleRow.getCell(1).font = { name: 'Arial', size: 20, bold: true };

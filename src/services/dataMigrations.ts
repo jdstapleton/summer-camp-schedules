@@ -17,9 +17,7 @@ export const migrateData = (data: any): ScheduleData => {
 
   const version = data.version ?? 0;
   if (version < CURRENT_VERSION) {
-    throw new Error(
-      `Data version ${version} is no longer supported.`,
-    );
+    throw new Error(`Data version ${version} is no longer supported.`);
   }
 
   // Normalize negative responses in medical and special request fields

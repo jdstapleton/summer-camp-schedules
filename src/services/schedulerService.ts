@@ -1,11 +1,4 @@
-import type {
-  Camp,
-  CampInstance,
-  CampRegistration,
-  GeneratedSchedule,
-  ScheduleData,
-  Student,
-} from '@/models/types';
+import type { Camp, CampInstance, CampRegistration, GeneratedSchedule, ScheduleData, Student } from '@/models/types';
 
 const MIN_GIRLS_PER_INSTANCE = 4;
 const MIN_BOYS_PER_INSTANCE = 2;
@@ -24,11 +17,7 @@ export function generateSchedule(data: ScheduleData): GeneratedSchedule {
   return { instances };
 }
 
-function splitIntoInstances(
-  registration: CampRegistration,
-  camp: Camp,
-  studentMap: Map<string, Student>
-): CampInstance[] {
+function splitIntoInstances(registration: CampRegistration, camp: Camp, studentMap: Map<string, Student>): CampInstance[] {
   const { campId, studentIds, friendGroups } = registration;
   const { maxSize } = camp;
 
@@ -71,37 +60,13 @@ function splitIntoInstances(
 
   const girls = remaining.filter((s) => s.gender === 'female');
   const boys = remaining.filter((s) => s.gender === 'male');
-  const others = remaining.filter(
-    (s) => s.gender !== 'female' && s.gender !== 'male'
-  );
+  const others = remaining.filter((s) => s.gender !== 'female' && s.gender !== 'male');
 
-  const girlInstanceCount =
-    girls.length === 0
-      ? 0
-      : Math.min(
-          numInstances,
-          Math.max(1, Math.floor(girls.length / MIN_GIRLS_PER_INSTANCE))
-        );
-  distributeGender(
-    girls,
-    buckets,
-    bucketIndicesBySize(buckets).slice(0, girlInstanceCount),
-    maxSize
-  );
+  const girlInstanceCount = girls.length === 0 ? 0 : Math.min(numInstances, Math.max(1, Math.floor(girls.length / MIN_GIRLS_PER_INSTANCE)));
+  distributeGender(girls, buckets, bucketIndicesBySize(buckets).slice(0, girlInstanceCount), maxSize);
 
-  const boyInstanceCount =
-    boys.length === 0
-      ? 0
-      : Math.min(
-          numInstances,
-          Math.max(1, Math.floor(boys.length / MIN_BOYS_PER_INSTANCE))
-        );
-  distributeGender(
-    boys,
-    buckets,
-    bucketIndicesBySize(buckets).slice(0, boyInstanceCount),
-    maxSize
-  );
+  const boyInstanceCount = boys.length === 0 ? 0 : Math.min(numInstances, Math.max(1, Math.floor(boys.length / MIN_BOYS_PER_INSTANCE)));
+  distributeGender(boys, buckets, bucketIndicesBySize(buckets).slice(0, boyInstanceCount), maxSize);
 
   distributeGender(others, buckets, bucketIndicesBySize(buckets), maxSize);
 
@@ -110,22 +75,14 @@ function splitIntoInstances(
 
 // Distribute students across the given bucket indices as evenly as possible,
 // respecting maxSize. Any overflow spills into any bucket with remaining capacity.
-function distributeGender(
-  students: Student[],
-  buckets: string[][],
-  targetIndices: number[],
-  maxSize: number
-): void {
+function distributeGender(students: Student[], buckets: string[][], targetIndices: number[], maxSize: number): void {
   if (students.length === 0 || targetIndices.length === 0) return;
   let idx = 0;
   for (let i = 0; i < targetIndices.length && idx < students.length; i++) {
     const bucketIdx = targetIndices[i];
     const studentsLeft = students.length - idx;
     const bucketsLeft = targetIndices.length - i;
-    const toAdd = Math.min(
-      Math.ceil(studentsLeft / bucketsLeft),
-      maxSize - buckets[bucketIdx].length
-    );
+    const toAdd = Math.min(Math.ceil(studentsLeft / bucketsLeft), maxSize - buckets[bucketIdx].length);
     for (let j = 0; j < toAdd && idx < students.length; j++) {
       buckets[bucketIdx].push(students[idx++].id);
     }
@@ -146,16 +103,10 @@ function bucketIndicesBySize(buckets: string[][]): number[] {
 }
 
 function smallestBucketIndex(buckets: string[][]): number {
-  return buckets.reduce(
-    (minI, b, i, arr) => (b.length < arr[minI].length ? i : minI),
-    0
-  );
+  return buckets.reduce((minI, b, i, arr) => (b.length < arr[minI].length ? i : minI), 0);
 }
 
-function makeCampInstances(
-  campId: string,
-  buckets: string[][]
-): CampInstance[] {
+function makeCampInstances(campId: string, buckets: string[][]): CampInstance[] {
   return buckets.map((studentIds, i) => ({
     id: `${campId}-${i + 1}`,
     campId,

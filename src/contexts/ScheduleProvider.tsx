@@ -1,12 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import type {
-  Camp,
-  CampRegistration,
-  GeneratedSchedule,
-  ScheduleData,
-  Student,
-} from '@/models/types';
+import type { Camp, CampRegistration, GeneratedSchedule, ScheduleData, Student } from '@/models/types';
 import type { ImportBatchPayload } from '@/models/contexts';
 import { fileService } from '@/services/fileService';
 import { generateSchedule } from '@/services/schedulerService';
@@ -15,8 +9,7 @@ import { extractMentionedStudents } from '@/services/friendGroupService';
 import { safeSetItem } from '@/services/safeStorage';
 import { ScheduleContext } from './ScheduleContext';
 
-const existingStudentKey = (s: Student): string =>
-  `${s.lastName.trim().toLowerCase()}|${s.firstName.trim().toLowerCase()}|${s.age}`;
+const existingStudentKey = (s: Student): string => `${s.lastName.trim().toLowerCase()}|${s.firstName.trim().toLowerCase()}|${s.age}`;
 
 const STORAGE_KEY = 'summer-camp-schedules';
 
@@ -33,12 +26,7 @@ const isValidScheduleData = (data: unknown): data is ScheduleData => {
   const obj = data as Record<string, unknown>;
   const isValidSchedule = (sched: unknown): sched is GeneratedSchedule | null =>
     sched === null || (typeof sched === 'object' && Array.isArray((sched as Record<string, unknown>).instances));
-  return (
-    Array.isArray(obj.students) &&
-    Array.isArray(obj.camps) &&
-    Array.isArray(obj.registrations) &&
-    isValidSchedule(obj.schedule)
-  );
+  return Array.isArray(obj.students) && Array.isArray(obj.camps) && Array.isArray(obj.registrations) && isValidSchedule(obj.schedule);
 };
 
 export function ScheduleProvider({ children }: { children: ReactNode }) {
@@ -57,8 +45,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     }
     return emptyData;
   });
-  const [generatedSchedule, setGeneratedSchedule] =
-    useState<GeneratedSchedule | null>(data.schedule ?? null);
+  const [generatedSchedule, setGeneratedSchedule] = useState<GeneratedSchedule | null>(data.schedule ?? null);
 
   useEffect(() => {
     safeSetItem(STORAGE_KEY, JSON.stringify(data));
@@ -85,9 +72,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
       registrations: prev.registrations.map((r) => ({
         ...r,
         studentIds: r.studentIds.filter((sid) => sid !== id),
-        friendGroups: r.friendGroups
-          .map((g) => g.filter((sid) => sid !== id))
-          .filter((g) => g.length >= 2),
+        friendGroups: r.friendGroups.map((g) => g.filter((sid) => sid !== id)).filter((g) => g.length >= 2),
       })),
     }));
   }, []);
@@ -97,10 +82,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     setData((prev) => ({
       ...prev,
       camps: [...prev.camps, { ...camp, id }],
-      registrations: [
-        ...prev.registrations,
-        { campId: id, studentIds: [], friendGroups: [] },
-      ],
+      registrations: [...prev.registrations, { campId: id, studentIds: [], friendGroups: [] }],
     }));
   }, []);
 
@@ -122,43 +104,38 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   const updateRegistration = useCallback((registration: CampRegistration) => {
     setData((prev) => ({
       ...prev,
-      registrations: prev.registrations.map((r) =>
-        r.campId === registration.campId ? registration : r
-      ),
+      registrations: prev.registrations.map((r) => (r.campId === registration.campId ? registration : r)),
     }));
   }, []);
 
-  const moveStudentBetweenInstances = useCallback(
-    (studentId: string, fromInstanceId: string, toInstanceId: string) => {
-      setGeneratedSchedule((prev) => {
-        if (!prev) return prev;
-        const updatedSchedule = {
-          ...prev,
-          instances: prev.instances.map((inst) => {
-            if (inst.id === fromInstanceId) {
-              return {
-                ...inst,
-                studentIds: inst.studentIds.filter((id) => id !== studentId),
-              };
-            }
-            if (inst.id === toInstanceId) {
-              return {
-                ...inst,
-                studentIds: [...inst.studentIds, studentId],
-              };
-            }
-            return inst;
-          }),
-        };
-        setData((prevData) => ({
-          ...prevData,
-          schedule: updatedSchedule,
-        }));
-        return updatedSchedule;
-      });
-    },
-    []
-  );
+  const moveStudentBetweenInstances = useCallback((studentId: string, fromInstanceId: string, toInstanceId: string) => {
+    setGeneratedSchedule((prev) => {
+      if (!prev) return prev;
+      const updatedSchedule = {
+        ...prev,
+        instances: prev.instances.map((inst) => {
+          if (inst.id === fromInstanceId) {
+            return {
+              ...inst,
+              studentIds: inst.studentIds.filter((id) => id !== studentId),
+            };
+          }
+          if (inst.id === toInstanceId) {
+            return {
+              ...inst,
+              studentIds: [...inst.studentIds, studentId],
+            };
+          }
+          return inst;
+        }),
+      };
+      setData((prevData) => ({
+        ...prevData,
+        schedule: updatedSchedule,
+      }));
+      return updatedSchedule;
+    });
+  }, []);
 
   const refreshSchedule = useCallback(() => {
     const newSchedule = generateSchedule(data);
@@ -242,9 +219,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
 
       // Create friend groups based on special request mentions with transitive merging
       for (const reg of registrationByCampId.values()) {
-        const campStudents = mergedStudents.filter((s) =>
-          reg.studentIds.includes(s.id)
-        );
+        const campStudents = mergedStudents.filter((s) => reg.studentIds.includes(s.id));
 
         const unionFind = new Map<string, string>();
         const find = (id: string): string => {
@@ -266,10 +241,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         for (const student of campStudents) {
           if (!student.specialRequest.trim()) continue;
 
-          const mentioned = extractMentionedStudents(
-            student.specialRequest,
-            campStudents
-          );
+          const mentioned = extractMentionedStudents(student.specialRequest, campStudents);
 
           for (const mentionedId of mentioned) {
             if (mentionedId === student.id) continue;
@@ -284,9 +256,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
           groupMap.get(root)!.push(studentId);
         }
 
-        reg.friendGroups = Array.from(groupMap.values()).filter(
-          (g) => g.length >= 2
-        );
+        reg.friendGroups = Array.from(groupMap.values()).filter((g) => g.length >= 2);
       }
 
       return {

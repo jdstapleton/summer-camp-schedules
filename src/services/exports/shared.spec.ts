@@ -1,15 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Student } from '@/models/types';
-import {
-  firstNonEmpty,
-  getEmergencyPhone,
-  getInstanceSheetName,
-  getSecondaryCellPhone,
-  sanitizeSheetName,
-  studentSortCompare,
-  yesOrBlank,
-  yesOrNo,
-} from './shared';
+import { firstNonEmpty, getEmergencyPhone, getInstanceSheetName, getSecondaryCellPhone, sanitizeSheetName, studentSortCompare, yesOrBlank, yesOrNo } from './shared';
 
 const makeStudent = (overrides: Partial<Student> = {}): Student => ({
   id: 's1',
@@ -58,9 +49,7 @@ describe('getInstanceSheetName', () => {
 
   it('appends instance number when multiple exist', () => {
     const used = new Set<string>();
-    expect(getInstanceSheetName('3D Creator', 2, 3, used)).toBe(
-      '3D Creator 2'
-    );
+    expect(getInstanceSheetName('3D Creator', 2, 3, used)).toBe('3D Creator 2');
   });
 
   it('resolves collisions with a numeric suffix', () => {
@@ -138,11 +127,7 @@ describe('studentSortCompare', () => {
       makeStudent({ lastName: 'Adams', firstName: 'Alice' }),
     ];
     const sorted = [...students].sort(studentSortCompare);
-    expect(sorted.map((s) => `${s.lastName} ${s.firstName}`)).toEqual([
-      'Adams Alice',
-      'adams John',
-      'Brown Zoe',
-    ]);
+    expect(sorted.map((s) => `${s.lastName} ${s.firstName}`)).toEqual(['Adams Alice', 'adams John', 'Brown Zoe']);
   });
 });
 

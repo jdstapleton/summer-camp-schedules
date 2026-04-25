@@ -197,9 +197,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
         }
 
         if (fieldCount === 0) {
-          setToastMessage(
-            'No valid configuration fields found. Expected: gradeRanges, extraWeeks, defaultMaxSize, or importColumnConfig.',
-          );
+          setToastMessage('No valid configuration fields found. Expected: gradeRanges, extraWeeks, defaultMaxSize, or importColumnConfig.');
           setToastOpen(true);
         }
       } catch {
@@ -233,11 +231,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                   key={index}
                   secondaryAction={
                     <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        size="small"
-                        onClick={() => removeGradeRange(index)}
-                      >
+                      <IconButton edge="end" size="small" onClick={() => removeGradeRange(index)}>
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -261,11 +255,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                 placeholder="e.g. Grades 1-3"
                 fullWidth
               />
-              <Button
-                onClick={addGradeRange}
-                variant="outlined"
-                disabled={!newGradeRange.trim() || gradeRanges.includes(newGradeRange.trim())}
-              >
+              <Button onClick={addGradeRange} variant="outlined" disabled={!newGradeRange.trim() || gradeRanges.includes(newGradeRange.trim())}>
                 Add
               </Button>
             </Box>
@@ -276,8 +266,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
               Extra Default Weeks
             </Typography>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
-              Auto-generated Mondays already appear in the Camp form autocomplete. Add specific
-              dates here to always include them.
+              Auto-generated Mondays already appear in the Camp form autocomplete. Add specific dates here to always include them.
             </Typography>
             <List dense>
               {extraWeeks.map((week, index) => (
@@ -285,11 +274,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                   key={index}
                   secondaryAction={
                     <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        size="small"
-                        onClick={() => removeWeek(index)}
-                      >
+                      <IconButton edge="end" size="small" onClick={() => removeWeek(index)}>
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -313,11 +298,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                 placeholder="e.g. June 8"
                 fullWidth
               />
-              <Button
-                onClick={addWeek}
-                variant="outlined"
-                disabled={!newWeek.trim() || extraWeeks.includes(newWeek.trim())}
-              >
+              <Button onClick={addWeek} variant="outlined" disabled={!newWeek.trim() || extraWeeks.includes(newWeek.trim())}>
                 Add
               </Button>
             </Box>
@@ -358,18 +339,11 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ textTransform: 'capitalize', fontWeight: 600, flex: 1 }}
-                  >
+                  <Typography variant="subtitle2" sx={{ textTransform: 'capitalize', fontWeight: 600, flex: 1 }}>
                     {field.replace(/([A-Z])/g, ' $1').trim()}
                   </Typography>
                   {editingColumnField !== field && (
-                    <IconButton
-                      size="small"
-                      onClick={() => setEditingColumnField(field as keyof ImportColumnConfig)}
-                      title="Add column header"
-                    >
+                    <IconButton size="small" onClick={() => setEditingColumnField(field as keyof ImportColumnConfig)} title="Add column header">
                       <AddIcon fontSize="small" />
                     </IconButton>
                   )}
@@ -387,9 +361,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                     <Chip
                       key={idx}
                       label={header}
-                      onDelete={() =>
-                        removeColumnHeader(field as keyof ImportColumnConfig, idx)
-                      }
+                      onDelete={() => removeColumnHeader(field as keyof ImportColumnConfig, idx)}
                       size="small"
                       draggable
                       onDragStart={() => handleDragStart(field, idx)}
@@ -397,10 +369,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                       onDrop={() => handleDrop(field, idx)}
                       sx={{
                         cursor: draggedItem?.field === field ? 'grabbing' : 'grab',
-                        opacity:
-                          draggedItem?.field === field && draggedItem?.index === idx
-                            ? 0.5
-                            : 1,
+                        opacity: draggedItem?.field === field && draggedItem?.index === idx ? 0.5 : 1,
                       }}
                     />
                   ))}
@@ -420,19 +389,10 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
                       autoFocus
                       fullWidth
                     />
-                    <Button
-                      onClick={() =>
-                        addColumnHeader(field as keyof ImportColumnConfig)
-                      }
-                      variant="outlined"
-                      disabled={!newColumnHeader.trim()}
-                    >
+                    <Button onClick={() => addColumnHeader(field as keyof ImportColumnConfig)} variant="outlined" disabled={!newColumnHeader.trim()}>
                       Add
                     </Button>
-                    <Button
-                      onClick={() => setEditingColumnField(null)}
-                      variant="text"
-                    >
+                    <Button onClick={() => setEditingColumnField(null)} variant="text">
                       Done
                     </Button>
                   </Box>
@@ -443,23 +403,11 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
         )}
       </DialogContent>
       <DialogActions>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json"
-          style={{ display: 'none' }}
-          onChange={handleImportConfig}
-        />
-        <Button
-          onClick={() => fileInputRef.current?.click()}
-          startIcon={<FileUploadIcon />}
-        >
+        <input ref={fileInputRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImportConfig} />
+        <Button onClick={() => fileInputRef.current?.click()} startIcon={<FileUploadIcon />}>
           Import
         </Button>
-        <Button
-          onClick={handleExportConfig}
-          startIcon={<FileDownloadIcon />}
-        >
+        <Button onClick={handleExportConfig} startIcon={<FileDownloadIcon />}>
           Export
         </Button>
         <Box sx={{ flex: 1 }} />
@@ -468,12 +416,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
           Save
         </Button>
       </DialogActions>
-      <Snackbar
-        open={toastOpen}
-        autoHideDuration={4000}
-        onClose={() => setToastOpen(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      >
+      <Snackbar open={toastOpen} autoHideDuration={4000} onClose={() => setToastOpen(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
         <Alert onClose={() => setToastOpen(false)} severity="error" sx={{ width: '100%' }}>
           {toastMessage}
         </Alert>

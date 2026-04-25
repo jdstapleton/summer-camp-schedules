@@ -33,7 +33,7 @@ export const DEFAULT_IMPORT_COLUMNS: ImportColumnConfig = {
   primaryName: ['Primary P/G: Name', 'Primary P/G: First name', 'Primary Parent/Guardian Name'],
   primaryHomePhone: ['Primary P/G: Home phone number', 'Primary Parent/Guardian Home Phone'],
   primaryCellPhone: ['Primary P/G: Cell phone number', 'Primary Parent/Guardian Cell Phone'],
-  secondaryName: ['Secondary P/G: Name', 'Secondary P/G: First name','Secondary Parent/Guardian Name'],
+  secondaryName: ['Secondary P/G: Name', 'Secondary P/G: First name', 'Secondary Parent/Guardian Name'],
   secondaryCellPhone: ['Secondary P/G: Cell phone number', 'Secondary Parent/Guardian Cell Phone'],
   emergencyName: ['Participant: Emergency contact name'],
   emergencyPhone: ['Participant: Emergency contact phone number.', 'Participant: Emergency contact phone number'],

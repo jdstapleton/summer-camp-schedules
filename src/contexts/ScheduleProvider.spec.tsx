@@ -5,17 +5,11 @@ import { ScheduleProvider } from './ScheduleProvider';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { ImportBatchPayload } from '@/models/contexts';
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <ScheduleProvider>{children}</ScheduleProvider>
-);
+const wrapper = ({ children }: { children: ReactNode }) => <ScheduleProvider>{children}</ScheduleProvider>;
 
 const blankContact = { name: '', homePhone: '', cellPhone: '' };
 
-const makeStudent = (
-  firstName: string,
-  lastName: string,
-  specialRequest = ''
-): ImportBatchPayload['newStudents'][number] => ({
+const makeStudent = (firstName: string, lastName: string, specialRequest = ''): ImportBatchPayload['newStudents'][number] => ({
   firstName,
   lastName,
   gender: 'male',
@@ -59,9 +53,7 @@ describe('ScheduleProvider importBatch', () => {
     expect(result.current.data.camps).toHaveLength(1);
     expect(result.current.data.camps[0].name).toBe('Art');
     const campId = result.current.data.camps[0].id;
-    const reg = result.current.data.registrations.find(
-      (r) => r.campId === campId
-    );
+    const reg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(reg?.studentIds).toHaveLength(1);
   });
 
@@ -128,15 +120,9 @@ describe('ScheduleProvider importBatch', () => {
     );
 
     const campId = result.current.data.camps[0].id;
-    const reg = result.current.data.registrations.find(
-      (r) => r.campId === campId
-    );
-    const aliceId = result.current.data.students.find(
-      (s) => s.firstName === 'Alice'
-    )?.id;
-    const bobId = result.current.data.students.find(
-      (s) => s.firstName === 'Bob'
-    )?.id;
+    const reg = result.current.data.registrations.find((r) => r.campId === campId);
+    const aliceId = result.current.data.students.find((s) => s.firstName === 'Alice')?.id;
+    const bobId = result.current.data.students.find((s) => s.firstName === 'Bob')?.id;
 
     expect(reg?.friendGroups).toHaveLength(1);
     expect(reg?.friendGroups[0]).toContain(aliceId);
@@ -162,18 +148,10 @@ describe('ScheduleProvider importBatch', () => {
     );
 
     const campId = result.current.data.camps[0].id;
-    const reg = result.current.data.registrations.find(
-      (r) => r.campId === campId
-    );
-    const aliceId = result.current.data.students.find(
-      (s) => s.firstName === 'Alice'
-    )?.id;
-    const bobId = result.current.data.students.find(
-      (s) => s.firstName === 'Bob'
-    )?.id;
-    const charlieId = result.current.data.students.find(
-      (s) => s.firstName === 'Charlie'
-    )?.id;
+    const reg = result.current.data.registrations.find((r) => r.campId === campId);
+    const aliceId = result.current.data.students.find((s) => s.firstName === 'Alice')?.id;
+    const bobId = result.current.data.students.find((s) => s.firstName === 'Bob')?.id;
+    const charlieId = result.current.data.students.find((s) => s.firstName === 'Charlie')?.id;
 
     expect(reg?.friendGroups).toHaveLength(1);
     expect(reg?.friendGroups[0]).toContain(aliceId);
@@ -198,9 +176,7 @@ describe('ScheduleProvider importBatch', () => {
     );
 
     const campId = result.current.data.camps[0].id;
-    const reg = result.current.data.registrations.find(
-      (r) => r.campId === campId
-    );
+    const reg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(reg?.friendGroups).toHaveLength(0);
   });
 
@@ -222,9 +198,7 @@ describe('ScheduleProvider importBatch', () => {
     );
 
     const campId = result.current.data.camps[0].id;
-    const reg = result.current.data.registrations.find(
-      (r) => r.campId === campId
-    );
+    const reg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(reg?.friendGroups).toHaveLength(0);
   });
 
@@ -243,9 +217,7 @@ describe('ScheduleProvider importBatch', () => {
     );
 
     const campId = result.current.data.camps[0].id;
-    const reg = result.current.data.registrations.find(
-      (r) => r.campId === campId
-    );
+    const reg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(result.current.data.students).toHaveLength(1);
     expect(reg?.studentIds).toHaveLength(0);
   });

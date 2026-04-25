@@ -3,13 +3,7 @@ import { Button, Typography } from '@mui/material';
 import { useSchedule } from '@/hooks/useSchedule';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { ImportExcelDialog } from './ImportExcelDialog';
-import {
-  ButtonRow,
-  StatCardContent,
-  StatCardRoot,
-  StatCardSubtitle,
-  StatCardsRow,
-} from './DashboardPage.styles';
+import { ButtonRow, StatCardContent, StatCardRoot, StatCardSubtitle, StatCardsRow } from './DashboardPage.styles';
 
 function StatCard({ title, value }: { title: string; value: number }) {
   return (
@@ -28,9 +22,7 @@ export function DashboardPage() {
   const [importFile, setImportFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const activeRegistrations = data.registrations.filter(
-    (r) => r.studentIds.length > 0
-  ).length;
+  const activeRegistrations = data.registrations.filter((r) => r.studentIds.length > 0).length;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
@@ -54,27 +46,14 @@ export function DashboardPage() {
         <Button variant="outlined" onClick={saveToFile}>
           Save Schedule File
         </Button>
-        <Button
-          variant="outlined"
-          onClick={() => fileInputRef.current?.click()}
-        >
+        <Button variant="outlined" onClick={() => fileInputRef.current?.click()}>
           Import from Excel
         </Button>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => setConfirmClear(true)}
-        >
+        <Button variant="outlined" color="error" onClick={() => setConfirmClear(true)}>
           New Schedule
         </Button>
       </ButtonRow>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".xlsx"
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
+      <input ref={fileInputRef} type="file" accept=".xlsx" style={{ display: 'none' }} onChange={handleFileChange} />
       <StatCardsRow>
         <StatCard title="Students" value={data.students.length} />
         <StatCard title="Camps" value={data.camps.length} />

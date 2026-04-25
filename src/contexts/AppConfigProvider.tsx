@@ -19,9 +19,7 @@ interface AppConfigContextValue {
   updateConfig: (config: AppConfig) => void;
 }
 
-const AppConfigContext = createContext<AppConfigContextValue | undefined>(
-  undefined
-);
+const AppConfigContext = createContext<AppConfigContextValue | undefined>(undefined);
 
 export function AppConfigProvider({ children }: { children: ReactNode }) {
   const [config, setConfig] = useState<AppConfig>(defaultConfig);
@@ -50,11 +48,7 @@ export function AppConfigProvider({ children }: { children: ReactNode }) {
     return null;
   }
 
-  return (
-    <AppConfigContext.Provider value={{ config, updateConfig }}>
-      {children}
-    </AppConfigContext.Provider>
-  );
+  return <AppConfigContext.Provider value={{ config, updateConfig }}>{children}</AppConfigContext.Provider>;
 }
 
 export function useAppConfig() {

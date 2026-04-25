@@ -10,18 +10,11 @@ interface Filters {
 }
 
 const hasNutAllergy = (student: Student): boolean => {
-  return (
-    student.medicalIssues.toLowerCase().includes('nut') ||
-    student.specialRequest.toLowerCase().includes('nut')
-  );
+  return student.medicalIssues.toLowerCase().includes('nut') || student.specialRequest.toLowerCase().includes('nut');
 };
 
 const hasAllergy = (student: Student): boolean => {
-  return (
-    student.medicalIssues.toLowerCase().includes('allerg') ||
-    student.specialRequest.toLowerCase().includes('allerg') ||
-    hasNutAllergy(student)
-  );
+  return student.medicalIssues.toLowerCase().includes('allerg') || student.specialRequest.toLowerCase().includes('allerg') || hasNutAllergy(student);
 };
 
 const compareValues = (a: unknown, b: unknown): number => {
@@ -53,29 +46,11 @@ export function useStudentFilters(data: ScheduleData) {
   const [filterMedical, setFilterMedical] = useState(false);
   const [filterSpecialRequest, setFilterSpecialRequest] = useState(false);
 
-  const uniqueCamps = useMemo(
-    () =>
-      Array.from(
-        new Set(data.camps.map((c) => c.name))
-      ).sort(),
-    [data.camps]
-  );
+  const uniqueCamps = useMemo(() => Array.from(new Set(data.camps.map((c) => c.name))).sort(), [data.camps]);
 
-  const uniqueCustody = useMemo(
-    () =>
-      Array.from(
-        new Set(data.students.map((s) => s.custody))
-      ).sort(),
-    [data.students]
-  );
+  const uniqueCustody = useMemo(() => Array.from(new Set(data.students.map((s) => s.custody))).sort(), [data.students]);
 
-  const uniqueTshirtSizes = useMemo(
-    () =>
-      Array.from(
-        new Set(data.students.map((s) => s.tshirtSize))
-      ).sort(),
-    [data.students]
-  );
+  const uniqueTshirtSizes = useMemo(() => Array.from(new Set(data.students.map((s) => s.tshirtSize))).sort(), [data.students]);
 
   const handleSort = (column: string) => {
     const isAsc = orderBy === column && order === 'asc';
@@ -83,10 +58,7 @@ export function useStudentFilters(data: ScheduleData) {
     setOrderBy(column);
   };
 
-  const handleMultiSelectChange = (
-    key: 'camps' | 'custody' | 'tshirtSize',
-    value: string[]
-  ) => {
+  const handleMultiSelectChange = (key: 'camps' | 'custody' | 'tshirtSize', value: string[]) => {
     if (value.includes('')) {
       setFilters({ ...filters, [key]: [] });
     } else {

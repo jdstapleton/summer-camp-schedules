@@ -2,13 +2,7 @@ import { Box } from '@mui/material';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
 
-export function NoPhotoIcon({
-  fontSize = 'small',
-  isActive = false,
-}: {
-  fontSize?: 'small' | 'medium' | 'large',
-  isActive?: boolean,
-}) {
+export function NoPhotoIcon({ fontSize = 'small', isActive = false }: { fontSize?: 'small' | 'medium' | 'large'; isActive?: boolean }) {
   return (
     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
       <PhotoCameraIcon

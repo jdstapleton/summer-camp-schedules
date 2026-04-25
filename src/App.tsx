@@ -1,9 +1,4 @@
-import {
-  createRootRoute,
-  createRoute,
-  createRouter,
-  RouterProvider,
-} from '@tanstack/react-router';
+import { createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router';
 import { AppConfigProvider } from '@/contexts/AppConfigProvider';
 import { ScheduleProvider } from '@/contexts/ScheduleProvider';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
@@ -46,13 +41,7 @@ const scheduleRoute = createRoute({
   component: SchedulePage,
 });
 
-const routeTree = rootRoute.addChildren([
-  indexRoute,
-  studentsRoute,
-  campsRoute,
-  registrationsRoute,
-  scheduleRoute,
-]);
+const routeTree = rootRoute.addChildren([indexRoute, studentsRoute, campsRoute, registrationsRoute, scheduleRoute]);
 
 const router = createRouter({ routeTree });
 

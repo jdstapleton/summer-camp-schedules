@@ -39,11 +39,7 @@ export interface CampBlockProps {
   getStudentFriendGroup: (campId: string, studentId: string) => number | null;
   getStudentNotes: (id: string) => { medical: string; special: string };
   hasNutAllergy: (instance: CampInstance) => boolean;
-  onMoveStudent: (
-    studentId: string,
-    fromInstanceId: string,
-    toInstanceId: string
-  ) => void;
+  onMoveStudent: (studentId: string, fromInstanceId: string, toInstanceId: string) => void;
 }
 
 export const CampBlock = memo(function CampBlock({
@@ -60,15 +56,9 @@ export const CampBlock = memo(function CampBlock({
   onMoveStudent,
 }: CampBlockProps) {
   const [dragging, setDragging] = useState<DragPayload | null>(null);
-  const [dragOverInstanceId, setDragOverInstanceId] = useState<string | null>(
-    null
-  );
+  const [dragOverInstanceId, setDragOverInstanceId] = useState<string | null>(null);
 
-  const handleDragStart = (
-    e: React.DragEvent,
-    studentId: string,
-    fromInstanceId: string
-  ) => {
+  const handleDragStart = (e: React.DragEvent, studentId: string, fromInstanceId: string) => {
     const payload: DragPayload = { studentId, fromInstanceId, campId };
     e.dataTransfer.setData('text/plain', JSON.stringify(payload));
     e.dataTransfer.effectAllowed = 'move';
@@ -100,13 +90,8 @@ export const CampBlock = memo(function CampBlock({
     setDragOverInstanceId(null);
     setDragging(null);
     try {
-      const payload: DragPayload = JSON.parse(
-        e.dataTransfer.getData('text/plain')
-      );
-      if (
-        payload.campId === campId &&
-        payload.fromInstanceId !== toInstanceId
-      ) {
+      const payload: DragPayload = JSON.parse(e.dataTransfer.getData('text/plain'));
+      if (payload.campId === campId && payload.fromInstanceId !== toInstanceId) {
         onMoveStudent(payload.studentId, payload.fromInstanceId, toInstanceId);
       }
     } catch {
@@ -121,22 +106,14 @@ export const CampBlock = memo(function CampBlock({
       <CampHeaderRow>
         <Typography variant="h6">
           {getCampName(campId)}
-          <CampMaxSizeSpan variant="body2">
-            (max {getCampMaxSize(campId)})
-          </CampMaxSizeSpan>
+          <CampMaxSizeSpan variant="body2">(max {getCampMaxSize(campId)})</CampMaxSizeSpan>
         </Typography>
-        <Chip
-          label={`${instances.length} instance${instances.length > 1 ? 's' : ''}`}
-          size="small"
-          color={instances.length > 1 ? 'warning' : 'default'}
-        />
+        <Chip label={`${instances.length} instance${instances.length > 1 ? 's' : ''}`} size="small" color={instances.length > 1 ? 'warning' : 'default'} />
       </CampHeaderRow>
 
       <InstanceCardsRow>
         {instances.map((inst) => {
-          const isOver =
-            dragOverInstanceId === inst.id &&
-            dragging?.fromInstanceId !== inst.id;
+          const isOver = dragOverInstanceId === inst.id && dragging?.fromInstanceId !== inst.id;
           const isSource = dragging?.fromInstanceId === inst.id;
 
           return (
@@ -153,8 +130,7 @@ export const CampBlock = memo(function CampBlock({
               <CardContent>
                 <InstanceHeaderRow>
                   <Typography variant="subtitle2">
-                    Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
-                    student
+                    Instance {inst.instanceNumber} — {inst.studentIds.length} student
                     {inst.studentIds.length !== 1 ? 's' : ''}
                   </Typography>
                   {hasNutAllergy(inst) && (
@@ -170,14 +146,10 @@ export const CampBlock = memo(function CampBlock({
                 </InstanceHeaderRow>
                 <StudentList>
                   {[...inst.studentIds]
-                    .sort((a, b) =>
-                      getStudentSortKey(a).localeCompare(getStudentSortKey(b))
-                    )
+                    .sort((a, b) => getStudentSortKey(a).localeCompare(getStudentSortKey(b)))
                     .map((id) => {
                       const friendGroup = getStudentFriendGroup(campId, id);
-                      const isPillDragging =
-                        dragging?.studentId === id &&
-                        dragging?.fromInstanceId === inst.id;
+                      const isPillDragging = dragging?.studentId === id && dragging?.fromInstanceId === inst.id;
                       return (
                         <StudentPill
                           key={id}
@@ -194,35 +166,20 @@ export const CampBlock = memo(function CampBlock({
                               return (
                                 <>
                                   {notes.medical && (
-                                    <Tooltip
-                                      title={notes.medical}
-                                      placement="top"
-                                    >
-                                      <LocalHospitalIcon
-                                        fontSize="small"
-                                        color="error"
-                                      />
+                                    <Tooltip title={notes.medical} placement="top">
+                                      <LocalHospitalIcon fontSize="small" color="error" />
                                     </Tooltip>
                                   )}
                                   {notes.special && (
-                                    <Tooltip
-                                      title={notes.special}
-                                      placement="top"
-                                    >
-                                      <NoteIcon
-                                        fontSize="small"
-                                        color="action"
-                                      />
+                                    <Tooltip title={notes.special} placement="top">
+                                      <NoteIcon fontSize="small" color="action" />
                                     </Tooltip>
                                   )}
                                 </>
                               );
                             })()}
                             {friendGroup && (
-                              <Tooltip
-                                title={`Friend Group ${friendGroup}`}
-                                placement="right"
-                              >
+                              <Tooltip title={`Friend Group ${friendGroup}`} placement="right">
                                 <FriendGroupBadge
                                   badgeContent={friendGroup}
                                   color="primary"
@@ -239,11 +196,7 @@ export const CampBlock = memo(function CampBlock({
                         </StudentPill>
                       );
                     })}
-                  {inst.studentIds.length === 0 && (
-                    <MutedTypography variant="body2">
-                      No students assigned
-                    </MutedTypography>
-                  )}
+                  {inst.studentIds.length === 0 && <MutedTypography variant="body2">No students assigned</MutedTypography>}
                 </StudentList>
               </CardContent>
             </InstanceCard>

@@ -9,24 +9,13 @@ const MAX_SHEET_NAME_LENGTH = 31;
 const FORBIDDEN_SHEET_CHARS = /[\\/?*[\]:]/g;
 
 export function sanitizeSheetName(raw: string): string {
-  const cleaned = raw
-    .replace(FORBIDDEN_SHEET_CHARS, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+  const cleaned = raw.replace(FORBIDDEN_SHEET_CHARS, '').replace(/\s+/g, ' ').trim();
   if (cleaned.length === 0) return 'Sheet';
   return cleaned.slice(0, MAX_SHEET_NAME_LENGTH);
 }
 
-export function getInstanceSheetName(
-  campName: string,
-  instanceNumber: number,
-  totalInstancesForCamp: number,
-  usedNames: Set<string>
-): string {
-  const base =
-    totalInstancesForCamp > 1
-      ? `${campName} ${instanceNumber}`
-      : campName;
+export function getInstanceSheetName(campName: string, instanceNumber: number, totalInstancesForCamp: number, usedNames: Set<string>): string {
+  const base = totalInstancesForCamp > 1 ? `${campName} ${instanceNumber}` : campName;
   const candidate = sanitizeSheetName(base);
 
   if (!usedNames.has(candidate)) {
@@ -36,10 +25,7 @@ export function getInstanceSheetName(
 
   for (let n = 2; n < 1000; n++) {
     const suffix = ` (${n})`;
-    const trimmed = candidate.slice(
-      0,
-      MAX_SHEET_NAME_LENGTH - suffix.length
-    );
+    const trimmed = candidate.slice(0, MAX_SHEET_NAME_LENGTH - suffix.length);
     const next = `${trimmed}${suffix}`;
     if (!usedNames.has(next)) {
       usedNames.add(next);
@@ -106,9 +92,7 @@ export function applyCellBorders(cell?: Cell) {
   return cell;
 }
 
-export function buildInstancesGroupedByCamp(
-  instances: CampInstance[]
-): Map<string, CampInstance[]> {
+export function buildInstancesGroupedByCamp(instances: CampInstance[]): Map<string, CampInstance[]> {
   const map = new Map<string, CampInstance[]>();
   for (const inst of instances) {
     const list = map.get(inst.campId) ?? [];
@@ -122,10 +106,7 @@ export function buildInstancesGroupedByCamp(
   return map;
 }
 
-export async function saveWorkbook(
-  workbook: Workbook,
-  filename: string
-): Promise<void> {
+export async function saveWorkbook(workbook: Workbook, filename: string): Promise<void> {
   const buffer = await workbook.xlsx.writeBuffer();
   const blob = new Blob([buffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

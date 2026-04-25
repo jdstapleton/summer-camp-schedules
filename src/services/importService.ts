@@ -1,8 +1,5 @@
 import type { Contact, Custody, Gender } from '@/models/types';
-import {
-  DEFAULT_IMPORT_COLUMNS,
-  type ImportColumnConfig,
-} from './importColumnConfig';
+import { DEFAULT_IMPORT_COLUMNS, type ImportColumnConfig } from './importColumnConfig';
 import { normalizeNegativeResponses } from './normalizeFieldValues';
 import { normalizeTshirtSize } from './tshirtSizeNormalization';
 import { Row } from 'exceljs';
@@ -33,12 +30,7 @@ export interface ParsedImport {
   skippedRows: { rowNumber: number; reason: string }[];
 }
 
-export const makeDedupeKey = (
-  firstName: string,
-  lastName: string,
-  age: number
-): string =>
-  `${lastName.trim().toLowerCase()}|${firstName.trim().toLowerCase()}|${age}`;
+export const makeDedupeKey = (firstName: string, lastName: string, age: number): string => `${lastName.trim().toLowerCase()}|${firstName.trim().toLowerCase()}|${age}`;
 
 export const extractCampName = (sessionName: string): string => {
   const normalized = sessionName.replace(/–|—/g, '-').trim();
@@ -47,10 +39,7 @@ export const extractCampName = (sessionName: string): string => {
   return normalized.slice(0, lastDash).trim();
 };
 
-export async function parseXlsx(
-  buffer: ArrayBuffer,
-  config: ImportColumnConfig = DEFAULT_IMPORT_COLUMNS
-): Promise<ParsedImport> {
+export async function parseXlsx(buffer: ArrayBuffer, config: ImportColumnConfig = DEFAULT_IMPORT_COLUMNS): Promise<ParsedImport> {
   const ExcelJS = (await import('exceljs')).default;
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.load(buffer);
@@ -93,7 +82,7 @@ export async function parseXlsx(
     }
     const campName = extractCampName(sessionName);
     if (campName === '') {
-      skipRow(`Session name "${sessionName}" yielded an empty camp name.`)
+      skipRow(`Session name "${sessionName}" yielded an empty camp name.`);
       continue;
     }
 
@@ -103,12 +92,8 @@ export async function parseXlsx(
 
     const photo = parsePhoto(readCell(row.getCell(col.photo)));
     const tshirtSize = normalizeTshirtSize(readCell(row.getCell(col.tshirtSize)));
-    const specialRequest = normalizeNegativeResponses(
-      readCell(row.getCell(col.specialRequest))
-    );
-    const medicalIssues = normalizeNegativeResponses(
-      readCell(row.getCell(col.medicalIssues))
-    );
+    const specialRequest = normalizeNegativeResponses(readCell(row.getCell(col.specialRequest)));
+    const medicalIssues = normalizeNegativeResponses(readCell(row.getCell(col.medicalIssues)));
 
     const primary: Contact = {
       name: readCell(row.getCell(col.primaryName)),
@@ -144,7 +129,7 @@ export async function parseXlsx(
         tshirtSize,
         primary,
         secondary,
-        emergency
+        emergency,
       });
     }
 
@@ -174,9 +159,7 @@ type WarningFun = (warningText: string) => number;
 function getCustody(row: Row, col: ColIndices, addWarning: WarningFun) {
   const custodyRaw = readCell(row.getCell(col.custody));
   const custody = normalizeCustody(custodyRaw);
-  if (custody === 'Both' &&
-    custodyRaw !== '' &&
-    custodyRaw.toLowerCase() !== 'both') {
+  if (custody === 'Both' && custodyRaw !== '' && custodyRaw.toLowerCase() !== 'both') {
     addWarning(`custody "${custodyRaw}" not recognized; defaulting to "Both".`);
   }
   return custody;
@@ -250,17 +233,12 @@ function columnIndices(headerRow: Row, config: ImportColumnConfig): ColIndices {
 }
 
 function checkMissing(config: ImportColumnConfig, resolveAny: (headers: string[]) => number | undefined) {
-  const requiredXXX: { key: keyof ImportColumnConfig; headers: string[]; }[] = (
-    Object.keys(config) as (keyof ImportColumnConfig)[]
-  ).map((key) => ({ key, headers: config[key] }));
+  const requiredXXX: { key: keyof ImportColumnConfig; headers: string[] }[] = (Object.keys(config) as (keyof ImportColumnConfig)[]).map((key) => ({ key, headers: config[key] }));
 
   const missing = requiredXXX.filter(({ headers }) => resolveAny(headers) === undefined);
   if (missing.length > 0) {
     const names = missing.map((m) => `"${m.headers.join('" or "')}"`).join(', ');
-    throw new Error(
-      `The import file is missing required column header(s): ${names}. ` +
-      `Update the expected headers in importColumnConfig.ts if the source format changed.`
-    );
+    throw new Error(`The import file is missing required column header(s): ${names}. ` + `Update the expected headers in importColumnConfig.ts if the source format changed.`);
   }
 }
 
@@ -306,7 +284,7 @@ function readCell(cell: CellLike | undefined): string {
     return String(value).trim();
   }
   if (typeof value === 'object') {
-    const obj = value as { result?: unknown; text?: unknown; };
+    const obj = value as { result?: unknown; text?: unknown };
     if (obj.result != null) return String(obj.result).trim();
     if (obj.text != null) return String(obj.text).trim();
   }

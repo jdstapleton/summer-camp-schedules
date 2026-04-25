@@ -50,9 +50,7 @@ interface StudentFormState {
   emergencyCellPhone: string;
 }
 
-type StudentFormAction =
-  | { type: 'reset'; student: Student | null }
-  | { type: 'patch'; payload: Partial<StudentFormState> };
+type StudentFormAction = { type: 'reset'; student: Student | null } | { type: 'patch'; payload: Partial<StudentFormState> };
 
 const defaultState: StudentFormState = {
   firstName: '',
@@ -77,10 +75,7 @@ const defaultState: StudentFormState = {
   emergencyCellPhone: '',
 };
 
-function studentFormReducer(
-  state: StudentFormState,
-  action: StudentFormAction
-): StudentFormState {
+function studentFormReducer(state: StudentFormState, action: StudentFormAction): StudentFormState {
   switch (action.type) {
     case 'reset':
       return {
@@ -110,12 +105,7 @@ function studentFormReducer(
   }
 }
 
-export function StudentDialog({
-  open,
-  student,
-  onSave,
-  onClose,
-}: StudentDialogProps) {
+export function StudentDialog({ open, student, onSave, onClose }: StudentDialogProps) {
   const [form, dispatch] = useReducer(studentFormReducer, defaultState);
 
   useEffect(() => {
@@ -124,8 +114,7 @@ export function StudentDialog({
     }
   }, [open, student]);
 
-  const handleGenderChange = (e: SelectChangeEvent) =>
-    dispatch({ type: 'patch', payload: { gender: e.target.value as Gender } });
+  const handleGenderChange = (e: SelectChangeEvent) => dispatch({ type: 'patch', payload: { gender: e.target.value as Gender } });
 
   const handleCustodyChange = (e: SelectChangeEvent) =>
     dispatch({
@@ -170,11 +159,7 @@ export function StudentDialog({
     });
   };
 
-  const isValid =
-    form.firstName.trim().length > 0 &&
-    form.lastName.trim().length > 0 &&
-    form.age.length > 0 &&
-    form.primaryName.trim().length > 0;
+  const isValid = form.firstName.trim().length > 0 && form.lastName.trim().length > 0 && form.age.length > 0 && form.primaryName.trim().length > 0;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -183,9 +168,7 @@ export function StudentDialog({
         <TextField
           label="First Name"
           value={form.firstName}
-          onChange={(e) =>
-            dispatch({ type: 'patch', payload: { firstName: e.target.value } })
-          }
+          onChange={(e) => dispatch({ type: 'patch', payload: { firstName: e.target.value } })}
           fullWidth
           margin="normal"
           required
@@ -194,9 +177,7 @@ export function StudentDialog({
         <TextField
           label="Last Name"
           value={form.lastName}
-          onChange={(e) =>
-            dispatch({ type: 'patch', payload: { lastName: e.target.value } })
-          }
+          onChange={(e) => dispatch({ type: 'patch', payload: { lastName: e.target.value } })}
           fullWidth
           margin="normal"
           required
@@ -218,11 +199,7 @@ export function StudentDialog({
         />
         <FormControl fullWidth margin="normal">
           <InputLabel>Gender</InputLabel>
-          <Select
-            value={form.gender}
-            label="Gender"
-            onChange={handleGenderChange}
-          >
+          <Select value={form.gender} label="Gender" onChange={handleGenderChange}>
             <MenuItem value="male">Male</MenuItem>
             <MenuItem value="female">Female</MenuItem>
             <MenuItem value="other">Other</MenuItem>
@@ -230,11 +207,7 @@ export function StudentDialog({
         </FormControl>
         <FormControl fullWidth margin="normal">
           <InputLabel>Custody</InputLabel>
-          <Select
-            value={form.custody}
-            label="Custody"
-            onChange={handleCustodyChange}
-          >
+          <Select value={form.custody} label="Custody" onChange={handleCustodyChange}>
             <MenuItem value="Both">Both</MenuItem>
             <MenuItem value="Father">Father</MenuItem>
             <MenuItem value="Mother">Mother</MenuItem>

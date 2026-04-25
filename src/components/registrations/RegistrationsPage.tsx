@@ -25,14 +25,7 @@ import { EnrollmentDialog } from './EnrollmentDialog';
 
 dayjs.extend(customParseFormat);
 
-type SortKey =
-  | 'name'
-  | 'gradeRange'
-  | 'week'
-  | 'maxSize'
-  | 'enrolled'
-  | 'instances'
-  | 'friendGroups';
+type SortKey = 'name' | 'gradeRange' | 'week' | 'maxSize' | 'enrolled' | 'instances' | 'friendGroups';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -52,17 +45,13 @@ export function RegistrationsPage() {
       friendGroups: [],
     };
 
-  const activeRegistration = managingCamp
-    ? getRegistration(managingCamp.id)
-    : null;
+  const activeRegistration = managingCamp ? getRegistration(managingCamp.id) : null;
 
-  const uniqueWeeks = Array.from(new Set(data.camps.map((c) => c.week))).sort(
-    (a, b) => {
-      const dateA = dayjs(a, ['MMMM D', 'MMM D']);
-      const dateB = dayjs(b, ['MMMM D', 'MMM D']);
-      return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
-    }
-  );
+  const uniqueWeeks = Array.from(new Set(data.camps.map((c) => c.week))).sort((a, b) => {
+    const dateA = dayjs(a, ['MMMM D', 'MMM D']);
+    const dateB = dayjs(b, ['MMMM D', 'MMM D']);
+    return dateA.isBefore(dateB) ? -1 : dateA.isAfter(dateB) ? 1 : 0;
+  });
 
   const rows = data.camps
     .filter((c) => !selectedWeek || c.week === selectedWeek)
@@ -112,19 +101,11 @@ export function RegistrationsPage() {
   });
 
   const handleSort = (key: SortKey) => {
-    setSortBy((prev) =>
-      prev.key === key
-        ? { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' }
-        : { key, direction: 'asc' }
-    );
+    setSortBy((prev) => (prev.key === key ? { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key, direction: 'asc' }));
   };
 
   const sortHeader = (key: SortKey, label: string) => (
-    <TableSortLabel
-      active={sortBy.key === key}
-      direction={sortBy.key === key ? sortBy.direction : 'asc'}
-      onClick={() => handleSort(key)}
-    >
+    <TableSortLabel active={sortBy.key === key} direction={sortBy.key === key ? sortBy.direction : 'asc'} onClick={() => handleSort(key)}>
       {label}
     </TableSortLabel>
   );
@@ -156,11 +137,7 @@ export function RegistrationsPage() {
         {uniqueWeeks.length > 0 && (
           <FormControl sx={{ minWidth: 200 }} size="small">
             <InputLabel>Week</InputLabel>
-            <Select
-              value={selectedWeek}
-              label="Week"
-              onChange={(e) => setSelectedWeek(e.target.value)}
-            >
+            <Select value={selectedWeek} label="Week" onChange={(e) => setSelectedWeek(e.target.value)}>
               <MenuItem value="">All Weeks</MenuItem>
               {uniqueWeeks.map((week) => (
                 <MenuItem key={week} value={week}>
@@ -181,9 +158,7 @@ export function RegistrationsPage() {
               <TableCell>{sortHeader('maxSize', 'Max Size')}</TableCell>
               <TableCell>{sortHeader('enrolled', 'Enrolled')}</TableCell>
               <TableCell>{sortHeader('instances', 'Instances')}</TableCell>
-              <TableCell>
-                {sortHeader('friendGroups', 'Friend Groups')}
-              </TableCell>
+              <TableCell>{sortHeader('friendGroups', 'Friend Groups')}</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -197,11 +172,7 @@ export function RegistrationsPage() {
                 <TableCell>{enrolled}</TableCell>
                 <TableCell>
                   {instances > 1 ? (
-                    <Chip
-                      label={`${instances} instances`}
-                      size="small"
-                      color="warning"
-                    />
+                    <Chip label={`${instances} instances`} size="small" color="warning" />
                   ) : instances === 1 ? (
                     <Chip label="1 instance" size="small" color="success" />
                   ) : (
@@ -215,11 +186,7 @@ export function RegistrationsPage() {
                     </Typography>
                   )}
                 </TableCell>
-                <TableCell>
-                  {reg.friendGroups.length > 0
-                    ? `${reg.friendGroups.length} group${reg.friendGroups.length > 1 ? 's' : ''}`
-                    : '—'}
-                </TableCell>
+                <TableCell>{reg.friendGroups.length > 0 ? `${reg.friendGroups.length} group${reg.friendGroups.length > 1 ? 's' : ''}` : '—'}</TableCell>
                 <TableCell align="right">
                   <Button size="small" onClick={() => setManagingCamp(camp)}>
                     Manage
@@ -229,14 +196,8 @@ export function RegistrationsPage() {
             ))}
             {rows.length === 0 && (
               <TableRow>
-                <TableCell
-                  colSpan={8}
-                  align="center"
-                  sx={{ color: 'text.secondary' }}
-                >
-                  {data.camps.length === 0
-                    ? 'No camps defined. Add camps on the Camps page first.'
-                    : 'No camps match the selected week.'}
+                <TableCell colSpan={8} align="center" sx={{ color: 'text.secondary' }}>
+                  {data.camps.length === 0 ? 'No camps defined. Add camps on the Camps page first.' : 'No camps match the selected week.'}
                 </TableCell>
               </TableRow>
             )}

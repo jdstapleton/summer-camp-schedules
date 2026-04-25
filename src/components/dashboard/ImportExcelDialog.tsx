@@ -1,25 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  Alert,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  LinearProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Stack, Typography } from '@mui/material';
 import { CampDialog } from '@/components/camps/CampDialog';
 import { useSchedule } from '@/hooks/useSchedule';
 import { useAppConfig } from '@/contexts/AppConfigProvider';
 import type { Camp } from '@/models/types';
 import type { ImportBatchPayload } from '@/models/contexts';
-import {
-  parseXlsx,
-  type ParsedImport,
-  type ParsedStudent,
-} from '@/services/importService';
+import { parseXlsx, type ParsedImport, type ParsedStudent } from '@/services/importService';
 
 interface ImportExcelDialogProps {
   file: File | null;
@@ -44,9 +30,7 @@ type Phase =
   | { kind: 'done'; summary: string }
   | { kind: 'error'; message: string };
 
-const parsedStudentToNew = (
-  p: ParsedStudent
-): ImportBatchPayload['newStudents'][number] => ({
+const parsedStudentToNew = (p: ParsedStudent): ImportBatchPayload['newStudents'][number] => ({
   dedupeKey: p.dedupeKey,
   firstName: p.firstName,
   lastName: p.lastName,
@@ -91,18 +75,13 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
         const parsed = await parseXlsx(buffer, config.importColumnConfig);
         if (cancelled) return;
 
-        const existingCampNames = new Set(
-          campsRef.current.map((c) => c.name.trim().toLowerCase())
-        );
-        const newCampNames = parsed.campNames.filter(
-          (n) => !existingCampNames.has(n.trim().toLowerCase())
-        );
+        const existingCampNames = new Set(campsRef.current.map((c) => c.name.trim().toLowerCase()));
+        const newCampNames = parsed.campNames.filter((n) => !existingCampNames.has(n.trim().toLowerCase()));
 
         setPhase({ kind: 'review', parsed, newCampNames });
       } catch (err) {
         if (cancelled) return;
-        const message =
-          err instanceof Error ? err.message : 'Failed to parse Excel file.';
+        const message = err instanceof Error ? err.message : 'Failed to parse Excel file.';
         setPhase({ kind: 'error', message });
       }
     };
@@ -113,22 +92,12 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
     };
   }, [file, config.importColumnConfig]);
 
-  const commit = (
-    parsed: ParsedImport,
-    newCamps: Omit<Camp, 'id'>[]
-  ): void => {
+  const commit = (parsed: ParsedImport, newCamps: Omit<Camp, 'id'>[]): void => {
     setPhase({ kind: 'committing', parsed, newCamps });
 
-    const existingKeys = new Set(
-      data.students.map(
-        (s) =>
-          `${s.lastName.trim().toLowerCase()}|${s.firstName.trim().toLowerCase()}|${s.age}`
-      )
-    );
+    const existingKeys = new Set(data.students.map((s) => `${s.lastName.trim().toLowerCase()}|${s.firstName.trim().toLowerCase()}|${s.age}`));
 
-    const newStudents = parsed.students
-      .filter((s) => !existingKeys.has(s.dedupeKey))
-      .map(parsedStudentToNew);
+    const newStudents = parsed.students.filter((s) => !existingKeys.has(s.dedupeKey)).map(parsedStudentToNew);
 
     importBatch({
       newStudents,
@@ -180,10 +149,7 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
 
   const isOpen = file !== null;
 
-  const currentCampName =
-    phase.kind === 'collectingCampInfo'
-      ? phase.newCampNames[phase.index]
-      : '';
+  const currentCampName = phase.kind === 'collectingCampInfo' ? phase.newCampNames[phase.index] : '';
   const stubCamp = useMemo<Camp>(
     () => ({
       id: '',
@@ -204,11 +170,7 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
         onSave={handleCampSaved}
         onClose={onClose}
         titleOverride={`Import Camp ${phase.index + 1} of ${phase.newCampNames.length}: ${currentCampName}`}
-        saveLabelOverride={
-          phase.index + 1 === phase.newCampNames.length
-            ? 'Finish Import'
-            : 'Next'
-        }
+        saveLabelOverride={phase.index + 1 === phase.newCampNames.length ? 'Finish Import' : 'Next'}
       />
     );
   }
@@ -228,15 +190,12 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
           <Stack spacing={2}>
             <Typography>
               <strong>{phase.parsed.students.length}</strong> unique student
-              {phase.parsed.students.length === 1 ? '' : 's'} found across{' '}
-              <strong>{phase.parsed.registrationRows.length}</strong>{' '}
-              registration row
+              {phase.parsed.students.length === 1 ? '' : 's'} found across <strong>{phase.parsed.registrationRows.length}</strong> registration row
               {phase.parsed.registrationRows.length === 1 ? '' : 's'}.
             </Typography>
             <Typography>
               <strong>{phase.parsed.campNames.length}</strong> camp
-              {phase.parsed.campNames.length === 1 ? '' : 's'} referenced;{' '}
-              <strong>{phase.newCampNames.length}</strong> new.
+              {phase.parsed.campNames.length === 1 ? '' : 's'} referenced; <strong>{phase.newCampNames.length}</strong> new.
             </Typography>
             {phase.parsed.skippedRows.length > 0 && (
               <Alert severity="info">
@@ -258,9 +217,7 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
                   ))}
                   {phase.parsed.warnings.length > 5 && (
                     <li>
-                      <Typography variant="body2">
-                        …and {phase.parsed.warnings.length - 5} more.
-                      </Typography>
+                      <Typography variant="body2">…and {phase.parsed.warnings.length - 5} more.</Typography>
                     </li>
                   )}
                 </ul>
@@ -268,8 +225,7 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
             )}
             {phase.newCampNames.length > 0 && (
               <Typography variant="body2" color="text.secondary">
-                You'll be asked to enter week / grade range / max size for each
-                new camp next.
+                You'll be asked to enter week / grade range / max size for each new camp next.
               </Typography>
             )}
           </Stack>
@@ -282,13 +238,9 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
           </Stack>
         )}
 
-        {phase.kind === 'done' && (
-          <Alert severity="success">{phase.summary}</Alert>
-        )}
+        {phase.kind === 'done' && <Alert severity="success">{phase.summary}</Alert>}
 
-        {phase.kind === 'error' && (
-          <Alert severity="error">{phase.message}</Alert>
-        )}
+        {phase.kind === 'error' && <Alert severity="error">{phase.message}</Alert>}
       </DialogContent>
       <DialogActions>
         {phase.kind === 'review' && (

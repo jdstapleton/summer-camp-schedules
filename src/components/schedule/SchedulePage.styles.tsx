@@ -68,21 +68,19 @@ export const InstanceCardsRow = styled(Box)(({ theme }) => ({
 
 export const InstanceCard = styled(Card, {
   shouldForwardProp: (prop) => prop !== 'isOver' && prop !== 'isDropTarget',
-})<{ isOver?: boolean; isDropTarget?: boolean }>(
-  ({ theme, isOver, isDropTarget }) => ({
-    flex: '1 1 200px',
-    maxWidth: 280,
-    ...(isDropTarget && {
-      outline: '1px dashed',
-      outlineColor: theme.palette.divider,
-    }),
-    ...(isOver && {
-      outline: '2px dashed',
-      outlineColor: theme.palette.primary.main,
-      backgroundColor: alpha(theme.palette.primary.main, 0.08),
-    }),
-  })
-);
+})<{ isOver?: boolean; isDropTarget?: boolean }>(({ theme, isOver, isDropTarget }) => ({
+  flex: '1 1 200px',
+  maxWidth: 280,
+  ...(isDropTarget && {
+    outline: '1px dashed',
+    outlineColor: theme.palette.divider,
+  }),
+  ...(isOver && {
+    outline: '2px dashed',
+    outlineColor: theme.palette.primary.main,
+    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+  }),
+}));
 
 export const InstanceHeaderRow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -111,20 +109,18 @@ export const StudentList = styled(Box)(({ theme }) => ({
 
 export const StudentPill = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'gender' && prop !== 'isPillDragging',
-})<{ gender: Gender; isPillDragging?: boolean }>(
-  ({ theme, gender, isPillDragging }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: theme.spacing(1, 1),
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: genderColor(gender),
-    fontSize: '0.875rem',
-    cursor: 'grab',
-    opacity: isPillDragging ? 0.4 : 1,
-    '&:active': { cursor: 'grabbing' },
-  })
-);
+})<{ gender: Gender; isPillDragging?: boolean }>(({ theme, gender, isPillDragging }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: theme.spacing(1, 1),
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: genderColor(gender),
+  fontSize: '0.875rem',
+  cursor: 'grab',
+  opacity: isPillDragging ? 0.4 : 1,
+  '&:active': { cursor: 'grabbing' },
+}));
 
 export const PillIconsRow = styled(Box)(({ theme }) => ({
   display: 'flex',

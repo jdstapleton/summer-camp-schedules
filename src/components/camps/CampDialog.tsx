@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Autocomplete,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from '@mui/material';
+import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { generateDefaultWeeks } from '@/config/defaultWeeks';
 import { useAppConfig } from '@/contexts/AppConfigProvider';
 import type { Camp } from '@/models/types';
@@ -22,45 +14,25 @@ interface CampDialogProps {
   saveLabelOverride?: string;
 }
 
-export function CampDialog({
-  open,
-  camp,
-  existingCamps,
-  onSave,
-  onClose,
-  titleOverride,
-  saveLabelOverride,
-}: CampDialogProps) {
+export function CampDialog({ open, camp, existingCamps, onSave, onClose, titleOverride, saveLabelOverride }: CampDialogProps) {
   const { config } = useAppConfig();
   const [name, setName] = useState('');
   const [gradeRange, setGradeRange] = useState('');
   const [week, setWeek] = useState('');
   const [maxSize, setMaxSize] = useState('16');
 
-  const existingNames = Array.from(
-    new Set(existingCamps.map((c) => c.name))
-  ).sort();
-  const existingWeeks = Array.from(
-    new Set([...config.extraWeeks, ...existingCamps.map((c) => c.week)])
-  ).sort();
+  const existingNames = Array.from(new Set(existingCamps.map((c) => c.name))).sort();
+  const existingWeeks = Array.from(new Set([...config.extraWeeks, ...existingCamps.map((c) => c.week)])).sort();
   const defaultWeeks = generateDefaultWeeks();
-  const existingGradeRanges = Array.from(
-    new Set([...config.gradeRanges, ...existingCamps.map((c) => c.gradeRange)])
-  ).sort();
+  const existingGradeRanges = Array.from(new Set([...config.gradeRanges, ...existingCamps.map((c) => c.gradeRange)])).sort();
 
   const filterWeekOptions = (options: string[], state: { inputValue: string }) => {
     if (!state.inputValue) {
       return options;
     }
     const inputLower = state.inputValue.toLowerCase();
-    const matchingExisting = options.filter((opt) =>
-      opt.toLowerCase().includes(inputLower)
-    );
-    const matchingGenerated = defaultWeeks.filter(
-      (w: string) =>
-        w.toLowerCase().includes(inputLower) &&
-        !matchingExisting.includes(w)
-    );
+    const matchingExisting = options.filter((opt) => opt.toLowerCase().includes(inputLower));
+    const matchingGenerated = defaultWeeks.filter((w: string) => w.toLowerCase().includes(inputLower) && !matchingExisting.includes(w));
     return [...matchingExisting, ...matchingGenerated];
   };
 
@@ -75,12 +47,7 @@ export function CampDialog({
   }, [open, camp, config.defaultMaxSize]);
 
   const parsedMax = parseInt(maxSize, 10);
-  const isValid =
-    name.trim().length > 0 &&
-    gradeRange.trim().length > 0 &&
-    week.trim().length > 0 &&
-    !isNaN(parsedMax) &&
-    parsedMax >= 1;
+  const isValid = name.trim().length > 0 && gradeRange.trim().length > 0 && week.trim().length > 0 && !isNaN(parsedMax) && parsedMax >= 1;
 
   const handleSubmit = () => {
     if (!isValid) return;
@@ -94,9 +61,7 @@ export function CampDialog({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        {titleOverride ?? (camp ? 'Edit Camp' : 'Add Camp')}
-      </DialogTitle>
+      <DialogTitle>{titleOverride ?? (camp ? 'Edit Camp' : 'Add Camp')}</DialogTitle>
       <DialogContent>
         <Autocomplete
           freeSolo
@@ -104,16 +69,7 @@ export function CampDialog({
           value={name}
           onChange={(_, newValue) => setName(newValue ?? '')}
           onInputChange={(_, newInput) => setName(newInput)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Camp Name"
-              margin="normal"
-              required
-              autoFocus
-              placeholder="e.g. Minecraft Programming"
-            />
-          )}
+          renderInput={(params) => <TextField {...params} label="Camp Name" margin="normal" required autoFocus placeholder="e.g. Minecraft Programming" />}
           fullWidth
         />
         <Autocomplete
@@ -122,15 +78,7 @@ export function CampDialog({
           value={gradeRange}
           onChange={(_, newValue) => setGradeRange(newValue ?? '')}
           onInputChange={(_, newInput) => setGradeRange(newInput)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Grade Range"
-              margin="normal"
-              required
-              placeholder="e.g. Grades 4-7, PreK-K"
-            />
-          )}
+          renderInput={(params) => <TextField {...params} label="Grade Range" margin="normal" required placeholder="e.g. Grades 4-7, PreK-K" />}
           fullWidth
         />
         <Autocomplete
@@ -140,15 +88,7 @@ export function CampDialog({
           onChange={(_, newValue) => setWeek(newValue ?? '')}
           onInputChange={(_, newInput) => setWeek(newInput)}
           filterOptions={filterWeekOptions}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Week"
-              margin="normal"
-              required
-              placeholder="e.g. June 8, June 15"
-            />
-          )}
+          renderInput={(params) => <TextField {...params} label="Week" margin="normal" required placeholder="e.g. June 8, June 15" />}
           fullWidth
         />
         <TextField

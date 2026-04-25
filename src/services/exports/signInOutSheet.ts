@@ -1,23 +1,12 @@
 import type { CampInstance, ScheduleData, Student } from '@/models/types';
-import {
-  GRAY_SIGNIN_FILL,
-  applyCellBorders,
-  applyCellFill,
-  buildInstancesGroupedByCamp,
-  getInstanceSheetName,
-  saveWorkbook,
-  studentSortCompare,
-} from './shared';
+import { GRAY_SIGNIN_FILL, applyCellBorders, applyCellFill, buildInstancesGroupedByCamp, getInstanceSheetName, saveWorkbook, studentSortCompare } from './shared';
 
 const DAY_HEADERS = ['Mon', 'Mon', 'Tues', 'Tues', 'Wed', 'Wed', 'Thurs', 'Thurs', 'Fri', 'Fri'];
 const SUB_HEADERS = ['In', 'Out', 'In', 'Out', 'In', 'Out', 'In', 'Out', 'In', 'Out'];
 // Columns C=3 (Mon In), E=5 (Tues In), G=7 (Wed In), I=9 (Thurs In), K=11 (Fri In)
 const TOTAL_COLUMNS = 12; // A..L
 
-export async function exportSignInOutSheet(
-  data: ScheduleData,
-  instances: CampInstance[]
-): Promise<void> {
+export async function exportSignInOutSheet(data: ScheduleData, instances: CampInstance[]): Promise<void> {
   const ExcelJS = (await import('exceljs')).default;
   const workbook = new ExcelJS.Workbook();
   workbook.creator = 'Summer Camp Schedules';
@@ -28,9 +17,7 @@ export async function exportSignInOutSheet(
   const grouped = buildInstancesGroupedByCamp(instances);
   const usedSheetNames = new Set<string>();
 
-  const sortedCampIds = Array.from(grouped.keys()).sort((a, b) =>
-    (campMap.get(a)?.name ?? '').localeCompare(campMap.get(b)?.name ?? '')
-  );
+  const sortedCampIds = Array.from(grouped.keys()).sort((a, b) => (campMap.get(a)?.name ?? '').localeCompare(campMap.get(b)?.name ?? ''));
 
   for (const campId of sortedCampIds) {
     const camp = campMap.get(campId);
@@ -39,12 +26,7 @@ export async function exportSignInOutSheet(
     const total = campInstances.length;
 
     for (const inst of campInstances) {
-      const sheetName = getInstanceSheetName(
-        camp.name,
-        inst.instanceNumber,
-        total,
-        usedSheetNames
-      );
+      const sheetName = getInstanceSheetName(camp.name, inst.instanceNumber, total, usedSheetNames);
       const sheet = workbook.addWorksheet(sheetName);
 
       sheet.getColumn(1).width = 18;
@@ -53,8 +35,7 @@ export async function exportSignInOutSheet(
         sheet.getColumn(c).width = 8.6;
       }
 
-      const title =
-        total > 1 ? `${camp.name} ${inst.instanceNumber}` : camp.name;
+      const title = total > 1 ? `${camp.name} ${inst.instanceNumber}` : camp.name;
       const titleRow = sheet.getRow(1);
       titleRow.getCell(1).value = title;
       titleRow.getCell(1).font = { name: 'Arial', size: 20, bold: true };
@@ -92,7 +73,7 @@ export async function exportSignInOutSheet(
         } else {
           applyCellBorders(subRow.getCell(colIdx));
         }
-      } 
+      }
 
       // Merge Last name / First name across rows 3-4 AFTER writing values.
       sheet.mergeCells('A3:A4');
@@ -112,7 +93,7 @@ export async function exportSignInOutSheet(
         applyCellBorders(row.getCell(2));
 
         row.font = { name: 'Calibri', size: 18 };
-        for (const colIdx of  [...Array(10).keys()].map((i) => 3 + i)) {
+        for (const colIdx of [...Array(10).keys()].map((i) => 3 + i)) {
           if (colIdx % 2 === 1) {
             applyCellBorders(applyCellFill(row.getCell(colIdx), GRAY_SIGNIN_FILL));
           } else {

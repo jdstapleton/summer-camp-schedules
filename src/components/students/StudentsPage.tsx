@@ -1,17 +1,5 @@
 import { useState } from 'react';
-import {
-  Button,
-  IconButton,
-  Paper,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Button, IconButton, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Tooltip, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -90,11 +78,7 @@ function StudentsPageContent() {
       <PageHeaderRow mb={2}>
         <Typography variant="h4">Students ({data.students.length})</Typography>
         <ActionButtonGroup>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleAdd}
-          >
+          <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
             Add Student
           </Button>
         </ActionButtonGroup>
@@ -105,47 +89,27 @@ function StudentsPageContent() {
           <TableHead>
             <TableRow>
               <NameColumnCell sortDirection={orderBy === 'name' ? order : false}>
-                <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={order}
-                  onClick={() => handleSort('name')}
-                >
+                <TableSortLabel active={orderBy === 'name'} direction={order} onClick={() => handleSort('name')}>
                   Name
                 </TableSortLabel>
               </NameColumnCell>
               <CampsColumnCell sortDirection={orderBy === 'camps' ? order : false}>
-                <TableSortLabel
-                  active={orderBy === 'camps'}
-                  direction={order}
-                  onClick={() => handleSort('camps')}
-                >
+                <TableSortLabel active={orderBy === 'camps'} direction={order} onClick={() => handleSort('camps')}>
                   Camps
                 </TableSortLabel>
               </CampsColumnCell>
               <AgeColumnCell align="right" sortDirection={orderBy === 'age' ? order : false}>
-                <TableSortLabel
-                  active={orderBy === 'age'}
-                  direction={order}
-                  onClick={() => handleSort('age')}
-                >
+                <TableSortLabel active={orderBy === 'age'} direction={order} onClick={() => handleSort('age')}>
                   Age
                 </TableSortLabel>
               </AgeColumnCell>
               <CustodyColumnCell sortDirection={orderBy === 'custody' ? order : false}>
-                <TableSortLabel
-                  active={orderBy === 'custody'}
-                  direction={order}
-                  onClick={() => handleSort('custody')}
-                >
+                <TableSortLabel active={orderBy === 'custody'} direction={order} onClick={() => handleSort('custody')}>
                   Custody
                 </TableSortLabel>
               </CustodyColumnCell>
               <TshirtSizeColumnCell sortDirection={orderBy === 'tshirtSize' ? order : false}>
-                <TableSortLabel
-                  active={orderBy === 'tshirtSize'}
-                  direction={order}
-                  onClick={() => handleSort('tshirtSize')}
-                >
+                <TableSortLabel active={orderBy === 'tshirtSize'} direction={order} onClick={() => handleSort('tshirtSize')}>
                   T-Shirt Size
                 </TableSortLabel>
               </TshirtSizeColumnCell>
@@ -163,86 +127,84 @@ function StudentsPageContent() {
                 .join(', ');
 
               return (
-              <TableRow key={student.id}>
-                <TableCell>
-                  <NameCellContent>
-                    <span>{student.lastName}, {student.firstName}</span>
-                    {student.gender === 'male' && (
-                      <Tooltip title="Male">
-                        <MaleIcon fontSize="small" color="action" />
-                      </Tooltip>
-                    )}
-                    {student.gender === 'female' && (
-                      <Tooltip title="Female">
-                        <FemaleIcon fontSize="small" color="action" />
-                      </Tooltip>
-                    )}
-                  </NameCellContent>
-                </TableCell>
-                <TableCell>{studentCamps}</TableCell>
-                <TableCell align="right">{student.age}</TableCell>
-                <TableCell>{student.custody}</TableCell>
-                <TableCell>{student.tshirtSize}</TableCell>
-                <FlagsCellWrapper align="center">
-                  <FlagsCellContent>
-                    <FlagsIconContainer>
-                      <PhotoCameraIcon fontSize="small" color="action" sx={student.photo ? { opacity: 0.25 } : undefined} />
-                      {!student.photo && (
-                        <NotInterestedIcon
-                          fontSize="small"
-                          color="error"
-                          sx={{
-                            position: 'absolute',
-                            top: -4,
-                            right: -4,
-                          }}
-                        />
+                <TableRow key={student.id}>
+                  <TableCell>
+                    <NameCellContent>
+                      <span>
+                        {student.lastName}, {student.firstName}
+                      </span>
+                      {student.gender === 'male' && (
+                        <Tooltip title="Male">
+                          <MaleIcon fontSize="small" color="action" />
+                        </Tooltip>
                       )}
-                    </FlagsIconContainer>
-                    {student.preCamp ? (
-                      <Tooltip title="Pre-Camp">
-                        <WbSunnyIcon fontSize="small" />
-                      </Tooltip>
-                    ) : (
-                      <FlagsIconSpacer />
-                    )}
-                    {student.postCamp ? (
-                      <Tooltip title="Post-Camp">
-                        <NightsStayIcon fontSize="small" />
-                      </Tooltip>
-                    ) : (
-                      <FlagsIconSpacer />
-                    )}
-                    {student.medicalIssues ? (
-                      <Tooltip title={student.medicalIssues}>
-                        <LocalHospitalIcon fontSize="small" color="error" />
-                      </Tooltip>
-                    ) : (
-                      <FlagsIconSpacer />
-                    )}
-                    {student.specialRequest ? (
-                      <Tooltip title={student.specialRequest}>
-                        <NoteIcon fontSize="small" color="action" />
-                      </Tooltip>
-                    ) : (
-                      <FlagsIconSpacer />
-                    )}
-                  </FlagsCellContent>
-                </FlagsCellWrapper>
-                <TableCell align="right">
-                  <IconButton size="small" onClick={() => handleEdit(student)}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    color="error"
-                    onClick={() => setDeletingId(student.id)}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            );
+                      {student.gender === 'female' && (
+                        <Tooltip title="Female">
+                          <FemaleIcon fontSize="small" color="action" />
+                        </Tooltip>
+                      )}
+                    </NameCellContent>
+                  </TableCell>
+                  <TableCell>{studentCamps}</TableCell>
+                  <TableCell align="right">{student.age}</TableCell>
+                  <TableCell>{student.custody}</TableCell>
+                  <TableCell>{student.tshirtSize}</TableCell>
+                  <FlagsCellWrapper align="center">
+                    <FlagsCellContent>
+                      <FlagsIconContainer>
+                        <PhotoCameraIcon fontSize="small" color="action" sx={student.photo ? { opacity: 0.25 } : undefined} />
+                        {!student.photo && (
+                          <NotInterestedIcon
+                            fontSize="small"
+                            color="error"
+                            sx={{
+                              position: 'absolute',
+                              top: -4,
+                              right: -4,
+                            }}
+                          />
+                        )}
+                      </FlagsIconContainer>
+                      {student.preCamp ? (
+                        <Tooltip title="Pre-Camp">
+                          <WbSunnyIcon fontSize="small" />
+                        </Tooltip>
+                      ) : (
+                        <FlagsIconSpacer />
+                      )}
+                      {student.postCamp ? (
+                        <Tooltip title="Post-Camp">
+                          <NightsStayIcon fontSize="small" />
+                        </Tooltip>
+                      ) : (
+                        <FlagsIconSpacer />
+                      )}
+                      {student.medicalIssues ? (
+                        <Tooltip title={student.medicalIssues}>
+                          <LocalHospitalIcon fontSize="small" color="error" />
+                        </Tooltip>
+                      ) : (
+                        <FlagsIconSpacer />
+                      )}
+                      {student.specialRequest ? (
+                        <Tooltip title={student.specialRequest}>
+                          <NoteIcon fontSize="small" color="action" />
+                        </Tooltip>
+                      ) : (
+                        <FlagsIconSpacer />
+                      )}
+                    </FlagsCellContent>
+                  </FlagsCellWrapper>
+                  <TableCell align="right">
+                    <IconButton size="small" onClick={() => handleEdit(student)}>
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton size="small" color="error" onClick={() => setDeletingId(student.id)}>
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              );
             })}
             {data.students.length === 0 && (
               <TableRow>
@@ -255,12 +217,7 @@ function StudentsPageContent() {
         </StyledTable>
       </TableContainer>
 
-      <StudentDialog
-        open={dialogOpen}
-        student={editingStudent}
-        onSave={handleSave}
-        onClose={() => setDialogOpen(false)}
-      />
+      <StudentDialog open={dialogOpen} student={editingStudent} onSave={handleSave} onClose={() => setDialogOpen(false)} />
 
       <ConfirmDialog
         open={deletingId !== null}

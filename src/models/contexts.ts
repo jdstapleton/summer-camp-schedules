@@ -1,10 +1,4 @@
-import {
-  ScheduleData,
-  GeneratedSchedule,
-  Student,
-  Camp,
-  CampRegistration,
-} from './types';
+import { ScheduleData, GeneratedSchedule, Student, Camp, CampRegistration } from './types';
 
 export interface ImportBatchPayload {
   newStudents: (Omit<Student, 'id'> & { dedupeKey: string })[];
@@ -22,11 +16,7 @@ export interface ScheduleContextValue {
   updateCamp: (camp: Camp) => void;
   deleteCamp: (id: string) => void;
   updateRegistration: (registration: CampRegistration) => void;
-  moveStudentBetweenInstances: (
-    studentId: string,
-    fromInstanceId: string,
-    toInstanceId: string
-  ) => void;
+  moveStudentBetweenInstances: (studentId: string, fromInstanceId: string, toInstanceId: string) => void;
   refreshSchedule: () => void;
   loadFromFile: () => Promise<void>;
   saveToFile: () => void;

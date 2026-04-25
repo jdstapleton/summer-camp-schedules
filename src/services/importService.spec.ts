@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import ExcelJS from 'exceljs';
-import {
-  extractCampName,
-  makeDedupeKey,
-  parseXlsx,
-} from './importService';
+import { extractCampName, makeDedupeKey, parseXlsx } from './importService';
 import { DEFAULT_IMPORT_COLUMNS } from './importColumnConfig';
 
 describe('makeDedupeKey', () => {
@@ -28,9 +24,7 @@ describe('extractCampName', () => {
   });
 
   it('normalizes en-dashes before splitting', () => {
-    expect(extractCampName('3D Creator–Richmond Academy')).toBe(
-      '3D Creator'
-    );
+    expect(extractCampName('3D Creator–Richmond Academy')).toBe('3D Creator');
   });
 
   it('trims whitespace', () => {
@@ -134,9 +128,7 @@ describe('parseXlsx', () => {
 
     expect(result.students).toHaveLength(1);
     expect(result.campNames).toEqual(['3D Creator']);
-    expect(result.registrationRows).toEqual([
-      { campName: '3D Creator', dedupeKey: 'smith|jane|9' },
-    ]);
+    expect(result.registrationRows).toEqual([{ campName: '3D Creator', dedupeKey: 'smith|jane|9' }]);
 
     const s = result.students[0];
     expect(s.firstName).toBe('Jane');
@@ -185,19 +177,12 @@ describe('parseXlsx', () => {
   });
 
   it('dedupes students by (lastName, firstName, age) and collects both registrations', async () => {
-    const buf = await buildXlsx([
-      dataRow({ sessionName: '3D Creator-Richmond Academy' }),
-      dataRow({ sessionName: 'Minecraft-Richmond Academy' }),
-    ]);
+    const buf = await buildXlsx([dataRow({ sessionName: '3D Creator-Richmond Academy' }), dataRow({ sessionName: 'Minecraft-Richmond Academy' })]);
     const result = await parseXlsx(buf);
     expect(result.students).toHaveLength(1);
-    expect(new Set(result.campNames)).toEqual(
-      new Set(['3D Creator', 'Minecraft'])
-    );
+    expect(new Set(result.campNames)).toEqual(new Set(['3D Creator', 'Minecraft']));
     expect(result.registrationRows).toHaveLength(2);
-    expect(result.registrationRows.every((r) => r.dedupeKey === 'smith|jane|9')).toBe(
-      true
-    );
+    expect(result.registrationRows.every((r) => r.dedupeKey === 'smith|jane|9')).toBe(true);
   });
 
   it('skips the Count summary row and blank rows', async () => {

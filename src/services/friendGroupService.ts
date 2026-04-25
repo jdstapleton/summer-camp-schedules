@@ -1,9 +1,6 @@
 import type { Student } from '@/models/types';
 
-export function extractMentionedStudents(
-  text: string,
-  students: Student[]
-): string[] {
+export function extractMentionedStudents(text: string, students: Student[]): string[] {
   if (!text.trim()) return [];
 
   const mentioned = new Set<string>();
@@ -18,11 +15,7 @@ export function extractMentionedStudents(
     const firstNameRegex = new RegExp(`\\b${escapeRegex(firstName)}\\b`, 'i');
     const lastNameRegex = new RegExp(`\\b${escapeRegex(lastName)}\\b`, 'i');
 
-    if (
-      fullNameRegex.test(text) ||
-      firstNameRegex.test(text) ||
-      lastNameRegex.test(text)
-    ) {
+    if (fullNameRegex.test(text) || firstNameRegex.test(text) || lastNameRegex.test(text)) {
       mentioned.add(student.id);
     }
   }
