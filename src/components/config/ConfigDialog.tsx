@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Dialog,
@@ -17,9 +17,13 @@ import {
   Divider,
   Typography,
   Chip,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useAppConfig } from '@/contexts/AppConfigProvider';
 import type { ImportColumnConfig } from '@/models/types';
 
@@ -30,6 +34,7 @@ interface ConfigDialogProps {
 
 export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const { config, updateConfig } = useAppConfig();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [tab, setTab] = useState(0);
   const [gradeRanges, setGradeRanges] = useState<string[]>([]);
   const [newGradeRange, setNewGradeRange] = useState('');
@@ -39,6 +44,8 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const [importColumnConfig, setImportColumnConfig] = useState<ImportColumnConfig | null>(null);
   const [editingColumnField, setEditingColumnField] = useState<keyof ImportColumnConfig | null>(null);
   const [newColumnHeader, setNewColumnHeader] = useState('');
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
     if (open) {
@@ -109,6 +116,69 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
         importColumnConfig,
       });
       onClose();
+    }
+  };
+
+  const handleExportConfig = () => {
+    const configToExport = {
+      gradeRanges,
+      extraWeeks,
+      defaultMaxSize: parseInt(defaultMaxSize, 10),
+      importColumnConfig,
+    };
+    const jsonString = JSON.stringify(configToExport, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'camp-schedule-config.json';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportConfig = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        const imported = JSON.parse(content);
+
+        let fieldCount = 0;
+
+        if (imported.gradeRanges && Array.isArray(imported.gradeRanges)) {
+          setGradeRanges(imported.gradeRanges);
+          fieldCount++;
+        }
+        if (imported.extraWeeks && Array.isArray(imported.extraWeeks)) {
+          setExtraWeeks(imported.extraWeeks);
+          fieldCount++;
+        }
+        if (imported.defaultMaxSize && typeof imported.defaultMaxSize === 'number') {
+          setDefaultMaxSize(String(imported.defaultMaxSize));
+          fieldCount++;
+        }
+        if (imported.importColumnConfig && typeof imported.importColumnConfig === 'object') {
+          setImportColumnConfig(imported.importColumnConfig);
+          fieldCount++;
+        }
+
+        if (fieldCount === 0) {
+          setToastMessage(
+            'No valid configuration fields found. Expected: gradeRanges, extraWeeks, defaultMaxSize, or importColumnConfig.',
+          );
+          setToastOpen(true);
+        }
+      } catch {
+        setToastMessage('Failed to import configuration. Please ensure the file is valid JSON.');
+        setToastOpen(true);
+      }
+    };
+    reader.readAsText(file);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -323,11 +393,41 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
         )}
       </DialogContent>
       <DialogActions>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json"
+          style={{ display: 'none' }}
+          onChange={handleImportConfig}
+        />
+        <Button
+          onClick={() => fileInputRef.current?.click()}
+          startIcon={<FileUploadIcon />}
+        >
+          Import
+        </Button>
+        <Button
+          onClick={handleExportConfig}
+          startIcon={<FileDownloadIcon />}
+        >
+          Export
+        </Button>
+        <Box sx={{ flex: 1 }} />
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSave} variant="contained">
           Save
         </Button>
       </DialogActions>
+      <Snackbar
+        open={toastOpen}
+        autoHideDuration={4000}
+        onClose={() => setToastOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert onClose={() => setToastOpen(false)} severity="error" sx={{ width: '100%' }}>
+          {toastMessage}
+        </Alert>
+      </Snackbar>
     </Dialog>
   );
 }
