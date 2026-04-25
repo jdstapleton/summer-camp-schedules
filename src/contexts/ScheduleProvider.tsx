@@ -224,11 +224,28 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      // Create friend groups based on special request mentions
+      // Create friend groups based on special request mentions with transitive merging
       for (const reg of registrationByCampId.values()) {
         const campStudents = mergedStudents.filter((s) =>
           reg.studentIds.includes(s.id)
         );
+
+        const unionFind = new Map<string, string>();
+        const find = (id: string): string => {
+          if (!unionFind.has(id)) unionFind.set(id, id);
+          const parent = unionFind.get(id)!;
+          if (parent === id) return id;
+          const root = find(parent);
+          unionFind.set(id, root);
+          return root;
+        };
+        const union = (id1: string, id2: string) => {
+          const root1 = find(id1);
+          const root2 = find(id2);
+          if (root1 !== root2) {
+            unionFind.set(root1, root2);
+          }
+        };
 
         for (const student of campStudents) {
           if (!student.specialRequest.trim()) continue;
@@ -240,18 +257,20 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
 
           for (const mentionedId of mentioned) {
             if (mentionedId === student.id) continue;
-
-            const groupExists = reg.friendGroups.some(
-              (g) =>
-                (g.includes(student.id) && g.includes(mentionedId)) ||
-                (g.includes(mentionedId) && g.includes(student.id))
-            );
-
-            if (!groupExists) {
-              reg.friendGroups.push([student.id, mentionedId]);
-            }
+            union(student.id, mentionedId);
           }
         }
+
+        const groupMap = new Map<string, string[]>();
+        for (const studentId of reg.studentIds) {
+          const root = find(studentId);
+          if (!groupMap.has(root)) groupMap.set(root, []);
+          groupMap.get(root)!.push(studentId);
+        }
+
+        reg.friendGroups = Array.from(groupMap.values()).filter(
+          (g) => g.length >= 2
+        );
       }
 
       return {

@@ -11,6 +11,7 @@ import {
   Tooltip,
   Typography,
   Badge,
+  Box,
 } from '@mui/material';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -21,6 +22,8 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import PrintIcon from '@mui/icons-material/Print';
 import BadgeIcon from '@mui/icons-material/Badge';
 import ChecklistIcon from '@mui/icons-material/Checklist';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import NoteIcon from '@mui/icons-material/Note';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
@@ -65,6 +68,7 @@ interface CampBlockProps {
   getStudentSortKey: (id: string) => string;
   getStudentGender: (id: string) => Gender;
   getStudentFriendGroup: (campId: string, studentId: string) => number | null;
+  getStudentNotes: (id: string) => { medical: string; special: string };
   onMoveStudent: (
     studentId: string,
     fromInstanceId: string,
@@ -81,6 +85,7 @@ function CampBlock({
   getStudentSortKey,
   getStudentGender,
   getStudentFriendGroup,
+  getStudentNotes,
   onMoveStudent,
 }: CampBlockProps) {
   const [dragging, setDragging] = useState<DragPayload | null>(null);
@@ -213,29 +218,50 @@ function CampBlock({
                         }}
                       >
                         <span>{getStudentName(id)}</span>
-                        {friendGroup && (
-                          <Tooltip
-                            title={`Friend Group ${friendGroup}`}
-                            placement="right"
-                          >
-                            <Badge
-                              badgeContent={friendGroup}
-                              color="primary"
-                              sx={{
-                                '& .MuiBadge-badge': {
-                                  bottom: 12,
-                                },
-                                marginRight: 1.25,
-                              }}
-                              anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right',
-                              }}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          {(() => {
+                            const notes = getStudentNotes(id);
+                            return (
+                              <>
+                                {notes.medical && (
+                                  <Tooltip title={notes.medical} placement="top">
+                                    <LocalHospitalIcon
+                                      fontSize="small"
+                                      color="error"
+                                    />
+                                  </Tooltip>
+                                )}
+                                {notes.special && (
+                                  <Tooltip title={notes.special} placement="top">
+                                    <NoteIcon fontSize="small" color="action" />
+                                  </Tooltip>
+                                )}
+                              </>
+                            );
+                          })()}
+                          {friendGroup && (
+                            <Tooltip
+                              title={`Friend Group ${friendGroup}`}
+                              placement="right"
                             >
-                              <GroupsIcon color="secondary" />
-                            </Badge>
-                          </Tooltip>
-                        )}
+                              <Badge
+                                badgeContent={friendGroup}
+                                color="primary"
+                                sx={{
+                                  '& .MuiBadge-badge': {
+                                    bottom: 12,
+                                  },
+                                }}
+                                anchorOrigin={{
+                                  vertical: 'bottom',
+                                  horizontal: 'right',
+                                }}
+                              >
+                                <GroupsIcon color="secondary" />
+                              </Badge>
+                            </Tooltip>
+                          )}
+                        </Box>
                       </StudentPill>
                     );
                   })}
@@ -292,6 +318,14 @@ export function SchedulePage() {
     return groupIndex >= 0 ? groupIndex + 1 : null;
   };
 
+  const getStudentNotes = (studentId: string) => {
+    const s = data.students.find((st) => st.id === studentId);
+    return {
+      medical: s?.medicalIssues ?? '',
+      special: s?.specialRequest ?? '',
+    };
+  };
+
   const uniqueWeeks = Array.from(new Set(data.camps.map((c) => c.week))).sort(
     (a, b) => {
       const dateA = dayjs(a, ['MMMM D', 'MMM D']);
@@ -328,6 +362,7 @@ export function SchedulePage() {
     getStudentSortKey,
     getStudentGender,
     getStudentFriendGroup,
+    getStudentNotes,
     onMoveStudent: moveStudentBetweenInstances,
   });
 
