@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { AppConfig } from '@/models/types';
 import { DEFAULT_GRADE_RANGES } from '@/config/defaultGradeRanges';
+import { DEFAULT_IMPORT_COLUMNS } from '@/services/importColumnConfig';
 
 const STORAGE_KEY = 'summerCampAppConfig';
 
@@ -9,6 +10,7 @@ const defaultConfig: AppConfig = {
   gradeRanges: DEFAULT_GRADE_RANGES,
   extraWeeks: [],
   defaultMaxSize: 10,
+  importColumnConfig: DEFAULT_IMPORT_COLUMNS,
 };
 
 interface AppConfigContextValue {

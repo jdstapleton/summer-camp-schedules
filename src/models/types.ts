@@ -1,10 +1,32 @@
 export type Gender = 'male' | 'female' | 'other';
 export type Custody = 'Both' | 'Father' | 'Mother';
 
+export interface ImportColumnConfig {
+  lastName: string[];
+  firstName: string[];
+  gender: string[];
+  age: string[];
+  sessionName: string[];
+  selections: string[];
+  specialRequest: string[];
+  medicalIssues: string[];
+  photo: string[];
+  tshirtSize: string[];
+  primaryName: string[];
+  primaryHomePhone: string[];
+  primaryCellPhone: string[];
+  secondaryName: string[];
+  secondaryCellPhone: string[];
+  emergencyName: string[];
+  emergencyPhone: string[];
+  custody: string[];
+}
+
 export interface AppConfig {
   gradeRanges: string[];
   extraWeeks: string[];
   defaultMaxSize: number;
+  importColumnConfig: ImportColumnConfig;
 }
 
 export interface Contact {

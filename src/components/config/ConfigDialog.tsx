@@ -16,9 +16,11 @@ import {
   IconButton,
   Divider,
   Typography,
+  Chip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppConfig } from '@/contexts/AppConfigProvider';
+import type { ImportColumnConfig } from '@/models/types';
 
 interface ConfigDialogProps {
   open: boolean;
@@ -33,6 +35,9 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const [extraWeeks, setExtraWeeks] = useState<string[]>([]);
   const [newWeek, setNewWeek] = useState('');
   const [defaultMaxSize, setDefaultMaxSize] = useState('10');
+  const [importColumnConfig, setImportColumnConfig] = useState<ImportColumnConfig | null>(null);
+  const [editingColumnField, setEditingColumnField] = useState<keyof ImportColumnConfig | null>(null);
+  const [newColumnHeader, setNewColumnHeader] = useState('');
 
   useEffect(() => {
     if (open) {
@@ -40,8 +45,11 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
       setGradeRanges([...config.gradeRanges]);
       setExtraWeeks([...config.extraWeeks]);
       setDefaultMaxSize(String(config.defaultMaxSize));
+      setImportColumnConfig(JSON.parse(JSON.stringify(config.importColumnConfig)));
       setNewGradeRange('');
       setNewWeek('');
+      setNewColumnHeader('');
+      setEditingColumnField(null);
       setTab(0);
     }
   }, [open, config]);
@@ -70,10 +78,35 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
     setExtraWeeks(extraWeeks.filter((_, i) => i !== index));
   };
 
+  const addColumnHeader = (field: keyof ImportColumnConfig) => {
+    if (!importColumnConfig || !newColumnHeader.trim()) return;
+    const trimmed = newColumnHeader.trim();
+    if (!importColumnConfig[field].includes(trimmed)) {
+      setImportColumnConfig({
+        ...importColumnConfig,
+        [field]: [...importColumnConfig[field], trimmed],
+      });
+      setNewColumnHeader('');
+    }
+  };
+
+  const removeColumnHeader = (field: keyof ImportColumnConfig, index: number) => {
+    if (!importColumnConfig) return;
+    setImportColumnConfig({
+      ...importColumnConfig,
+      [field]: importColumnConfig[field].filter((_, i) => i !== index),
+    });
+  };
+
   const handleSave = () => {
     const parsedMaxSize = parseInt(defaultMaxSize, 10);
-    if (!isNaN(parsedMaxSize) && parsedMaxSize >= 1) {
-      updateConfig({ gradeRanges, extraWeeks, defaultMaxSize: parsedMaxSize });
+    if (!isNaN(parsedMaxSize) && parsedMaxSize >= 1 && importColumnConfig) {
+      updateConfig({
+        gradeRanges,
+        extraWeeks,
+        defaultMaxSize: parsedMaxSize,
+        importColumnConfig,
+      });
       onClose();
     }
   };
@@ -84,6 +117,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
       <DialogContent>
         <Tabs value={tab} onChange={(_, newTab) => setTab(newTab)} sx={{ mb: 2 }}>
           <Tab label="Camp Defaults" />
+          <Tab label="Import Columns" />
         </Tabs>
 
         {tab === 0 && (
@@ -202,6 +236,73 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
               helperText="Default camp size when creating new camps. If enrollment exceeds this, multiple instances are created."
             />
           </>
+        )}
+
+        {tab === 1 && importColumnConfig && (
+          <Box sx={{ pt: 2 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
+              Configure column header mappings for Excel imports. Each field can match multiple column headers.
+            </Typography>
+            {Object.entries(importColumnConfig).map(([field, headers]) => (
+              <Box key={field} sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" sx={{ mb: 1, textTransform: 'capitalize' }}>
+                  {field.replace(/([A-Z])/g, ' $1').trim()}
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1 }}>
+                  {headers.map((header: string, idx: number) => (
+                    <Chip
+                      key={idx}
+                      label={header}
+                      onDelete={() =>
+                        removeColumnHeader(field as keyof ImportColumnConfig, idx)
+                      }
+                      size="small"
+                    />
+                  ))}
+                </Box>
+                {editingColumnField === field ? (
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <TextField
+                      size="small"
+                      value={newColumnHeader}
+                      onChange={(e) => setNewColumnHeader(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          addColumnHeader(field as keyof ImportColumnConfig);
+                        }
+                      }}
+                      placeholder="Add column header"
+                      autoFocus
+                      fullWidth
+                    />
+                    <Button
+                      onClick={() =>
+                        addColumnHeader(field as keyof ImportColumnConfig)
+                      }
+                      variant="outlined"
+                      disabled={!newColumnHeader.trim()}
+                    >
+                      Add
+                    </Button>
+                    <Button
+                      onClick={() => setEditingColumnField(null)}
+                      variant="text"
+                    >
+                      Done
+                    </Button>
+                  </Box>
+                ) : (
+                  <Button
+                    onClick={() => setEditingColumnField(field as keyof ImportColumnConfig)}
+                    variant="outlined"
+                    size="small"
+                  >
+                    Add Header
+                  </Button>
+                )}
+              </Box>
+            ))}
+          </Box>
         )}
       </DialogContent>
       <DialogActions>

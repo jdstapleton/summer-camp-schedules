@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { CampDialog } from '@/components/camps/CampDialog';
 import { useSchedule } from '@/hooks/useSchedule';
+import { useAppConfig } from '@/contexts/AppConfigProvider';
 import type { Camp } from '@/models/types';
 import type { ImportBatchPayload } from '@/models/contexts';
 import {
@@ -65,6 +66,7 @@ const parsedStudentToNew = (
 
 export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
   const { data, importBatch } = useSchedule();
+  const { config } = useAppConfig();
   const [phase, setPhase] = useState<Phase>({ kind: 'parsing' });
   const [lastCampConfig, setLastCampConfig] = useState<{
     gradeRange: string;
@@ -86,7 +88,7 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
     const run = async () => {
       try {
         const buffer = await file.arrayBuffer();
-        const parsed = await parseXlsx(buffer);
+        const parsed = await parseXlsx(buffer, config.importColumnConfig);
         if (cancelled) return;
 
         const existingCampNames = new Set(
@@ -109,7 +111,7 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
     return () => {
       cancelled = true;
     };
-  }, [file]);
+  }, [file, config.importColumnConfig]);
 
   const commit = (
     parsed: ParsedImport,
