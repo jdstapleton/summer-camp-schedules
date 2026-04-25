@@ -1,41 +1,10 @@
 import { useState } from 'react';
-import { Button, IconButton, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Tooltip, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import NoteIcon from '@mui/icons-material/Note';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import NotInterestedIcon from '@mui/icons-material/NotInterested';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import NightsStayIcon from '@mui/icons-material/NightsStay';
-import MaleIcon from '@mui/icons-material/Male';
-import FemaleIcon from '@mui/icons-material/Female';
+import { useTheme, useMediaQuery } from '@mui/material';
 import { useSchedule } from '@/hooks/useSchedule';
-import { useStudentsFilters } from '@/contexts/StudentsFiltersContext';
 import { StudentsFiltersProvider } from '@/contexts/StudentsFiltersProvider';
 import type { Student } from '@/models/types';
-import { StudentDialog } from './StudentDialog';
-import { StudentsFilterRow } from './StudentsFilterRow';
-import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
-import { PageHeaderRow } from '@/components/shared/shared.styles';
-import {
-  ActionButtonGroup,
-  MutedTableCell,
-  StyledTable,
-  NameCellContent,
-  FlagsCellContent,
-  FlagsIconContainer,
-  FlagsIconSpacer,
-  FlagsCellWrapper,
-  NameColumnCell,
-  CampsColumnCell,
-  AgeColumnCell,
-  CustodyColumnCell,
-  TshirtSizeColumnCell,
-  FlagsColumnCell,
-  ActionsColumnCell,
-} from './StudentsPage.styles';
+import { StudentsDesktopPage } from './StudentsDesktopPage';
+import { StudentsMobilePage } from './StudentsMobilePage';
 
 export function StudentsPage() {
   const { data } = useSchedule();
@@ -47,8 +16,9 @@ export function StudentsPage() {
 }
 
 function StudentsPageContent() {
-  const { data, addStudent, updateStudent, deleteStudent } = useSchedule();
-  const { sortedStudents, orderBy, order, handleSort } = useStudentsFilters();
+  const { addStudent, updateStudent, deleteStudent } = useSchedule();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
@@ -73,161 +43,23 @@ function StudentsPageContent() {
     setDialogOpen(false);
   };
 
-  return (
-    <div>
-      <PageHeaderRow mb={2}>
-        <Typography variant="h4">Students ({data.students.length})</Typography>
-        <ActionButtonGroup>
-          <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
-            Add Student
-          </Button>
-        </ActionButtonGroup>
-      </PageHeaderRow>
+  const handleDelete = (id: string) => {
+    deleteStudent(id);
+    setDeletingId(null);
+  };
 
-      <TableContainer component={Paper}>
-        <StyledTable>
-          <TableHead>
-            <TableRow>
-              <NameColumnCell sortDirection={orderBy === 'name' ? order : false}>
-                <TableSortLabel active={orderBy === 'name'} direction={order} onClick={() => handleSort('name')}>
-                  Name
-                </TableSortLabel>
-              </NameColumnCell>
-              <CampsColumnCell sortDirection={orderBy === 'camps' ? order : false}>
-                <TableSortLabel active={orderBy === 'camps'} direction={order} onClick={() => handleSort('camps')}>
-                  Camps
-                </TableSortLabel>
-              </CampsColumnCell>
-              <AgeColumnCell align="right" sortDirection={orderBy === 'age' ? order : false}>
-                <TableSortLabel active={orderBy === 'age'} direction={order} onClick={() => handleSort('age')}>
-                  Age
-                </TableSortLabel>
-              </AgeColumnCell>
-              <CustodyColumnCell sortDirection={orderBy === 'custody' ? order : false}>
-                <TableSortLabel active={orderBy === 'custody'} direction={order} onClick={() => handleSort('custody')}>
-                  Custody
-                </TableSortLabel>
-              </CustodyColumnCell>
-              <TshirtSizeColumnCell sortDirection={orderBy === 'tshirtSize' ? order : false}>
-                <TableSortLabel active={orderBy === 'tshirtSize'} direction={order} onClick={() => handleSort('tshirtSize')}>
-                  T-Shirt Size
-                </TableSortLabel>
-              </TshirtSizeColumnCell>
-              <FlagsColumnCell align="center">Flags</FlagsColumnCell>
-              <ActionsColumnCell align="right">Actions</ActionsColumnCell>
-            </TableRow>
-            <StudentsFilterRow />
-          </TableHead>
-          <TableBody>
-            {sortedStudents.map((student: Student) => {
-              const studentCamps = data.registrations
-                .filter((reg) => reg.studentIds.includes(student.id))
-                .map((reg) => data.camps.find((c) => c.id === reg.campId)?.name)
-                .filter(Boolean)
-                .join(', ');
+  const commonProps = {
+    onEdit: handleEdit,
+    onAdd: handleAdd,
+    dialogOpen,
+    editingStudent,
+    onSave: handleSave,
+    onCloseDialog: () => setDialogOpen(false),
+    deletingId,
+    onStartDelete: (id: string) => setDeletingId(id),
+    onDelete: handleDelete,
+    onClosedDeleteDialog: () => setDeletingId(null),
+  };
 
-              return (
-                <TableRow key={student.id}>
-                  <TableCell>
-                    <NameCellContent>
-                      <span>
-                        {student.lastName}, {student.firstName}
-                      </span>
-                      {student.gender === 'male' && (
-                        <Tooltip title="Male">
-                          <MaleIcon fontSize="small" color="action" />
-                        </Tooltip>
-                      )}
-                      {student.gender === 'female' && (
-                        <Tooltip title="Female">
-                          <FemaleIcon fontSize="small" color="action" />
-                        </Tooltip>
-                      )}
-                    </NameCellContent>
-                  </TableCell>
-                  <TableCell>{studentCamps}</TableCell>
-                  <TableCell align="right">{student.age}</TableCell>
-                  <TableCell>{student.custody}</TableCell>
-                  <TableCell>{student.tshirtSize}</TableCell>
-                  <FlagsCellWrapper align="center">
-                    <FlagsCellContent>
-                      <FlagsIconContainer>
-                        <PhotoCameraIcon fontSize="small" color="action" sx={student.photo ? { opacity: 0.25 } : undefined} />
-                        {!student.photo && (
-                          <NotInterestedIcon
-                            fontSize="small"
-                            color="error"
-                            sx={{
-                              position: 'absolute',
-                              top: -4,
-                              right: -4,
-                            }}
-                          />
-                        )}
-                      </FlagsIconContainer>
-                      {student.preCamp ? (
-                        <Tooltip title="Pre-Camp">
-                          <WbSunnyIcon fontSize="small" />
-                        </Tooltip>
-                      ) : (
-                        <FlagsIconSpacer />
-                      )}
-                      {student.postCamp ? (
-                        <Tooltip title="Post-Camp">
-                          <NightsStayIcon fontSize="small" />
-                        </Tooltip>
-                      ) : (
-                        <FlagsIconSpacer />
-                      )}
-                      {student.medicalIssues ? (
-                        <Tooltip title={student.medicalIssues}>
-                          <LocalHospitalIcon fontSize="small" color="error" />
-                        </Tooltip>
-                      ) : (
-                        <FlagsIconSpacer />
-                      )}
-                      {student.specialRequest ? (
-                        <Tooltip title={student.specialRequest}>
-                          <NoteIcon fontSize="small" color="action" />
-                        </Tooltip>
-                      ) : (
-                        <FlagsIconSpacer />
-                      )}
-                    </FlagsCellContent>
-                  </FlagsCellWrapper>
-                  <TableCell align="right">
-                    <IconButton size="small" onClick={() => handleEdit(student)}>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton size="small" color="error" onClick={() => setDeletingId(student.id)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {data.students.length === 0 && (
-              <TableRow>
-                <MutedTableCell colSpan={7} align="center">
-                  No students added yet.
-                </MutedTableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </StyledTable>
-      </TableContainer>
-
-      <StudentDialog open={dialogOpen} student={editingStudent} onSave={handleSave} onClose={() => setDialogOpen(false)} />
-
-      <ConfirmDialog
-        open={deletingId !== null}
-        title="Delete Student"
-        message="Are you sure? This student will be removed from all class registrations."
-        onConfirm={() => {
-          if (deletingId) deleteStudent(deletingId);
-        }}
-        onClose={() => setDeletingId(null)}
-      />
-    </div>
-  );
+  return isMobile ? <StudentsMobilePage {...commonProps} /> : <StudentsDesktopPage {...commonProps} />;
 }
