@@ -52,7 +52,12 @@
         "tool": "Bash",
         "description": "Drop git stash permanently",
         "command": "git stash drop"
-      }
+      },
+      {
+        "tool": "Bash",
+        "description": "npm commands",
+        "command": "^npm run dev"
+      },
     ]
   },
   "codeFormatter": "prettier",

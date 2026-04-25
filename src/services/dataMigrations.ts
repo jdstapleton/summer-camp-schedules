@@ -2,7 +2,7 @@
 import type { ScheduleData } from '@/models/types';
 import { normalizeNegativeResponses } from './normalizeFieldValues';
 
-const CURRENT_VERSION = 6;
+const CURRENT_VERSION = 7;
 
 const randomSafetyCode = () =>
   Math.floor(Math.random() * 10000)
@@ -74,6 +74,11 @@ const migrateV5toV6 = (data: any): ScheduleData => {
   return { ...data, version: 6, students: migratedStudents };
 };
 
+// Version 6 → Version 7: Add schedule field for persisting generated schedules
+const migrateV6toV7 = (data: any): ScheduleData => {
+  return { ...data, version: 7, schedule: data.schedule ?? null };
+};
+
 export const migrateData = (data: any): ScheduleData => {
   if (!data || typeof data !== 'object') {
     return {
@@ -102,6 +107,9 @@ export const migrateData = (data: any): ScheduleData => {
   }
   if (startVersion < 6) {
     currentData = migrateV5toV6(currentData);
+  }
+  if (startVersion < 7) {
+    currentData = migrateV6toV7(currentData);
   }
 
   // Ensure version is set

@@ -79,6 +79,7 @@ export interface ScheduleData {
   students: Student[];
   camps: Camp[];
   registrations: CampRegistration[];
+  schedule: GeneratedSchedule | null;
 }
 
 export interface GeneratedSchedule {

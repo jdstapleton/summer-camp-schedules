@@ -20,19 +20,23 @@ const existingStudentKey = (s: Student): string =>
 const STORAGE_KEY = 'summer-camp-schedules';
 
 const emptyData: ScheduleData = {
-  version: 6,
+  version: 7,
   students: [],
   camps: [],
   registrations: [],
+  schedule: null,
 };
 
 const isValidScheduleData = (data: unknown): data is ScheduleData => {
   if (!data || typeof data !== 'object') return false;
   const obj = data as Record<string, unknown>;
+  const isValidSchedule = (sched: unknown): sched is GeneratedSchedule | null =>
+    sched === null || (typeof sched === 'object' && Array.isArray((sched as Record<string, unknown>).instances));
   return (
     Array.isArray(obj.students) &&
     Array.isArray(obj.camps) &&
-    Array.isArray(obj.registrations)
+    Array.isArray(obj.registrations) &&
+    isValidSchedule(obj.schedule)
   );
 };
 
@@ -53,7 +57,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     return emptyData;
   });
   const [generatedSchedule, setGeneratedSchedule] =
-    useState<GeneratedSchedule | null>(null);
+    useState<GeneratedSchedule | null>(data.schedule ?? null);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -127,7 +131,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     (studentId: string, fromInstanceId: string, toInstanceId: string) => {
       setGeneratedSchedule((prev) => {
         if (!prev) return prev;
-        return {
+        const updatedSchedule = {
           ...prev,
           instances: prev.instances.map((inst) => {
             if (inst.id === fromInstanceId) {
@@ -145,20 +149,31 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
             return inst;
           }),
         };
+        setData((prevData) => ({
+          ...prevData,
+          schedule: updatedSchedule,
+        }));
+        return updatedSchedule;
       });
     },
     []
   );
 
   const refreshSchedule = useCallback(() => {
-    setGeneratedSchedule(generateSchedule(data));
+    const newSchedule = generateSchedule(data);
+    setGeneratedSchedule(newSchedule);
+    setData((prevData) => ({
+      ...prevData,
+      schedule: newSchedule,
+    }));
   }, [data]);
 
   const loadFromFile = useCallback(async () => {
     const loaded = await fileService.openFile();
     if (loaded) {
-      setData(migrateData(loaded));
-      setGeneratedSchedule(null);
+      const migratedData = migrateData(loaded);
+      setData(migratedData);
+      setGeneratedSchedule(migratedData.schedule ?? null);
     }
   }, []);
 
