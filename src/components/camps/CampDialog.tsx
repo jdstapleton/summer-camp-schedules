@@ -8,6 +8,8 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
+import { DEFAULT_GRADE_RANGES } from '@/config/defaultGradeRanges';
+import { generateDefaultWeeks } from '@/config/defaultWeeks';
 import type { Camp } from '@/models/types';
 
 interface CampDialogProps {
@@ -40,9 +42,26 @@ export function CampDialog({
   const existingWeeks = Array.from(
     new Set(existingCamps.map((c) => c.week))
   ).sort();
+  const defaultWeeks = generateDefaultWeeks();
   const existingGradeRanges = Array.from(
-    new Set(existingCamps.map((c) => c.gradeRange))
+    new Set([...DEFAULT_GRADE_RANGES, ...existingCamps.map((c) => c.gradeRange)])
   ).sort();
+
+  const filterWeekOptions = (options: string[], state: { inputValue: string }) => {
+    if (!state.inputValue) {
+      return options;
+    }
+    const inputLower = state.inputValue.toLowerCase();
+    const matchingExisting = options.filter((opt) =>
+      opt.toLowerCase().includes(inputLower)
+    );
+    const matchingGenerated = defaultWeeks.filter(
+      (w: string) =>
+        w.toLowerCase().includes(inputLower) &&
+        !matchingExisting.includes(w)
+    );
+    return [...matchingExisting, ...matchingGenerated];
+  };
 
   useEffect(() => {
     if (open) {
@@ -119,6 +138,7 @@ export function CampDialog({
           value={week}
           onChange={(_, newValue) => setWeek(newValue ?? '')}
           onInputChange={(_, newInput) => setWeek(newInput)}
+          filterOptions={filterWeekOptions}
           renderInput={(params) => (
             <TextField
               {...params}

@@ -23,6 +23,7 @@ const makeStudent = (overrides: Partial<Student> = {}): Student => ({
   postCamp: false,
   specialRequest: '',
   medicalIssues: '',
+  tshirtSize: '',
   primary: { name: '', homePhone: '', cellPhone: '' },
   secondary: { name: '', homePhone: '', cellPhone: '' },
   emergency: { name: '', homePhone: '', cellPhone: '' },

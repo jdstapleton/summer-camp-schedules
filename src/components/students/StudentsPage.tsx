@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  Box,
   Button,
   IconButton,
   Paper,
@@ -13,13 +14,17 @@ import {
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import NoteIcon from '@mui/icons-material/Note';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import NightsStayIcon from '@mui/icons-material/NightsStay';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { Student } from '@/models/types';
+import { studentSortCompare } from '@/services/exports/shared';
 import { StudentDialog } from './StudentDialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
@@ -82,30 +87,52 @@ export function StudentsPage() {
               <TableCell>Gender</TableCell>
               <TableCell align="right">Age</TableCell>
               <TableCell>Custody</TableCell>
+              <TableCell>T-Shirt Size</TableCell>
               <TableCell align="center">Photo</TableCell>
-              <TableCell align="center">Pre-Camp</TableCell>
-              <TableCell align="center">Post-Camp</TableCell>
+              <TableCell align="center">Pre/Post</TableCell>
               <TableCell align="center">Notes</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.students.map((student) => (
+            {[...data.students].sort(studentSortCompare).map((student) => (
               <TableRow key={student.id}>
                 <TableCell>
-                  {student.firstName} {student.lastName}
+                  {student.lastName}, {student.firstName}
                 </TableCell>
                 <CapitalizedTableCell>{student.gender}</CapitalizedTableCell>
                 <TableCell align="right">{student.age}</TableCell>
                 <TableCell>{student.custody}</TableCell>
+                <TableCell>{student.tshirtSize}</TableCell>
                 <TableCell align="center">
-                  {student.photo && <CheckIcon fontSize="small" />}
+                  <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                    <PhotoCameraIcon fontSize="small" color="action" sx={student.photo ? { opacity: 0.25  } : undefined} />
+                    {!student.photo && (
+                      <NotInterestedIcon
+                        fontSize="small"
+                        color="error"
+                        sx={{
+                          position: 'absolute',
+                          top: -4,
+                          right: -4,
+                        }}
+                      />
+                    )}
+                  </Box>
                 </TableCell>
                 <TableCell align="center">
-                  {student.preCamp && <CheckIcon fontSize="small" />}
-                </TableCell>
-                <TableCell align="center">
-                  {student.postCamp && <CheckIcon fontSize="small" />}
+                  <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'center' }}>
+                    {student.preCamp && (
+                      <Tooltip title="Pre-Camp">
+                        <WbSunnyIcon fontSize="small" />
+                      </Tooltip>
+                    )}
+                    {student.postCamp && (
+                      <Tooltip title="Post-Camp">
+                        <NightsStayIcon fontSize="small" />
+                      </Tooltip>
+                    )}
+                  </Box>
                 </TableCell>
                 <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>
                   {student.medicalIssues && (

@@ -11,6 +11,7 @@ import type { ImportBatchPayload } from '@/models/contexts';
 import { fileService } from '@/services/fileService';
 import { generateSchedule } from '@/services/schedulerService';
 import { migrateData } from '@/services/dataMigrations';
+import { extractMentionedStudents } from '@/services/friendGroupService';
 import { ScheduleContext } from './ScheduleContext';
 
 const existingStudentKey = (s: Student): string =>
@@ -19,7 +20,7 @@ const existingStudentKey = (s: Student): string =>
 const STORAGE_KEY = 'summer-camp-schedules';
 
 const emptyData: ScheduleData = {
-  version: 5,
+  version: 6,
   students: [],
   camps: [],
   registrations: [],
@@ -220,6 +221,36 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         if (!reg) continue;
         if (!reg.studentIds.includes(studentId)) {
           reg.studentIds.push(studentId);
+        }
+      }
+
+      // Create friend groups based on special request mentions
+      for (const reg of registrationByCampId.values()) {
+        const campStudents = mergedStudents.filter((s) =>
+          reg.studentIds.includes(s.id)
+        );
+
+        for (const student of campStudents) {
+          if (!student.specialRequest.trim()) continue;
+
+          const mentioned = extractMentionedStudents(
+            student.specialRequest,
+            campStudents
+          );
+
+          for (const mentionedId of mentioned) {
+            if (mentionedId === student.id) continue;
+
+            const groupExists = reg.friendGroups.some(
+              (g) =>
+                (g.includes(student.id) && g.includes(mentionedId)) ||
+                (g.includes(mentionedId) && g.includes(student.id))
+            );
+
+            if (!groupExists) {
+              reg.friendGroups.push([student.id, mentionedId]);
+            }
+          }
         }
       }
 

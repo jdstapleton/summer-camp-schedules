@@ -3,6 +3,8 @@ import {
   DEFAULT_IMPORT_COLUMNS,
   type ImportColumnConfig,
 } from './importColumnConfig';
+import { normalizeNegativeResponses } from './normalizeFieldValues';
+import { normalizeTshirtSize } from './tshirtSizeNormalization';
 
 export interface ParsedStudent {
   dedupeKey: string;
@@ -16,6 +18,7 @@ export interface ParsedStudent {
   postCamp: boolean;
   specialRequest: string;
   medicalIssues: string;
+  tshirtSize: string;
   primary: Contact;
   secondary: Contact;
   emergency: Contact;
@@ -110,16 +113,24 @@ export async function parseXlsx(
     }
   });
 
-  const resolve = (header: string): number | undefined =>
+  const resolveSingle = (header: string): number | undefined =>
     headerToIndex.get(header.trim().toLowerCase());
 
-  const required: { key: keyof ImportColumnConfig; header: string }[] = (
-    Object.keys(config) as (keyof ImportColumnConfig)[]
-  ).map((key) => ({ key, header: config[key] }));
+  const resolveAny = (headers: string[]): number | undefined => {
+    for (const header of headers) {
+      const col = resolveSingle(header);
+      if (col !== undefined) return col;
+    }
+    return undefined;
+  };
 
-  const missing = required.filter(({ header }) => resolve(header) === undefined);
+  const required: { key: keyof ImportColumnConfig; headers: string[] }[] = (
+    Object.keys(config) as (keyof ImportColumnConfig)[]
+  ).map((key) => ({ key, headers: config[key] }));
+
+  const missing = required.filter(({ headers }) => resolveAny(headers) === undefined);
   if (missing.length > 0) {
-    const names = missing.map((m) => `"${m.header}"`).join(', ');
+    const names = missing.map((m) => `"${m.headers.join('" or "')}"`).join(', ');
     throw new Error(
       `The import file is missing required column header(s): ${names}. ` +
         `Update the expected headers in importColumnConfig.ts if the source format changed.`
@@ -127,23 +138,24 @@ export async function parseXlsx(
   }
 
   const col = {
-    lastName: resolve(config.lastName)!,
-    firstName: resolve(config.firstName)!,
-    gender: resolve(config.gender)!,
-    age: resolve(config.age)!,
-    sessionName: resolve(config.sessionName)!,
-    selections: resolve(config.selections)!,
-    specialRequest: resolve(config.specialRequest)!,
-    medicalIssues: resolve(config.medicalIssues)!,
-    photo: resolve(config.photo)!,
-    primaryName: resolve(config.primaryName)!,
-    primaryHomePhone: resolve(config.primaryHomePhone)!,
-    primaryCellPhone: resolve(config.primaryCellPhone)!,
-    secondaryName: resolve(config.secondaryName)!,
-    secondaryCellPhone: resolve(config.secondaryCellPhone)!,
-    emergencyName: resolve(config.emergencyName)!,
-    emergencyPhone: resolve(config.emergencyPhone)!,
-    custody: resolve(config.custody)!,
+    lastName: resolveAny(config.lastName)!,
+    firstName: resolveAny(config.firstName)!,
+    gender: resolveAny(config.gender)!,
+    age: resolveAny(config.age)!,
+    sessionName: resolveAny(config.sessionName)!,
+    selections: resolveAny(config.selections)!,
+    specialRequest: resolveAny(config.specialRequest)!,
+    medicalIssues: resolveAny(config.medicalIssues)!,
+    photo: resolveAny(config.photo)!,
+    tshirtSize: resolveAny(config.tshirtSize)!,
+    primaryName: resolveAny(config.primaryName)!,
+    primaryHomePhone: resolveAny(config.primaryHomePhone)!,
+    primaryCellPhone: resolveAny(config.primaryCellPhone)!,
+    secondaryName: resolveAny(config.secondaryName)!,
+    secondaryCellPhone: resolveAny(config.secondaryCellPhone)!,
+    emergencyName: resolveAny(config.emergencyName)!,
+    emergencyPhone: resolveAny(config.emergencyPhone)!,
+    custody: resolveAny(config.custody)!,
   };
 
   const warnings: string[] = [];
@@ -213,8 +225,13 @@ export async function parseXlsx(
     const postCamp = detectPostCamp(selections);
 
     const photo = parsePhoto(readCell(row.getCell(col.photo)));
-    const specialRequest = readCell(row.getCell(col.specialRequest));
-    const medicalIssues = readCell(row.getCell(col.medicalIssues));
+    const tshirtSize = normalizeTshirtSize(readCell(row.getCell(col.tshirtSize)));
+    const specialRequest = normalizeNegativeResponses(
+      readCell(row.getCell(col.specialRequest))
+    );
+    const medicalIssues = normalizeNegativeResponses(
+      readCell(row.getCell(col.medicalIssues))
+    );
 
     const primary: Contact = {
       name: readCell(row.getCell(col.primaryName)),
@@ -247,6 +264,7 @@ export async function parseXlsx(
         postCamp,
         specialRequest,
         medicalIssues,
+        tshirtSize,
         primary,
         secondary,
         emergency,

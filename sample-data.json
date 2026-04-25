@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "students": [
     {
       "id": "s01",
@@ -13,6 +13,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Small",
       "primary": {
         "name": "Sarah Brooks",
         "homePhone": "",
@@ -41,6 +42,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Small",
       "primary": {
         "name": "Michael Carter",
         "homePhone": "",
@@ -69,6 +71,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Child Medium",
       "primary": {
         "name": "Jessica Davis",
         "homePhone": "",
@@ -97,6 +100,7 @@
       "photo": false,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Medium",
       "primary": {
         "name": "David Evans",
         "homePhone": "",
@@ -139,7 +143,8 @@
         "name": "Dr. Paul Foster",
         "homePhone": "(210) 555-0109",
         "cellPhone": "(210) 555-0110"
-      }
+      },
+      "tshirtSize": "Youth Large"
     },
     {
       "id": "s06",
@@ -167,7 +172,8 @@
         "name": "Grandma Helen Grant",
         "homePhone": "(211) 555-0111",
         "cellPhone": "(211) 555-0112"
-      }
+      },
+      "tshirtSize": "Youth Large"
     },
     {
       "id": "s07",
@@ -195,7 +201,8 @@
         "name": "Uncle Dan Harris",
         "homePhone": "(212) 555-0113",
         "cellPhone": "(212) 555-0114"
-      }
+      },
+      "tshirtSize": "Medium"
     },
     {
       "id": "s08",
@@ -209,6 +216,7 @@
       "photo": true,
       "specialRequest": "Shy - needs encouragement to participate",
       "medicalIssues": "",
+      "tshirtSize": "Large",
       "primary": {
         "name": "Robert Irving",
         "homePhone": "",
@@ -237,6 +245,7 @@
       "photo": false,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Adult Large",
       "primary": {
         "name": "Lisa Jensen",
         "homePhone": "",
@@ -265,6 +274,7 @@
       "photo": false,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Small",
       "primary": {
         "name": "William Kim",
         "homePhone": "",
@@ -293,6 +303,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Small",
       "primary": {
         "name": "Mary Lewis",
         "homePhone": "",
@@ -321,6 +332,7 @@
       "photo": false,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Child Medium",
       "primary": {
         "name": "Richard Morgan",
         "homePhone": "",
@@ -349,6 +361,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Medium",
       "primary": {
         "name": "Patricia Nelson",
         "homePhone": "",
@@ -377,6 +390,7 @@
       "photo": false,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Large",
       "primary": {
         "name": "Thomas Ortiz",
         "homePhone": "",
@@ -419,7 +433,8 @@
         "name": "Uncle Hank Patel",
         "homePhone": "(210) 555-0129",
         "cellPhone": "(210) 555-0130"
-      }
+      },
+      "tshirtSize": "Youth Large"
     },
     {
       "id": "s16",
@@ -447,7 +462,8 @@
         "name": "Grandpa Lou Quinn",
         "homePhone": "(211) 555-0131",
         "cellPhone": "(211) 555-0132"
-      }
+      },
+      "tshirtSize": "Medium"
     },
     {
       "id": "s17",
@@ -475,7 +491,8 @@
         "name": "Aunt Vera Reed",
         "homePhone": "(212) 555-0133",
         "cellPhone": "(212) 555-0134"
-      }
+      },
+      "tshirtSize": "Large"
     },
     {
       "id": "s18",
@@ -489,6 +506,7 @@
       "photo": true,
       "specialRequest": "Shy - needs encouragement to participate",
       "medicalIssues": "",
+      "tshirtSize": "Adult Large",
       "primary": {
         "name": "Jessica Scott",
         "homePhone": "",
@@ -517,6 +535,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Small",
       "primary": {
         "name": "David Torres",
         "homePhone": "",
@@ -545,6 +564,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Small",
       "primary": {
         "name": "Amanda Upton",
         "homePhone": "",
@@ -573,6 +593,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Child Medium",
       "primary": {
         "name": "James Vargas",
         "homePhone": "",
@@ -601,6 +622,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Medium",
       "primary": {
         "name": "Jennifer Walker",
         "homePhone": "",
@@ -629,6 +651,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Large",
       "primary": {
         "name": "Robert Xavier",
         "homePhone": "",
@@ -657,6 +680,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Large",
       "primary": {
         "name": "Lisa Young",
         "homePhone": "",
@@ -699,7 +723,8 @@
         "name": "Aunt Mae Zhang",
         "homePhone": "(210) 555-0149",
         "cellPhone": "(210) 555-0150"
-      }
+      },
+      "tshirtSize": "Medium"
     },
     {
       "id": "s26",
@@ -727,7 +752,8 @@
         "name": "Grandma Bea Adams",
         "homePhone": "(211) 555-0151",
         "cellPhone": "(211) 555-0152"
-      }
+      },
+      "tshirtSize": "Large"
     },
     {
       "id": "s27",
@@ -755,7 +781,8 @@
         "name": "Dr. Glen Baker",
         "homePhone": "(212) 555-0153",
         "cellPhone": "(212) 555-0154"
-      }
+      },
+      "tshirtSize": "Adult Large"
     },
     {
       "id": "s28",
@@ -769,6 +796,7 @@
       "photo": false,
       "specialRequest": "Shy - needs encouragement to participate",
       "medicalIssues": "",
+      "tshirtSize": "Youth Small",
       "primary": {
         "name": "Patricia Cole",
         "homePhone": "",
@@ -797,6 +825,7 @@
       "photo": false,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Youth Small",
       "primary": {
         "name": "Thomas Diaz",
         "homePhone": "",
@@ -825,6 +854,7 @@
       "photo": true,
       "specialRequest": "",
       "medicalIssues": "",
+      "tshirtSize": "Child Medium",
       "primary": {
         "name": "Barbara Edwards",
         "homePhone": "",

@@ -43,6 +43,7 @@ export function StudentDialog({
   const [postCamp, setPostCamp] = useState(false);
   const [specialRequest, setSpecialRequest] = useState('');
   const [medicalIssues, setMedicalIssues] = useState('');
+  const [tshirtSize, setTshirtSize] = useState('');
   const [primaryName, setPrimaryName] = useState('');
   const [primaryHomePhone, setPrimaryHomePhone] = useState('');
   const [primaryCellPhone, setPrimaryCellPhone] = useState('');
@@ -66,6 +67,7 @@ export function StudentDialog({
       setPostCamp(student?.postCamp ?? false);
       setSpecialRequest(student?.specialRequest ?? '');
       setMedicalIssues(student?.medicalIssues ?? '');
+      setTshirtSize(student?.tshirtSize ?? '');
       setPrimaryName(student?.primary?.name ?? '');
       setPrimaryHomePhone(student?.primary?.homePhone ?? '');
       setPrimaryCellPhone(student?.primary?.cellPhone ?? '');
@@ -102,6 +104,7 @@ export function StudentDialog({
       postCamp,
       specialRequest: specialRequest.trim(),
       medicalIssues: medicalIssues.trim(),
+      tshirtSize: tshirtSize.trim(),
       primary: {
         name: primaryName.trim(),
         homePhone: primaryHomePhone.trim(),
@@ -281,6 +284,14 @@ export function StudentDialog({
           margin="normal"
           multiline
           minRows={2}
+        />
+        <TextField
+          label="T-Shirt Size"
+          value={tshirtSize}
+          onChange={(e) => setTshirtSize(e.target.value)}
+          fullWidth
+          margin="normal"
+          placeholder="e.g., Youth Medium, Large, XL"
         />
 
         <Divider sx={{ mt: 2, mb: 1 }} />

@@ -57,6 +57,7 @@ const parsedStudentToNew = (
   postCamp: p.postCamp,
   specialRequest: p.specialRequest,
   medicalIssues: p.medicalIssues,
+  tshirtSize: p.tshirtSize,
   primary: p.primary,
   secondary: p.secondary,
   emergency: p.emergency,
@@ -65,6 +66,11 @@ const parsedStudentToNew = (
 export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
   const { data, importBatch } = useSchedule();
   const [phase, setPhase] = useState<Phase>({ kind: 'parsing' });
+  const [lastCampConfig, setLastCampConfig] = useState<{
+    gradeRange: string;
+    week: string;
+    maxSize: number;
+  } | null>(null);
 
   const campsRef = useRef(data.camps);
   useEffect(() => {
@@ -157,6 +163,11 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
   const handleCampSaved = (camp: Omit<Camp, 'id'>) => {
     if (phase.kind !== 'collectingCampInfo') return;
     const collected = [...phase.collected, camp];
+    setLastCampConfig({
+      gradeRange: camp.gradeRange,
+      week: camp.week,
+      maxSize: camp.maxSize,
+    });
     const nextIndex = phase.index + 1;
     if (nextIndex >= phase.newCampNames.length) {
       commit(phase.parsed, collected);
@@ -175,11 +186,11 @@ export function ImportExcelDialog({ file, onClose }: ImportExcelDialogProps) {
     () => ({
       id: '',
       name: currentCampName,
-      gradeRange: '',
-      week: '',
-      maxSize: 16,
+      gradeRange: lastCampConfig?.gradeRange ?? '',
+      week: lastCampConfig?.week ?? '',
+      maxSize: lastCampConfig?.maxSize ?? 16,
     }),
-    [currentCampName]
+    [currentCampName, lastCampConfig]
   );
 
   if (phase.kind === 'collectingCampInfo') {

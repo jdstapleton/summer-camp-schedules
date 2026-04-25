@@ -19,6 +19,7 @@ export interface Student {
   postCamp: boolean;
   specialRequest: string;
   medicalIssues: string;
+  tshirtSize: string;
   primary: Contact;
   secondary: Contact;
   emergency: Contact;

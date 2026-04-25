@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ScheduleData } from '@/models/types';
+import { normalizeNegativeResponses } from './normalizeFieldValues';
 
-const CURRENT_VERSION = 5;
+const CURRENT_VERSION = 6;
 
 const randomSafetyCode = () =>
   Math.floor(Math.random() * 10000)
@@ -64,6 +65,15 @@ const migrateV4toV5 = (data: any): ScheduleData => {
   return { ...data, version: 5, students: migratedStudents };
 };
 
+// Version 5 → Version 6: Add tshirtSize field
+const migrateV5toV6 = (data: any): ScheduleData => {
+  const migratedStudents = data.students.map((student: any) => ({
+    ...student,
+    tshirtSize: student.tshirtSize ?? '',
+  }));
+  return { ...data, version: 6, students: migratedStudents };
+};
+
 export const migrateData = (data: any): ScheduleData => {
   if (!data || typeof data !== 'object') {
     return {
@@ -90,11 +100,22 @@ export const migrateData = (data: any): ScheduleData => {
   if (startVersion < 5) {
     currentData = migrateV4toV5(currentData);
   }
+  if (startVersion < 6) {
+    currentData = migrateV5toV6(currentData);
+  }
 
   // Ensure version is set
   if (!currentData.version) {
     currentData.version = CURRENT_VERSION;
   }
+
+  // Normalize negative responses in medical and special request fields
+  const normalizedStudents = currentData.students.map((student: any) => ({
+    ...student,
+    medicalIssues: normalizeNegativeResponses(student.medicalIssues ?? ''),
+    specialRequest: normalizeNegativeResponses(student.specialRequest ?? ''),
+  }));
+  currentData.students = normalizedStudents;
 
   return currentData as ScheduleData;
 };

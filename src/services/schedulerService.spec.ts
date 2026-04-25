@@ -14,6 +14,7 @@ const makeStudent = (id: string, gender: 'male' | 'female' | 'other') => ({
   postCamp: false,
   specialRequest: '',
   medicalIssues: '',
+  tshirtSize: '',
   primary: { name: 'Primary Contact', homePhone: '', cellPhone: '555-0000' },
   secondary: { name: 'Secondary Contact', homePhone: '', cellPhone: '555-0001' },
   emergency: { name: '', homePhone: '', cellPhone: '' },

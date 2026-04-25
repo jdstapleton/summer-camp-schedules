@@ -34,9 +34,9 @@ export function buildMasterlistRows(
   }
 
   rows.sort((a, b) => {
-    const primary = studentSortCompare(a.student, b.student);
-    if (primary !== 0) return primary;
-    return a.campName.localeCompare(b.campName);
+    const campCmp = a.campName.localeCompare(b.campName);
+    if (campCmp !== 0) return campCmp;
+    return studentSortCompare(a.student, b.student);
   });
 
   return rows;
@@ -50,6 +50,7 @@ const COLUMNS: { header: string; width: number }[] = [
   { header: 'Session name', width: 32.22 },
   { header: 'Pre', width: 7.44 },
   { header: 'Post', width: 7.44 },
+  { header: 'T-Shirt Size', width: 12 },
   { header: 'Special Request', width: 20 },
   { header: 'Medical Issues', width: 20 },
   { header: 'Photo', width: 9.33 },
@@ -95,6 +96,7 @@ export async function exportPrintableMasterlist(
       campName,
       yesOrBlank(student.preCamp),
       yesOrBlank(student.postCamp),
+      student.tshirtSize,
       student.specialRequest,
       student.medicalIssues,
       yesOrNo(student.photo),
