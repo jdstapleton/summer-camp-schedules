@@ -5,6 +5,7 @@ import {
 } from './importColumnConfig';
 import { normalizeNegativeResponses } from './normalizeFieldValues';
 import { normalizeTshirtSize } from './tshirtSizeNormalization';
+import { Row } from 'exceljs';
 
 export interface ParsedStudent {
   dedupeKey: string;
@@ -46,51 +47,6 @@ export const extractCampName = (sessionName: string): string => {
   return normalized.slice(0, lastDash).trim();
 };
 
-const normalizeGender = (raw: string): Gender => {
-  const v = raw.trim().toLowerCase();
-  if (v === 'male' || v === 'm') return 'male';
-  if (v === 'female' || v === 'f') return 'female';
-  return 'other';
-};
-
-const normalizeCustody = (raw: string): Custody => {
-  const v = raw.trim().toLowerCase();
-  if (v === 'father') return 'Father';
-  if (v === 'mother') return 'Mother';
-  return 'Both';
-};
-
-const detectPreCamp = (selections: string): boolean =>
-  /pre[- ]?camp care/i.test(selections);
-
-const detectPostCamp = (selections: string): boolean =>
-  /post[- ]?camp care/i.test(selections);
-
-const parsePhoto = (raw: string): boolean => raw.trim().toLowerCase() === 'yes';
-
-interface CellLike {
-  text?: string;
-  value?: unknown;
-}
-
-const readCell = (cell: CellLike | undefined): string => {
-  if (!cell) return '';
-  const text = cell.text;
-  if (typeof text === 'string' && text.length > 0) return text.trim();
-  const value = cell.value;
-  if (value == null) return '';
-  if (typeof value === 'string') return value.trim();
-  if (typeof value === 'number' || typeof value === 'boolean') {
-    return String(value).trim();
-  }
-  if (typeof value === 'object') {
-    const obj = value as { result?: unknown; text?: unknown };
-    if (obj.result != null) return String(obj.result).trim();
-    if (obj.text != null) return String(obj.text).trim();
-  }
-  return '';
-};
-
 export async function parseXlsx(
   buffer: ArrayBuffer,
   config: ImportColumnConfig = DEFAULT_IMPORT_COLUMNS
@@ -105,58 +61,7 @@ export async function parseXlsx(
   }
 
   const headerRow = sheet.getRow(1);
-  const headerToIndex = new Map<string, number>();
-  headerRow.eachCell({ includeEmpty: false }, (cell, colNumber) => {
-    const text = readCell(cell).toLowerCase();
-    if (text.length > 0 && !headerToIndex.has(text)) {
-      headerToIndex.set(text, colNumber);
-    }
-  });
-
-  const resolveSingle = (header: string): number | undefined =>
-    headerToIndex.get(header.trim().toLowerCase());
-
-  const resolveAny = (headers: string[]): number | undefined => {
-    for (const header of headers) {
-      const col = resolveSingle(header);
-      if (col !== undefined) return col;
-    }
-    return undefined;
-  };
-
-  const required: { key: keyof ImportColumnConfig; headers: string[] }[] = (
-    Object.keys(config) as (keyof ImportColumnConfig)[]
-  ).map((key) => ({ key, headers: config[key] }));
-
-  const missing = required.filter(({ headers }) => resolveAny(headers) === undefined);
-  if (missing.length > 0) {
-    const names = missing.map((m) => `"${m.headers.join('" or "')}"`).join(', ');
-    throw new Error(
-      `The import file is missing required column header(s): ${names}. ` +
-        `Update the expected headers in importColumnConfig.ts if the source format changed.`
-    );
-  }
-
-  const col = {
-    lastName: resolveAny(config.lastName)!,
-    firstName: resolveAny(config.firstName)!,
-    gender: resolveAny(config.gender)!,
-    age: resolveAny(config.age)!,
-    sessionName: resolveAny(config.sessionName)!,
-    selections: resolveAny(config.selections)!,
-    specialRequest: resolveAny(config.specialRequest)!,
-    medicalIssues: resolveAny(config.medicalIssues)!,
-    photo: resolveAny(config.photo)!,
-    tshirtSize: resolveAny(config.tshirtSize)!,
-    primaryName: resolveAny(config.primaryName)!,
-    primaryHomePhone: resolveAny(config.primaryHomePhone)!,
-    primaryCellPhone: resolveAny(config.primaryCellPhone)!,
-    secondaryName: resolveAny(config.secondaryName)!,
-    secondaryCellPhone: resolveAny(config.secondaryCellPhone)!,
-    emergencyName: resolveAny(config.emergencyName)!,
-    emergencyPhone: resolveAny(config.emergencyPhone)!,
-    custody: resolveAny(config.custody)!,
-  };
+  const col = columnIndices(headerRow, config);
 
   const warnings: string[] = [];
   const skippedRows: { rowNumber: number; reason: string }[] = [];
@@ -170,53 +75,25 @@ export async function parseXlsx(
     const row = sheet.getRow(r);
     const lastName = readCell(row.getCell(col.lastName));
     const firstName = readCell(row.getCell(col.firstName));
+    const rowDesc = `Row ${r} (${lastName}, ${firstName})`;
+    const addWarning: WarningFun = (warningTxt: string) => warnings.push(`${rowDesc}: ${warningTxt}`);
+    const skipRow: WarningFun = (reason: string) => skippedRows.push({ rowNumber: r, reason: reason });
 
     if (lastName.toLowerCase() === 'count') continue;
     if (lastName === '' && firstName === '') continue;
 
-    const ageRaw = readCell(row.getCell(col.age));
-    let age = parseInt(ageRaw, 10);
-    if (isNaN(age)) {
-      warnings.push(
-        `Row ${r} (${lastName}, ${firstName}): age "${ageRaw}" is not numeric; defaulting to 0.`
-      );
-      age = 0;
-    }
-
-    const genderRaw = readCell(row.getCell(col.gender));
-    const gender = normalizeGender(genderRaw);
-    if (gender === 'other' && genderRaw !== '' && genderRaw.toLowerCase() !== 'other') {
-      warnings.push(
-        `Row ${r} (${lastName}, ${firstName}): gender "${genderRaw}" not recognized; defaulting to "other".`
-      );
-    }
-
-    const custodyRaw = readCell(row.getCell(col.custody));
-    const custody = normalizeCustody(custodyRaw);
-    if (
-      custody === 'Both' &&
-      custodyRaw !== '' &&
-      custodyRaw.toLowerCase() !== 'both'
-    ) {
-      warnings.push(
-        `Row ${r} (${lastName}, ${firstName}): custody "${custodyRaw}" not recognized; defaulting to "Both".`
-      );
-    }
+    const age = getAge(row, col, addWarning);
+    const gender = getGender(row, col, addWarning);
+    const custody = getCustody(row, col, addWarning);
 
     const sessionName = readCell(row.getCell(col.sessionName));
     if (sessionName === '') {
-      skippedRows.push({
-        rowNumber: r,
-        reason: 'Session name is empty.',
-      });
+      skipRow('Session name is empty.');
       continue;
     }
     const campName = extractCampName(sessionName);
     if (campName === '') {
-      skippedRows.push({
-        rowNumber: r,
-        reason: `Session name "${sessionName}" yielded an empty camp name.`,
-      });
+      skipRow(`Session name "${sessionName}" yielded an empty camp name.`)
       continue;
     }
 
@@ -267,7 +144,7 @@ export async function parseXlsx(
         tshirtSize,
         primary,
         secondary,
-        emergency,
+        emergency
       });
     }
 
@@ -290,4 +167,169 @@ export async function parseXlsx(
     warnings,
     skippedRows,
   };
+}
+
+type WarningFun = (warningText: string) => number;
+
+function getCustody(row: Row, col: ColIndices, addWarning: WarningFun) {
+  const custodyRaw = readCell(row.getCell(col.custody));
+  const custody = normalizeCustody(custodyRaw);
+  if (custody === 'Both' &&
+    custodyRaw !== '' &&
+    custodyRaw.toLowerCase() !== 'both') {
+    addWarning(`custody "${custodyRaw}" not recognized; defaulting to "Both".`);
+  }
+  return custody;
+}
+
+function getGender(row: Row, col: ColIndices, addWarning: WarningFun) {
+  const genderRaw = readCell(row.getCell(col.gender));
+  const gender = normalizeGender(genderRaw);
+  if (gender === 'other' && genderRaw !== '' && genderRaw.toLowerCase() !== 'other') {
+    addWarning(`gender "${genderRaw}" not recognized; defaulting to "other".`);
+  }
+  return gender;
+}
+
+function getAge(row: Row, col: ColIndices, addWarning: WarningFun) {
+  const ageRaw = readCell(row.getCell(col.age));
+  let age = parseInt(ageRaw, 10);
+  if (isNaN(age)) {
+    addWarning(`age "${ageRaw}" is not numeric; defaulting to 0.`);
+    age = 0;
+  }
+  return age;
+}
+
+interface ColIndices {
+  lastName: number;
+  firstName: number;
+  gender: number;
+  age: number;
+  sessionName: number;
+  selections: number;
+  specialRequest: number;
+  medicalIssues: number;
+  photo: number;
+  tshirtSize: number;
+  primaryName: number;
+  primaryHomePhone: number;
+  primaryCellPhone: number;
+  secondaryName: number;
+  secondaryCellPhone: number;
+  emergencyName: number;
+  emergencyPhone: number;
+  custody: number;
+}
+
+function columnIndices(headerRow: Row, config: ImportColumnConfig): ColIndices {
+  const resolveAny = createResolver(headerRow);
+
+  checkMissing(config, resolveAny);
+
+  return {
+    lastName: resolveAny(config.lastName)!,
+    firstName: resolveAny(config.firstName)!,
+    gender: resolveAny(config.gender)!,
+    age: resolveAny(config.age)!,
+    sessionName: resolveAny(config.sessionName)!,
+    selections: resolveAny(config.selections)!,
+    specialRequest: resolveAny(config.specialRequest)!,
+    medicalIssues: resolveAny(config.medicalIssues)!,
+    photo: resolveAny(config.photo)!,
+    tshirtSize: resolveAny(config.tshirtSize)!,
+    primaryName: resolveAny(config.primaryName)!,
+    primaryHomePhone: resolveAny(config.primaryHomePhone)!,
+    primaryCellPhone: resolveAny(config.primaryCellPhone)!,
+    secondaryName: resolveAny(config.secondaryName)!,
+    secondaryCellPhone: resolveAny(config.secondaryCellPhone)!,
+    emergencyName: resolveAny(config.emergencyName)!,
+    emergencyPhone: resolveAny(config.emergencyPhone)!,
+    custody: resolveAny(config.custody)!,
+  };
+}
+
+function checkMissing(config: ImportColumnConfig, resolveAny: (headers: string[]) => number | undefined) {
+  const requiredXXX: { key: keyof ImportColumnConfig; headers: string[]; }[] = (
+    Object.keys(config) as (keyof ImportColumnConfig)[]
+  ).map((key) => ({ key, headers: config[key] }));
+
+  const missing = requiredXXX.filter(({ headers }) => resolveAny(headers) === undefined);
+  if (missing.length > 0) {
+    const names = missing.map((m) => `"${m.headers.join('" or "')}"`).join(', ');
+    throw new Error(
+      `The import file is missing required column header(s): ${names}. ` +
+      `Update the expected headers in importColumnConfig.ts if the source format changed.`
+    );
+  }
+}
+
+function normalizeGender(raw: string): Gender {
+  const v = raw.trim().toLowerCase();
+  if (v === 'male' || v === 'm') return 'male';
+  if (v === 'female' || v === 'f') return 'female';
+  return 'other';
+}
+
+function normalizeCustody(raw: string): Custody {
+  const v = raw.trim().toLowerCase();
+  if (v === 'father') return 'Father';
+  if (v === 'mother') return 'Mother';
+  return 'Both';
+}
+
+function detectPreCamp(selections: string): boolean {
+  return /pre[- ]?camp care/i.test(selections);
+}
+
+function detectPostCamp(selections: string): boolean {
+  return /post[- ]?camp care/i.test(selections);
+}
+
+function parsePhoto(raw: string): boolean {
+  return raw.trim().toLowerCase() === 'yes';
+}
+
+interface CellLike {
+  text?: string;
+  value?: unknown;
+}
+
+function readCell(cell: CellLike | undefined): string {
+  if (!cell) return '';
+  const text = cell.text;
+  if (typeof text === 'string' && text.length > 0) return text.trim();
+  const value = cell.value;
+  if (value == null) return '';
+  if (typeof value === 'string') return value.trim();
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value).trim();
+  }
+  if (typeof value === 'object') {
+    const obj = value as { result?: unknown; text?: unknown; };
+    if (obj.result != null) return String(obj.result).trim();
+    if (obj.text != null) return String(obj.text).trim();
+  }
+  return '';
+}
+
+function createResolver(headerRow: Row) {
+  const headerToIndex = new Map<string, number>();
+  headerRow.eachCell({ includeEmpty: false }, (cell, colNumber) => {
+    const text = readCell(cell).toLowerCase();
+    if (text.length > 0 && !headerToIndex.has(text)) {
+      headerToIndex.set(text, colNumber);
+    }
+  });
+
+  const resolveSingle = (header: string): number | undefined => headerToIndex.get(header.trim().toLowerCase());
+
+  const resolveAny = (headers: string[]): number | undefined => {
+    for (const header of headers) {
+      const col = resolveSingle(header);
+      if (col !== undefined) return col;
+    }
+    return undefined;
+  };
+  return resolveAny;
 }
