@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Box, Button, CardContent, CardActions, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -39,14 +39,28 @@ interface ExpandableNoteProps {
 
 function ExpandableNote({ icon, text }: ExpandableNoteProps) {
   const [expanded, setExpanded] = useState(false);
+  const textRef = useRef<HTMLElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    if (textRef.current) {
+      requestAnimationFrame(() => {
+        if (textRef.current) {
+          setIsOverflowing(textRef.current.scrollWidth > textRef.current.clientWidth);
+        }
+      });
+    }
+  }, [text]);
 
   return (
-    <NoteRow onClick={() => setExpanded(!expanded)}>
+    <NoteRow onClick={isOverflowing ? () => setExpanded(!expanded) : undefined} sx={{ cursor: isOverflowing ? 'pointer' : 'default' }}>
       {icon}
       <Typography
+        ref={textRef}
         variant="body2"
         sx={{
           flex: 1,
+          minWidth: 0,
           ...(!expanded && {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -56,14 +70,16 @@ function ExpandableNote({ icon, text }: ExpandableNoteProps) {
       >
         {text}
       </Typography>
-      <ExpandMoreIcon
-        fontSize="small"
-        sx={{
-          transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
-          transition: 'transform 0.2s',
-          flexShrink: 0,
-        }}
-      />
+      {isOverflowing && (
+        <ExpandMoreIcon
+          fontSize="small"
+          sx={{
+            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.2s',
+            flexShrink: 0,
+          }}
+        />
+      )}
     </NoteRow>
   );
 }
