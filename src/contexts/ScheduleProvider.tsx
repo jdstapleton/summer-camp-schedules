@@ -12,6 +12,7 @@ import { fileService } from '@/services/fileService';
 import { generateSchedule } from '@/services/schedulerService';
 import { migrateData } from '@/services/dataMigrations';
 import { extractMentionedStudents } from '@/services/friendGroupService';
+import { safeSetItem } from '@/services/safeStorage';
 import { ScheduleContext } from './ScheduleContext';
 
 const existingStudentKey = (s: Student): string =>
@@ -60,7 +61,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     useState<GeneratedSchedule | null>(data.schedule ?? null);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    safeSetItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
   const addStudent = useCallback((student: Omit<Student, 'id'>) => {

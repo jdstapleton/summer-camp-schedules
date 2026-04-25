@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import type { AppConfig } from '@/models/types';
 import { DEFAULT_GRADE_RANGES } from '@/config/defaultGradeRanges';
 import { DEFAULT_IMPORT_COLUMNS } from '@/services/importColumnConfig';
+import { safeSetItem } from '@/services/safeStorage';
 
 const STORAGE_KEY = 'summerCampAppConfig';
 
@@ -42,7 +43,7 @@ export function AppConfigProvider({ children }: { children: ReactNode }) {
 
   const updateConfig = (newConfig: AppConfig) => {
     setConfig(newConfig);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newConfig));
+    safeSetItem(STORAGE_KEY, JSON.stringify(newConfig));
   };
 
   if (!isHydrated) {

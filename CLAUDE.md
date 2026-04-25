@@ -55,33 +55,23 @@ npm run dev
 
 ## Data Schema & Migrations
 
-The app uses a versioning system for the `ScheduleData` model to handle backwards compatibility:
+The app uses a versioning system for the `ScheduleData` model:
 
-- **Current schema version**: 2
+- **Current schema version**: 7
 - **Migration system**: `src/services/dataMigrations.ts`
 - **Sample data**: `sample-data.json` (always at current version)
+
+`migrateData()` rejects any data older than `CURRENT_VERSION` and throws — there is no backwards-compatibility migration chain. It also normalizes negative responses (e.g. "No", "None") in `medicalIssues` and `specialRequest`.
 
 ### When to add a new schema version:
 
 1. Update the type definition in `src/models/types.ts`
-2. Create a migration function in `src/services/dataMigrations.ts` (e.g., `migrateV2toV3`)
-3. Add it to the `migrateData()` function's migration chain
-4. Increment `CURRENT_VERSION` in `dataMigrations.ts`
-5. Update `sample-data.json` with the new fields
+2. Increment `CURRENT_VERSION` in `src/services/dataMigrations.ts`
+3. Adjust the normalization step in `migrateData()` if any new fields need defaults
+4. Update `sample-data.json` to the new version with the new fields
+5. Update the `version` literal in `emptyData` in `src/contexts/ScheduleProvider.tsx`
 
-Example migration:
-
-```ts
-const migrateV2toV3 = (data: any): ScheduleData => {
-  const migratedStudents = data.students.map((student: any) => ({
-    ...student,
-    newField: student.newField ?? defaultValue,
-  }));
-  return { ...data, version: 3, students: migratedStudents };
-};
-```
-
-Data is automatically migrated when:
+Data is rejected (or migrated, where applicable) when:
 
 - Loading from localStorage on app startup
 - Importing a saved schedule file

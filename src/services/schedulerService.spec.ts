@@ -35,6 +35,7 @@ describe('generateSchedule', () => {
         },
       ],
       registrations: [{ campId: 'c1', studentIds: [], friendGroups: [] }],
+      schedule: null,
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(0);
@@ -57,6 +58,7 @@ describe('generateSchedule', () => {
       registrations: [
         { campId: 'c1', studentIds: ['s1', 's2', 's3'], friendGroups: [] },
       ],
+      schedule: null,
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(1);
@@ -86,6 +88,7 @@ describe('generateSchedule', () => {
           friendGroups: [],
         },
       ],
+      schedule: null,
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(2);
@@ -125,6 +128,7 @@ describe('generateSchedule', () => {
           friendGroups: [],
         },
       ],
+      schedule: null,
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(2);
@@ -168,6 +172,7 @@ describe('generateSchedule', () => {
           friendGroups: [],
         },
       ],
+      schedule: null,
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(2);
@@ -206,6 +211,7 @@ describe('generateSchedule', () => {
           friendGroups: [],
         },
       ],
+      schedule: null,
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(2);
@@ -241,6 +247,7 @@ describe('generateSchedule', () => {
           friendGroups: [friendGroup],
         },
       ],
+      schedule: null,
     };
     const result = generateSchedule(data);
     const instanceWithFriends = result.instances.find((inst) =>
@@ -272,6 +279,7 @@ describe('generateSchedule', () => {
           friendGroups: [],
         },
       ],
+      schedule: null,
     };
     const result = generateSchedule(data);
     expect(result.instances).toHaveLength(2);
