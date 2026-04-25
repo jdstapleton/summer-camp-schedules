@@ -2,12 +2,8 @@ import { useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
   IconButton,
-  MenuItem,
   Paper,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -15,7 +11,6 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -31,8 +26,11 @@ import NightsStayIcon from '@mui/icons-material/NightsStay';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import { useSchedule } from '@/hooks/useSchedule';
+import { useStudentsFilters } from '@/contexts/StudentsFiltersContext';
+import { StudentsFiltersProvider } from '@/contexts/StudentsFiltersProvider';
 import type { Student } from '@/models/types';
 import { StudentDialog } from './StudentDialog';
+import { StudentsFilterRow } from './StudentsFilterRow';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
@@ -40,74 +38,22 @@ import {
   MutedTableCell,
 } from './StudentsPage.styles';
 
-function NoPhotoIcon({
-  fontSize = 'small',
-  isActive = false,
-}: {
-  fontSize?: 'small' | 'medium' | 'large',
-  isActive?: boolean,
-}) {
+export function StudentsPage() {
+  const { data } = useSchedule();
   return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <PhotoCameraIcon
-        fontSize={fontSize}
-        sx={{
-          opacity: 0.25,
-          color: isActive ? 'rgba(211, 47, 47, 0.25)' : 'rgba(0, 0, 0, 0.26)',
-        }}
-      />
-      <NotInterestedIcon
-        fontSize={fontSize}
-        sx={{
-          position: 'absolute',
-          top: -4,
-          right: -4,
-          color: isActive ? '#d32f2f' : 'rgba(0, 0, 0, 0.26)',
-        }}
-      />
-    </Box>
+    <StudentsFiltersProvider data={data}>
+      <StudentsPageContent />
+    </StudentsFiltersProvider>
   );
 }
 
-export function StudentsPage() {
-  const {
-    data,
-    addStudent,
-    updateStudent,
-    deleteStudent,
-  } = useSchedule();
+function StudentsPageContent() {
+  const { data, addStudent, updateStudent, deleteStudent } = useSchedule();
+  const { sortedStudents, orderBy, order, handleSort } = useStudentsFilters();
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [orderBy, setOrderBy] = useState<string>('name');
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [filters, setFilters] = useState({
-    name: '',
-    camps: [] as string[],
-    age: '',
-    custody: [] as string[],
-    tshirtSize: [] as string[],
-  });
-  const [showOnlyAllergies, setShowOnlyAllergies] = useState(false);
-  const [filterNoPhoto, setFilterNoPhoto] = useState(false);
-  const [filterPreCamp, setFilterPreCamp] = useState(false);
-  const [filterPostCamp, setFilterPostCamp] = useState(false);
-  const [filterMedical, setFilterMedical] = useState(false);
-  const [filterSpecialRequest, setFilterSpecialRequest] = useState(false);
-
-  const uniqueCamps = Array.from(
-    new Set(
-      data.camps.map((c) => c.name)
-    )
-  ).sort();
-
-  const uniqueCustody = Array.from(
-    new Set(data.students.map((s) => s.custody))
-  ).sort();
-
-  const uniqueTshirtSizes = Array.from(
-    new Set(data.students.map((s) => s.tshirtSize))
-  ).sort();
 
   const handleAdd = () => {
     setEditingStudent(null);
@@ -126,137 +72,6 @@ export function StudentsPage() {
       addStudent(studentData);
     }
     setDialogOpen(false);
-  };
-
-  const handleSort = (column: string) => {
-    const isAsc = orderBy === column && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(column);
-  };
-
-  const handleMultiSelectChange = (
-    key: 'camps' | 'custody' | 'tshirtSize',
-    value: string[]
-  ) => {
-    // If "All" (empty string) is selected, clear all selections
-    if (value.includes('')) {
-      setFilters({ ...filters, [key]: [] });
-    } else {
-      setFilters({ ...filters, [key]: value });
-    }
-  };
-
-  const hasNutAllergy = (student: Student): boolean => {
-    return (
-      student.medicalIssues.toLowerCase().includes('nut') ||
-      student.specialRequest.toLowerCase().includes('nut')
-    );
-  };
-
-  const hasAllergy = (student: Student): boolean => {
-    return (
-      student.medicalIssues.toLowerCase().includes('allerg') ||
-      student.specialRequest.toLowerCase().includes('allerg') ||
-      hasNutAllergy(student)
-    );
-  };
-
-  const compareValues = (a: unknown, b: unknown): number => {
-    if (a === null || a === undefined) return 1;
-    if (b === null || b === undefined) return -1;
-    if (typeof a === 'string' && typeof b === 'string') {
-      return a.localeCompare(b);
-    }
-    if (typeof a === 'number' && typeof b === 'number') {
-      return a - b;
-    }
-    return 0;
-  };
-
-  const getSortedStudents = () => {
-    const filtered = [...data.students].filter((student) => {
-      if (filters.name) {
-        const fullName = `${student.lastName}, ${student.firstName}`.toLowerCase();
-        if (!fullName.includes(filters.name.toLowerCase())) return false;
-      }
-      if (filters.camps.length > 0) {
-        const studentCamps = data.registrations
-          .filter((reg) => reg.studentIds.includes(student.id))
-          .map((reg) => data.camps.find((c) => c.id === reg.campId)?.name)
-          .filter(Boolean);
-        if (!filters.camps.some((camp) => studentCamps.includes(camp))) return false;
-      }
-      if (filters.age) {
-        if (student.age.toString() !== filters.age) return false;
-      }
-      if (filters.custody.length > 0) {
-        if (!filters.custody.includes(student.custody)) return false;
-      }
-      if (filters.tshirtSize.length > 0) {
-        if (!filters.tshirtSize.includes(student.tshirtSize)) return false;
-      }
-      if (showOnlyAllergies) {
-        if (!hasAllergy(student)) return false;
-      }
-      if (filterMedical) {
-        if (!student.medicalIssues) return false;
-      }
-      if (filterSpecialRequest) {
-        if (!student.specialRequest) return false;
-      }
-      if (filterNoPhoto) {
-        if (student.photo) return false;
-      }
-      if (filterPreCamp) {
-        if (!student.preCamp) return false;
-      }
-      if (filterPostCamp) {
-        if (!student.postCamp) return false;
-      }
-      return true;
-    });
-
-    const sorted = filtered.sort((a, b) => {
-      let aVal: unknown;
-      let bVal: unknown;
-
-      switch (orderBy) {
-        case 'name':
-          aVal = `${a.lastName}, ${a.firstName}`;
-          bVal = `${b.lastName}, ${b.firstName}`;
-          break;
-        case 'camps':
-          aVal = data.registrations
-            .filter((reg) => reg.studentIds.includes(a.id))
-            .map((reg) => data.camps.find((c) => c.id === reg.campId)?.name)
-            .filter(Boolean)
-            .join(', ');
-          bVal = data.registrations
-            .filter((reg) => reg.studentIds.includes(b.id))
-            .map((reg) => data.camps.find((c) => c.id === reg.campId)?.name)
-            .filter(Boolean)
-            .join(', ');
-          break;
-        case 'age':
-          aVal = a.age;
-          bVal = b.age;
-          break;
-        case 'custody':
-          aVal = a.custody;
-          bVal = b.custody;
-          break;
-        case 'tshirtSize':
-          aVal = a.tshirtSize;
-          bVal = b.tshirtSize;
-          break;
-        default:
-          return 0;
-      }
-
-      const comparison = compareValues(aVal, bVal);
-      return order === 'asc' ? comparison : -comparison;
-    });
-    return sorted;
   };
 
   return (
@@ -326,169 +141,10 @@ export function StudentsPage() {
               <TableCell sx={{ width: '13%' }} align="center">Flags</TableCell>
               <TableCell sx={{ width: '10%' }} align="right">Actions</TableCell>
             </TableRow>
-            <TableRow sx={{ backgroundColor: '#fafafa' }}>
-              <TableCell colSpan={7} sx={{ p: 1 }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={showOnlyAllergies}
-                      onChange={(e) => setShowOnlyAllergies(e.target.checked)}
-                      size="small"
-                    />
-                  }
-                  label="Show only students with allergies"
-                  sx={{ m: 0 }}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-              <TableCell sx={{ p: 0.5, width: 0 }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  placeholder="Filter name..."
-                  value={filters.name}
-                  onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-                  slotProps={{ input: { sx: { fontSize: '0.875rem' } } }}
-                />
-              </TableCell>
-              <TableCell sx={{ p: 0.5, width: 0 }}>
-                <Select
-                  multiple
-                  fullWidth
-                  size="small"
-                  value={filters.camps}
-                  onChange={(e) => handleMultiSelectChange('camps', e.target.value as string[])}
-                  displayEmpty
-                  renderValue={(selected) =>
-                    selected.length === 0 ? 'All Camps' : `${selected.length} selected`
-                  }
-                  slotProps={{ input: { sx: { fontSize: '0.875rem' } } }}
-                >
-                  <MenuItem value="">All Camps</MenuItem>
-                  {uniqueCamps.map((camp) => (
-                    <MenuItem key={camp} value={camp}>
-                      {camp}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </TableCell>
-              <TableCell sx={{ p: 0.5, width: 0 }} align="right">
-                <TextField
-                  fullWidth
-                  size="small"
-                  placeholder="Filter age..."
-                  value={filters.age}
-                  onChange={(e) => setFilters({ ...filters, age: e.target.value })}
-                  slotProps={{ input: { sx: { fontSize: '0.875rem' } } }}
-                />
-              </TableCell>
-              <TableCell sx={{ p: 0.5, width: 0 }}>
-                <Select
-                  multiple
-                  fullWidth
-                  size="small"
-                  value={filters.custody}
-                  onChange={(e) => handleMultiSelectChange('custody', e.target.value as string[])}
-                  displayEmpty
-                  renderValue={(selected) =>
-                    selected.length === 0 ? 'All Custody' : `${selected.length} selected`
-                  }
-                  slotProps={{ input: { sx: { fontSize: '0.875rem' } } }}
-                >
-                  <MenuItem value="">All Custody</MenuItem>
-                  {uniqueCustody.map((custody) => (
-                    <MenuItem key={custody} value={custody}>
-                      {custody}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </TableCell>
-              <TableCell sx={{ p: 0.5, width: 0 }}>
-                <Select
-                  multiple
-                  fullWidth
-                  size="small"
-                  value={filters.tshirtSize}
-                  onChange={(e) => handleMultiSelectChange('tshirtSize', e.target.value as string[])}
-                  displayEmpty
-                  renderValue={(selected) =>
-                    selected.length === 0 ? 'All Sizes' : `${selected.length} selected`
-                  }
-                  slotProps={{ input: { sx: { fontSize: '0.875rem' } } }}
-                >
-                  <MenuItem value="">All Sizes</MenuItem>
-                  {uniqueTshirtSizes.map((size) => (
-                    <MenuItem key={size} value={size}>
-                      {size}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </TableCell>
-              <TableCell sx={{ p: 0.5, width: 0 }} align="center">
-                <Box sx={{ display: 'flex', gap: 0.25, justifyContent: 'center' }}>
-                  <Tooltip title={filterNoPhoto ? 'Show all' : 'Show without photo'}>
-                    <IconButton
-                      size="small"
-                      onClick={() => setFilterNoPhoto(!filterNoPhoto)}
-                      sx={{
-                        padding: '4px',
-                      }}
-                    >
-                      <NoPhotoIcon fontSize="small" isActive={filterNoPhoto} />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={filterPreCamp ? 'Show all' : 'Show with pre-camp'}>
-                    <IconButton
-                      size="small"
-                      onClick={() => setFilterPreCamp(!filterPreCamp)}
-                      sx={{
-                        color: filterPreCamp ? 'warning.main' : 'action.disabled',
-                      }}
-                    >
-                      <WbSunnyIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={filterPostCamp ? 'Show all' : 'Show with post-camp'}>
-                    <IconButton
-                      size="small"
-                      onClick={() => setFilterPostCamp(!filterPostCamp)}
-                      sx={{
-                        color: filterPostCamp ? 'info.main' : 'action.disabled',
-                      }}
-                    >
-                      <NightsStayIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={filterMedical ? 'Show all' : 'Show with medical issues'}>
-                    <IconButton
-                      size="small"
-                      onClick={() => setFilterMedical(!filterMedical)}
-                      sx={{
-                        color: filterMedical ? 'error.main' : 'action.disabled',
-                      }}
-                    >
-                      <LocalHospitalIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={filterSpecialRequest ? 'Show all' : 'Show with special requests'}>
-                    <IconButton
-                      size="small"
-                      onClick={() => setFilterSpecialRequest(!filterSpecialRequest)}
-                      sx={{
-                        color: filterSpecialRequest ? 'action.main' : 'action.disabled',
-                      }}
-                    >
-                      <NoteIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </TableCell>
-              <TableCell sx={{ p: 0.5, width: 0 }} align="right" />
-            </TableRow>
+            <StudentsFilterRow />
           </TableHead>
           <TableBody>
-            {getSortedStudents().map((student) => {
+            {sortedStudents.map((student: Student) => {
               const studentCamps = data.registrations
                 .filter((reg) => reg.studentIds.includes(student.id))
                 .map((reg) => data.camps.find((c) => c.id === reg.campId)?.name)
