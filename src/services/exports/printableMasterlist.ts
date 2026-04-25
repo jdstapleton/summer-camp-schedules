@@ -13,6 +13,8 @@ import {
 interface MasterlistRow {
   student: Student;
   campName: string;
+  instanceNumber?: number;
+  totalInstances?: number;
 }
 
 export function buildMasterlistRows(
@@ -22,20 +24,36 @@ export function buildMasterlistRows(
   const campMap = new Map(data.camps.map((c) => [c.id, c]));
   const studentMap = new Map(data.students.map((s) => [s.id, s]));
 
+  const instanceCountByCamp = new Map<string, number>();
+  for (const inst of instances) {
+    instanceCountByCamp.set(
+      inst.campId,
+      (instanceCountByCamp.get(inst.campId) ?? 0) + 1
+    );
+  }
+
   const rows: MasterlistRow[] = [];
   for (const inst of instances) {
     const camp = campMap.get(inst.campId);
     if (!camp) continue;
+    const totalInstances = instanceCountByCamp.get(inst.campId) ?? 1;
     for (const studentId of inst.studentIds) {
       const student = studentMap.get(studentId);
       if (!student) continue;
-      rows.push({ student, campName: camp.name });
+      rows.push({
+        student,
+        campName: camp.name,
+        instanceNumber: inst.instanceNumber,
+        totalInstances,
+      });
     }
   }
 
   rows.sort((a, b) => {
     const campCmp = a.campName.localeCompare(b.campName);
     if (campCmp !== 0) return campCmp;
+    const instCmp = (a.instanceNumber ?? 0) - (b.instanceNumber ?? 0);
+    if (instCmp !== 0) return instCmp;
     return studentSortCompare(a.student, b.student);
   });
 
@@ -89,13 +107,17 @@ export async function exportPrintableMasterlist(
 
   const rows = buildMasterlistRows(data, instances);
 
-  for (const { student, campName } of rows) {
+  for (const { student, campName, instanceNumber, totalInstances } of rows) {
+    const sessionName =
+      totalInstances && totalInstances > 1
+        ? `${campName} - Instance ${instanceNumber}`
+        : campName;
     const row = sheet.addRow([
       student.lastName,
       student.firstName,
       student.gender,
       student.age,
-      campName,
+      sessionName,
       yesOrBlank(student.preCamp),
       yesOrBlank(student.postCamp),
       student.tshirtSize,
