@@ -64,8 +64,6 @@ const COLUMNS: { header: string; width: number }[] = [
   { header: 'Custody', width: 10.66 },
 ];
 
-const PHOTO_COLUMN = 10;
-
 export async function exportPrintableMasterlist(
   data: ScheduleData,
   instances: CampInstance[]
@@ -84,6 +82,10 @@ export async function exportPrintableMasterlist(
 
   const headerRow = sheet.getRow(1);
   headerRow.font = { name: 'Calibri', size: 12, bold: true };
+
+  const photoColumnIndex = sheet.columns.findIndex(
+    (col) => col.header === 'Photo'
+  );
 
   const rows = buildMasterlistRows(data, instances);
 
@@ -110,8 +112,8 @@ export async function exportPrintableMasterlist(
       student.custody,
     ]);
     row.font = { name: 'Calibri', size: 12 };
-    if (!student.photo) {
-      applyCellFill(row.getCell(PHOTO_COLUMN), YELLOW_FILL);
+    if (!student.photo && photoColumnIndex >= 0) {
+      applyCellFill(row.getCell(photoColumnIndex + 1), YELLOW_FILL);
     }
   }
 
