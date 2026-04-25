@@ -1,0 +1,89 @@
+{
+  "permissions": {
+    "allowlist": [
+      {
+        "tool": "Bash",
+        "description": "npm commands",
+        "command": "^npm (install|run|test|run test)"
+      },
+      {
+        "tool": "Bash",
+        "description": "git commands",
+        "command": "^git"
+      },
+      {
+        "tool": "Bash",
+        "description": "TypeScript compiler check",
+        "command": "^tsc"
+      }
+    ],
+    "denylist": [
+      {
+        "tool": "Bash",
+        "description": "Force push to git",
+        "command": "git push.*--force"
+      },
+      {
+        "tool": "Bash",
+        "description": "Hard reset git history",
+        "command": "git reset --hard"
+      },
+      {
+        "tool": "Bash",
+        "description": "Discard all changes",
+        "command": "git checkout \\."
+      },
+      {
+        "tool": "Bash",
+        "description": "Delete git branches forcefully",
+        "command": "git branch -D"
+      },
+      {
+        "tool": "Bash",
+        "description": "Recursive force delete",
+        "command": "rm -rf"
+      },
+      {
+        "tool": "Bash",
+        "description": "Clean untracked files",
+        "command": "git clean -f"
+      },
+      {
+        "tool": "Bash",
+        "description": "Drop git stash permanently",
+        "command": "git stash drop"
+      },
+      {
+        "tool": "Bash",
+        "description": "npm commands",
+        "command": "^npm run dev"
+      }
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx prettier --write $(jq -r '.tool_input.file_path')"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude needs input\" with title \"Claude Code\"'"
+          }
+        ]
+      }
+    ]
+  },
+  "codeFormatter": "prettier",
+  "enabledMcpjsonServers": ["mui-mcp"]
+}
