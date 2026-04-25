@@ -57,7 +57,7 @@
         "tool": "Bash",
         "description": "npm commands",
         "command": "^npm run dev"
-      },
+      }
     ]
   },
   "codeFormatter": "prettier",

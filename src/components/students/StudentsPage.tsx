@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import {
-  Box,
   Button,
   IconButton,
   Paper,
-  Table,
   TableBody,
   TableCell,
   TableContainer,
@@ -36,6 +34,19 @@ import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
   ActionButtonGroup,
   MutedTableCell,
+  StyledTable,
+  NameCellContent,
+  FlagsCellContent,
+  FlagsIconContainer,
+  FlagsIconSpacer,
+  FlagsCellWrapper,
+  NameColumnCell,
+  CampsColumnCell,
+  AgeColumnCell,
+  CustodyColumnCell,
+  TshirtSizeColumnCell,
+  FlagsColumnCell,
+  ActionsColumnCell,
 } from './StudentsPage.styles';
 
 export function StudentsPage() {
@@ -90,10 +101,10 @@ function StudentsPageContent() {
       </PageHeaderRow>
 
       <TableContainer component={Paper}>
-        <Table sx={{ tableLayout: 'fixed' }}>
+        <StyledTable>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ width: '25%' }} sortDirection={orderBy === 'name' ? order : false}>
+              <NameColumnCell sortDirection={orderBy === 'name' ? order : false}>
                 <TableSortLabel
                   active={orderBy === 'name'}
                   direction={order}
@@ -101,8 +112,8 @@ function StudentsPageContent() {
                 >
                   Name
                 </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ width: '18%' }} sortDirection={orderBy === 'camps' ? order : false}>
+              </NameColumnCell>
+              <CampsColumnCell sortDirection={orderBy === 'camps' ? order : false}>
                 <TableSortLabel
                   active={orderBy === 'camps'}
                   direction={order}
@@ -110,8 +121,8 @@ function StudentsPageContent() {
                 >
                   Camps
                 </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ width: '8%' }} align="right" sortDirection={orderBy === 'age' ? order : false}>
+              </CampsColumnCell>
+              <AgeColumnCell align="right" sortDirection={orderBy === 'age' ? order : false}>
                 <TableSortLabel
                   active={orderBy === 'age'}
                   direction={order}
@@ -119,8 +130,8 @@ function StudentsPageContent() {
                 >
                   Age
                 </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ width: '13%' }} sortDirection={orderBy === 'custody' ? order : false}>
+              </AgeColumnCell>
+              <CustodyColumnCell sortDirection={orderBy === 'custody' ? order : false}>
                 <TableSortLabel
                   active={orderBy === 'custody'}
                   direction={order}
@@ -128,8 +139,8 @@ function StudentsPageContent() {
                 >
                   Custody
                 </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ width: '13%' }} sortDirection={orderBy === 'tshirtSize' ? order : false}>
+              </CustodyColumnCell>
+              <TshirtSizeColumnCell sortDirection={orderBy === 'tshirtSize' ? order : false}>
                 <TableSortLabel
                   active={orderBy === 'tshirtSize'}
                   direction={order}
@@ -137,9 +148,9 @@ function StudentsPageContent() {
                 >
                   T-Shirt Size
                 </TableSortLabel>
-              </TableCell>
-              <TableCell sx={{ width: '13%' }} align="center">Flags</TableCell>
-              <TableCell sx={{ width: '10%' }} align="right">Actions</TableCell>
+              </TshirtSizeColumnCell>
+              <FlagsColumnCell align="center">Flags</FlagsColumnCell>
+              <ActionsColumnCell align="right">Actions</ActionsColumnCell>
             </TableRow>
             <StudentsFilterRow />
           </TableHead>
@@ -154,7 +165,7 @@ function StudentsPageContent() {
               return (
               <TableRow key={student.id}>
                 <TableCell>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <NameCellContent>
                     <span>{student.lastName}, {student.firstName}</span>
                     {student.gender === 'male' && (
                       <Tooltip title="Male">
@@ -166,15 +177,15 @@ function StudentsPageContent() {
                         <FemaleIcon fontSize="small" color="action" />
                       </Tooltip>
                     )}
-                  </Box>
+                  </NameCellContent>
                 </TableCell>
                 <TableCell>{studentCamps}</TableCell>
                 <TableCell align="right">{student.age}</TableCell>
                 <TableCell>{student.custody}</TableCell>
                 <TableCell>{student.tshirtSize}</TableCell>
-                <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>
-                  <Box sx={{ display: 'flex', gap: 0.25, justifyContent: 'center' }}>
-                    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                <FlagsCellWrapper align="center">
+                  <FlagsCellContent>
+                    <FlagsIconContainer>
                       <PhotoCameraIcon fontSize="small" color="action" sx={student.photo ? { opacity: 0.25 } : undefined} />
                       {!student.photo && (
                         <NotInterestedIcon
@@ -187,37 +198,37 @@ function StudentsPageContent() {
                           }}
                         />
                       )}
-                    </Box>
+                    </FlagsIconContainer>
                     {student.preCamp ? (
                       <Tooltip title="Pre-Camp">
                         <WbSunnyIcon fontSize="small" />
                       </Tooltip>
                     ) : (
-                      <Box sx={{ width: '1.25rem' }} />
+                      <FlagsIconSpacer />
                     )}
                     {student.postCamp ? (
                       <Tooltip title="Post-Camp">
                         <NightsStayIcon fontSize="small" />
                       </Tooltip>
                     ) : (
-                      <Box sx={{ width: '1.25rem' }} />
+                      <FlagsIconSpacer />
                     )}
                     {student.medicalIssues ? (
                       <Tooltip title={student.medicalIssues}>
                         <LocalHospitalIcon fontSize="small" color="error" />
                       </Tooltip>
                     ) : (
-                      <Box sx={{ width: '1.25rem' }} />
+                      <FlagsIconSpacer />
                     )}
                     {student.specialRequest ? (
                       <Tooltip title={student.specialRequest}>
                         <NoteIcon fontSize="small" color="action" />
                       </Tooltip>
                     ) : (
-                      <Box sx={{ width: '1.25rem' }} />
+                      <FlagsIconSpacer />
                     )}
-                  </Box>
-                </TableCell>
+                  </FlagsCellContent>
+                </FlagsCellWrapper>
                 <TableCell align="right">
                   <IconButton size="small" onClick={() => handleEdit(student)}>
                     <EditIcon fontSize="small" />
@@ -241,7 +252,7 @@ function StudentsPageContent() {
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </StyledTable>
       </TableContainer>
 
       <StudentDialog
