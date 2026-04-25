@@ -40,6 +40,35 @@ import {
   MutedTableCell,
 } from './StudentsPage.styles';
 
+function NoPhotoIcon({
+  fontSize = 'small',
+  isActive = false,
+}: {
+  fontSize?: 'small' | 'medium' | 'large',
+  isActive?: boolean,
+}) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <PhotoCameraIcon
+        fontSize={fontSize}
+        sx={{
+          opacity: 0.25,
+          color: isActive ? 'rgba(211, 47, 47, 0.25)' : 'rgba(0, 0, 0, 0.26)',
+        }}
+      />
+      <NotInterestedIcon
+        fontSize={fontSize}
+        sx={{
+          position: 'absolute',
+          top: -4,
+          right: -4,
+          color: isActive ? '#d32f2f' : 'rgba(0, 0, 0, 0.26)',
+        }}
+      />
+    </Box>
+  );
+}
+
 export function StudentsPage() {
   const {
     data,
@@ -60,6 +89,9 @@ export function StudentsPage() {
     tshirtSize: [] as string[],
   });
   const [showOnlyAllergies, setShowOnlyAllergies] = useState(false);
+  const [filterNoPhoto, setFilterNoPhoto] = useState(false);
+  const [filterPreCamp, setFilterPreCamp] = useState(false);
+  const [filterPostCamp, setFilterPostCamp] = useState(false);
   const [filterMedical, setFilterMedical] = useState(false);
   const [filterSpecialRequest, setFilterSpecialRequest] = useState(false);
 
@@ -172,6 +204,15 @@ export function StudentsPage() {
       if (filterSpecialRequest) {
         if (!student.specialRequest) return false;
       }
+      if (filterNoPhoto) {
+        if (student.photo) return false;
+      }
+      if (filterPreCamp) {
+        if (!student.preCamp) return false;
+      }
+      if (filterPostCamp) {
+        if (!student.postCamp) return false;
+      }
       return true;
     });
 
@@ -282,13 +323,11 @@ export function StudentsPage() {
                   T-Shirt Size
                 </TableSortLabel>
               </TableCell>
-              <TableCell sx={{ width: '5%' }} align="center">Photo</TableCell>
-              <TableCell sx={{ width: '5%' }} align="center">Pre/Post</TableCell>
-              <TableCell sx={{ width: '3%' }} align="center">Notes</TableCell>
+              <TableCell sx={{ width: '13%' }} align="center">Flags</TableCell>
               <TableCell sx={{ width: '10%' }} align="right">Actions</TableCell>
             </TableRow>
             <TableRow sx={{ backgroundColor: '#fafafa' }}>
-              <TableCell colSpan={9} sx={{ p: 1 }}>
+              <TableCell colSpan={7} sx={{ p: 1 }}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -386,10 +425,41 @@ export function StudentsPage() {
                   ))}
                 </Select>
               </TableCell>
-              <TableCell sx={{ p: 0.5, width: 0 }} align="center" />
-              <TableCell sx={{ p: 0.5, width: 0 }} align="center" />
               <TableCell sx={{ p: 0.5, width: 0 }} align="center">
-                <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', gap: 0.25, justifyContent: 'center' }}>
+                  <Tooltip title={filterNoPhoto ? 'Show all' : 'Show without photo'}>
+                    <IconButton
+                      size="small"
+                      onClick={() => setFilterNoPhoto(!filterNoPhoto)}
+                      sx={{
+                        padding: '4px',
+                      }}
+                    >
+                      <NoPhotoIcon fontSize="small" isActive={filterNoPhoto} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={filterPreCamp ? 'Show all' : 'Show with pre-camp'}>
+                    <IconButton
+                      size="small"
+                      onClick={() => setFilterPreCamp(!filterPreCamp)}
+                      sx={{
+                        color: filterPreCamp ? 'warning.main' : 'action.disabled',
+                      }}
+                    >
+                      <WbSunnyIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={filterPostCamp ? 'Show all' : 'Show with post-camp'}>
+                    <IconButton
+                      size="small"
+                      onClick={() => setFilterPostCamp(!filterPostCamp)}
+                      sx={{
+                        color: filterPostCamp ? 'info.main' : 'action.disabled',
+                      }}
+                    >
+                      <NightsStayIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title={filterMedical ? 'Show all' : 'Show with medical issues'}>
                     <IconButton
                       size="small"
@@ -446,51 +516,51 @@ export function StudentsPage() {
                 <TableCell align="right">{student.age}</TableCell>
                 <TableCell>{student.custody}</TableCell>
                 <TableCell>{student.tshirtSize}</TableCell>
-                <TableCell align="center">
-                  <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                    <PhotoCameraIcon fontSize="small" color="action" sx={student.photo ? { opacity: 0.25  } : undefined} />
-                    {!student.photo && (
-                      <NotInterestedIcon
-                        fontSize="small"
-                        color="error"
-                        sx={{
-                          position: 'absolute',
-                          top: -4,
-                          right: -4,
-                        }}
-                      />
-                    )}
-                  </Box>
-                </TableCell>
-                <TableCell align="center">
-                  <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'center' }}>
-                    {student.preCamp && (
+                <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>
+                  <Box sx={{ display: 'flex', gap: 0.25, justifyContent: 'center' }}>
+                    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                      <PhotoCameraIcon fontSize="small" color="action" sx={student.photo ? { opacity: 0.25 } : undefined} />
+                      {!student.photo && (
+                        <NotInterestedIcon
+                          fontSize="small"
+                          color="error"
+                          sx={{
+                            position: 'absolute',
+                            top: -4,
+                            right: -4,
+                          }}
+                        />
+                      )}
+                    </Box>
+                    {student.preCamp ? (
                       <Tooltip title="Pre-Camp">
                         <WbSunnyIcon fontSize="small" />
                       </Tooltip>
+                    ) : (
+                      <Box sx={{ width: '1.25rem' }} />
                     )}
-                    {student.postCamp && (
+                    {student.postCamp ? (
                       <Tooltip title="Post-Camp">
                         <NightsStayIcon fontSize="small" />
                       </Tooltip>
+                    ) : (
+                      <Box sx={{ width: '1.25rem' }} />
+                    )}
+                    {student.medicalIssues ? (
+                      <Tooltip title={student.medicalIssues}>
+                        <LocalHospitalIcon fontSize="small" color="error" />
+                      </Tooltip>
+                    ) : (
+                      <Box sx={{ width: '1.25rem' }} />
+                    )}
+                    {student.specialRequest ? (
+                      <Tooltip title={student.specialRequest}>
+                        <NoteIcon fontSize="small" color="action" />
+                      </Tooltip>
+                    ) : (
+                      <Box sx={{ width: '1.25rem' }} />
                     )}
                   </Box>
-                </TableCell>
-                <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>
-                  {student.medicalIssues && (
-                    <Tooltip title={student.medicalIssues}>
-                      <LocalHospitalIcon
-                        fontSize="small"
-                        color="error"
-                        sx={{ mr: student.specialRequest ? 0.5 : 0 }}
-                      />
-                    </Tooltip>
-                  )}
-                  {student.specialRequest && (
-                    <Tooltip title={student.specialRequest}>
-                      <NoteIcon fontSize="small" color="action" />
-                    </Tooltip>
-                  )}
                 </TableCell>
                 <TableCell align="right">
                   <IconButton size="small" onClick={() => handleEdit(student)}>
@@ -509,7 +579,7 @@ export function StudentsPage() {
             })}
             {data.students.length === 0 && (
               <TableRow>
-                <MutedTableCell colSpan={9} align="center">
+                <MutedTableCell colSpan={7} align="center">
                   No students added yet.
                 </MutedTableCell>
               </TableRow>
