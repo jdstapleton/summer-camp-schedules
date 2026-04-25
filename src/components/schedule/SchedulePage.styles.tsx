@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles';
-import { Box, Card, FormControl, Typography } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
+import { Badge, Box, Card, FormControl, Typography } from '@mui/material';
 import type { Gender } from '@/models/types';
 
 const genderColor = (gender: Gender): string => {
@@ -66,9 +66,41 @@ export const InstanceCardsRow = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
 }));
 
-export const InstanceCard = styled(Card)({
-  flex: '1 1 200px',
-  maxWidth: 280,
+export const InstanceCard = styled(Card, {
+  shouldForwardProp: (prop) => prop !== 'isOver' && prop !== 'isDropTarget',
+})<{ isOver?: boolean; isDropTarget?: boolean }>(
+  ({ theme, isOver, isDropTarget }) => ({
+    flex: '1 1 200px',
+    maxWidth: 280,
+    ...(isDropTarget && {
+      outline: '1px dashed',
+      outlineColor: theme.palette.divider,
+    }),
+    ...(isOver && {
+      outline: '2px dashed',
+      outlineColor: theme.palette.primary.main,
+      backgroundColor: alpha(theme.palette.primary.main, 0.08),
+    }),
+  })
+);
+
+export const InstanceHeaderRow = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(1),
+  marginBottom: theme.spacing(1),
+}));
+
+export const AllergyIconWrapper = styled(Box)({
+  position: 'relative',
+  display: 'inline-flex',
+});
+
+export const AllergyOverlayIconWrapper = styled(Box)({
+  position: 'absolute',
+  top: -2,
+  right: -2,
+  display: 'flex',
 });
 
 export const StudentList = styled(Box)(({ theme }) => ({
@@ -78,13 +110,36 @@ export const StudentList = styled(Box)(({ theme }) => ({
 }));
 
 export const StudentPill = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'gender',
-})<{ gender: Gender }>(({ theme, gender }) => ({
+  shouldForwardProp: (prop) => prop !== 'gender' && prop !== 'isPillDragging',
+})<{ gender: Gender; isPillDragging?: boolean }>(
+  ({ theme, gender, isPillDragging }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: theme.spacing(1, 1),
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: genderColor(gender),
+    fontSize: '0.875rem',
+    cursor: 'grab',
+    opacity: isPillDragging ? 0.4 : 1,
+    '&:active': { cursor: 'grabbing' },
+  })
+);
+
+export const PillIconsRow = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: theme.spacing(1, 1),
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: genderColor(gender),
-  fontSize: '0.875rem',
+  gap: theme.spacing(0.5),
+}));
+
+export const FriendGroupBadge = styled(Badge)({
+  '& .MuiBadge-badge': {
+    bottom: 12,
+  },
+});
+
+export const MenuItemIcon = styled(Box)(({ theme }) => ({
+  marginRight: theme.spacing(1.5),
+  display: 'flex',
+  alignItems: 'center',
 }));

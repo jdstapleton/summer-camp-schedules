@@ -10,8 +10,6 @@ import {
   Menu,
   Tooltip,
   Typography,
-  Badge,
-  Box,
 } from '@mui/material';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -38,14 +36,20 @@ import {
 import { printLabels } from '@/services/labelService';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
 import {
+  AllergyIconWrapper,
+  AllergyOverlayIconWrapper,
   CampHeaderRow,
   CampMaxSizeSpan,
   CampSection,
   ControlsRow,
   EmptyState,
+  FriendGroupBadge,
   InstanceCard,
   InstanceCardsRow,
+  InstanceHeaderRow,
+  MenuItemIcon,
   MutedTypography,
+  PillIconsRow,
   StudentList,
   StudentPill,
   WeekFilterControl,
@@ -176,31 +180,15 @@ function CampBlock({
             <InstanceCard
               key={inst.id}
               variant="outlined"
+              isOver={isOver}
+              isDropTarget={isDragging && !isSource}
               onDragOver={handleDragOver}
               onDragEnter={() => handleDragEnter(inst.id)}
               onDragLeave={(e) => handleDragLeave(e, inst.id)}
               onDrop={(e) => handleDrop(e, inst.id)}
-              sx={
-                isOver
-                  ? {
-                      outline: '2px dashed',
-                      outlineColor: 'primary.main',
-                      bgcolor: 'primary.50',
-                    }
-                  : isDragging && !isSource
-                    ? { outline: '1px dashed', outlineColor: 'divider' }
-                    : {}
-              }
             >
               <CardContent>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    marginBottom: 1,
-                  }}
-                >
+                <InstanceHeaderRow>
                   <Typography variant="subtitle2">
                     Instance {inst.instanceNumber} — {inst.studentIds.length}{' '}
                     student
@@ -208,99 +196,90 @@ function CampBlock({
                   </Typography>
                   {hasNutAllergy(inst) && (
                     <Tooltip title="No Nuts - Nut allergy in instance">
-                      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                      <AllergyIconWrapper>
                         <PeanutIcon fontSize="small" color="action" />
-                        <NotInterestedIcon
-                          fontSize="small"
-                          color="error"
-                          sx={{
-                            position: 'absolute',
-                            top: -2,
-                            right: -2,
-                          }}
-                        />
-                      </Box>
+                        <AllergyOverlayIconWrapper>
+                          <NotInterestedIcon fontSize="small" color="error" />
+                        </AllergyOverlayIconWrapper>
+                      </AllergyIconWrapper>
                     </Tooltip>
                   )}
-                </Box>
+                </InstanceHeaderRow>
                 <StudentList>
                   {[...inst.studentIds]
                     .sort((a, b) =>
                       getStudentSortKey(a).localeCompare(getStudentSortKey(b))
                     )
                     .map((id) => {
-                    const friendGroup = getStudentFriendGroup(campId, id);
-                    const isPillDragging =
-                      dragging?.studentId === id &&
-                      dragging?.fromInstanceId === inst.id;
-                    return (
-                      <StudentPill
-                        key={id}
-                        gender={getStudentGender(id)}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, id, inst.id)}
-                        onDragEnd={handleDragEnd}
-                        sx={{
-                          cursor: 'grab',
-                          opacity: isPillDragging ? 0.4 : 1,
-                          '&:active': { cursor: 'grabbing' },
-                        }}
-                      >
-                        <span>{getStudentName(id)}</span>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          {(() => {
-                            const notes = getStudentNotes(id);
-                            return (
-                              <>
-                                {notes.medical && (
-                                  <Tooltip title={notes.medical} placement="top">
-                                    <LocalHospitalIcon
-                                      fontSize="small"
-                                      color="error"
-                                    />
-                                  </Tooltip>
-                                )}
-                                {notes.special && (
-                                  <Tooltip title={notes.special} placement="top">
-                                    <NoteIcon fontSize="small" color="action" />
-                                  </Tooltip>
-                                )}
-                              </>
-                            );
-                          })()}
-                          {friendGroup && (
-                            <Tooltip
-                              title={`Friend Group ${friendGroup}`}
-                              placement="right"
-                            >
-                              <Badge
-                                badgeContent={friendGroup}
-                                color="primary"
-                                sx={{
-                                  '& .MuiBadge-badge': {
-                                    bottom: 12,
-                                  },
-                                }}
-                                anchorOrigin={{
-                                  vertical: 'bottom',
-                                  horizontal: 'right',
-                                }}
+                      const friendGroup = getStudentFriendGroup(campId, id);
+                      const isPillDragging =
+                        dragging?.studentId === id &&
+                        dragging?.fromInstanceId === inst.id;
+                      return (
+                        <StudentPill
+                          key={id}
+                          gender={getStudentGender(id)}
+                          isPillDragging={isPillDragging}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, id, inst.id)}
+                          onDragEnd={handleDragEnd}
+                        >
+                          <span>{getStudentName(id)}</span>
+                          <PillIconsRow>
+                            {(() => {
+                              const notes = getStudentNotes(id);
+                              return (
+                                <>
+                                  {notes.medical && (
+                                    <Tooltip
+                                      title={notes.medical}
+                                      placement="top"
+                                    >
+                                      <LocalHospitalIcon
+                                        fontSize="small"
+                                        color="error"
+                                      />
+                                    </Tooltip>
+                                  )}
+                                  {notes.special && (
+                                    <Tooltip
+                                      title={notes.special}
+                                      placement="top"
+                                    >
+                                      <NoteIcon
+                                        fontSize="small"
+                                        color="action"
+                                      />
+                                    </Tooltip>
+                                  )}
+                                </>
+                              );
+                            })()}
+                            {friendGroup && (
+                              <Tooltip
+                                title={`Friend Group ${friendGroup}`}
+                                placement="right"
                               >
-                                <GroupsIcon color="secondary" />
-                              </Badge>
-                            </Tooltip>
-                          )}
-                        </Box>
-                      </StudentPill>
-                    );
-                  })}
+                                <FriendGroupBadge
+                                  badgeContent={friendGroup}
+                                  color="primary"
+                                  anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                  }}
+                                >
+                                  <GroupsIcon color="secondary" />
+                                </FriendGroupBadge>
+                              </Tooltip>
+                            )}
+                          </PillIconsRow>
+                        </StudentPill>
+                      );
+                    })}
                   {inst.studentIds.length === 0 && (
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'text.secondary' }}
-                    >
+                    <MutedTypography variant="body2">
                       No students assigned
-                    </Typography>
+                    </MutedTypography>
                   )}
                 </StudentList>
               </CardContent>
@@ -313,11 +292,17 @@ function CampBlock({
 }
 
 export function SchedulePage() {
-  const { data, generatedSchedule, moveStudentBetweenInstances, refreshSchedule, saveToFile } =
-    useSchedule();
+  const {
+    data,
+    generatedSchedule,
+    moveStudentBetweenInstances,
+    refreshSchedule,
+    saveToFile,
+  } = useSchedule();
   const [selectedWeek, setSelectedWeek] = useState<string>('');
-  const [exportMenuAnchor, setExportMenuAnchor] =
-    useState<HTMLElement | null>(null);
+  const [exportMenuAnchor, setExportMenuAnchor] = useState<HTMLElement | null>(
+    null
+  );
 
   const getCampName = (campId: string) =>
     data.camps.find((c) => c.id === campId)?.name ?? campId;
@@ -441,8 +426,15 @@ export function SchedulePage() {
             open={Boolean(exportMenuAnchor)}
             onClose={() => setExportMenuAnchor(null)}
           >
-            <MenuItem onClick={() => { setExportMenuAnchor(null); saveToFile(); }}>
-              <CodeIcon sx={{ mr: 1.5 }} />
+            <MenuItem
+              onClick={() => {
+                setExportMenuAnchor(null);
+                saveToFile();
+              }}
+            >
+              <MenuItemIcon>
+                <CodeIcon />
+              </MenuItemIcon>
               Export JSON
             </MenuItem>
             <Divider />
@@ -456,7 +448,9 @@ export function SchedulePage() {
                 );
               }}
             >
-              <TableChartIcon sx={{ mr: 1.5 }} />
+              <MenuItemIcon>
+                <TableChartIcon />
+              </MenuItemIcon>
               Printable Masterlist
             </MenuItem>
             <MenuItem
@@ -469,7 +463,9 @@ export function SchedulePage() {
                 );
               }}
             >
-              <BadgeIcon sx={{ mr: 1.5 }} />
+              <MenuItemIcon>
+                <BadgeIcon />
+              </MenuItemIcon>
               Classroom Roster
             </MenuItem>
             <MenuItem
@@ -482,7 +478,9 @@ export function SchedulePage() {
                 );
               }}
             >
-              <ChecklistIcon sx={{ mr: 1.5 }} />
+              <MenuItemIcon>
+                <ChecklistIcon />
+              </MenuItemIcon>
               Sign In &amp; Sign Out Sheet
             </MenuItem>
             <Divider />
@@ -490,10 +488,13 @@ export function SchedulePage() {
               disabled={!generatedSchedule}
               onClick={() => {
                 setExportMenuAnchor(null);
-                if (generatedSchedule) printLabels(data, Object.values(instancesByCamp).flat());
+                if (generatedSchedule)
+                  printLabels(data, Object.values(instancesByCamp).flat());
               }}
             >
-              <PrintIcon sx={{ mr: 1.5 }} />
+              <MenuItemIcon>
+                <PrintIcon />
+              </MenuItemIcon>
               Print Labels
             </MenuItem>
           </Menu>
@@ -533,7 +534,10 @@ export function SchedulePage() {
               <WeekSection key={week}>
                 <WeekHeading variant="h5">{week}</WeekHeading>
                 {campsInWeek.map(([campId, instances]) => (
-                  <CampBlock key={campId} {...campBlockProps(campId, instances)} />
+                  <CampBlock
+                    key={campId}
+                    {...campBlockProps(campId, instances)}
+                  />
                 ))}
               </WeekSection>
             );
