@@ -358,7 +358,10 @@ export function SchedulePage() {
   const hasNutAllergy = (instance: CampInstance): boolean => {
     return instance.studentIds.some((studentId) => {
       const student = data.students.find((s) => s.id === studentId);
-      return student?.medicalIssues.toLowerCase().includes('nut');
+      return (
+        student?.medicalIssues.toLowerCase().includes('nut') ||
+        student?.specialRequest.toLowerCase().includes('nut')
+      );
     });
   };
 
