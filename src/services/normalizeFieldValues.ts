@@ -1,6 +1,21 @@
+const NEGATIVE_RESPONSES = new Set([
+  'no',
+  'n',
+  'none',
+  'n/a',
+  'na',
+  'not applicable',
+  'nothing',
+  'nope',
+  '-',
+]);
+
 export function normalizeNegativeResponses(value: string): string {
-  const trimmed = value.trim().toLowerCase();
-  if (trimmed === 'no' || trimmed === 'n' || trimmed === 'none' || trimmed === 'n/a') {
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/[.,!?;:—-]+$/g, '');
+  if (NEGATIVE_RESPONSES.has(normalized) || normalized === '') {
     return '';
   }
   return value;
