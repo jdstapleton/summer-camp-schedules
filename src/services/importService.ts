@@ -91,7 +91,7 @@ export async function parseXlsx(buffer: ArrayBuffer, config: ImportColumnConfig 
     const postCamp = detectPostCamp(selections);
 
     const photo = parsePhoto(readCell(row.getCell(col.photo)));
-    const tshirtSize = normalizeTshirtSize(readCell(row.getCell(col.tshirtSize)));
+    const tshirtSize = col.tshirtSize !== undefined ? normalizeTshirtSize(readCell(row.getCell(col.tshirtSize))) : '';
     const specialRequest = normalizeNegativeResponses(readCell(row.getCell(col.specialRequest)));
     const medicalIssues = normalizeNegativeResponses(readCell(row.getCell(col.medicalIssues)));
 
@@ -194,7 +194,7 @@ interface ColIndices {
   specialRequest: number;
   medicalIssues: number;
   photo: number;
-  tshirtSize: number;
+  tshirtSize: number | undefined;
   primaryName: number;
   primaryHomePhone: number;
   primaryCellPhone: number;
@@ -220,7 +220,7 @@ function columnIndices(headerRow: Row, config: ImportColumnConfig): ColIndices {
     specialRequest: resolveAny(config.specialRequest)!,
     medicalIssues: resolveAny(config.medicalIssues)!,
     photo: resolveAny(config.photo)!,
-    tshirtSize: resolveAny(config.tshirtSize)!,
+    tshirtSize: resolveAny(config.tshirtSize),
     primaryName: resolveAny(config.primaryName)!,
     primaryHomePhone: resolveAny(config.primaryHomePhone)!,
     primaryCellPhone: resolveAny(config.primaryCellPhone)!,
@@ -233,7 +233,10 @@ function columnIndices(headerRow: Row, config: ImportColumnConfig): ColIndices {
 }
 
 function checkMissing(config: ImportColumnConfig, resolveAny: (headers: string[]) => number | undefined) {
-  const requiredXXX: { key: keyof ImportColumnConfig; headers: string[] }[] = (Object.keys(config) as (keyof ImportColumnConfig)[]).map((key) => ({ key, headers: config[key] }));
+  const optionalFields = new Set(['tshirtSize']);
+  const requiredXXX: { key: keyof ImportColumnConfig; headers: string[] }[] = (Object.keys(config) as (keyof ImportColumnConfig)[])
+    .filter((key) => !optionalFields.has(key))
+    .map((key) => ({ key, headers: config[key] }));
 
   const missing = requiredXXX.filter(({ headers }) => resolveAny(headers) === undefined);
   if (missing.length > 0) {

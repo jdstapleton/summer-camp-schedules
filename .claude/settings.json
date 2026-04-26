@@ -85,5 +85,5 @@
     ]
   },
   "codeFormatter": "prettier",
-  "enabledMcpjsonServers": ["mui-mcp"]
+  "enabledMcpjsonServers": ["mui-mcp", "supabase"]
 }
