@@ -51,7 +51,13 @@ export function subscribeToChanges(callback: (data: ScheduleData) => void): () =
         callback(payload.new.data);
       }
     })
-    .subscribe();
+    .subscribe((status, err) => {
+      if (status === 'SUBSCRIBED') {
+        console.log('[Realtime] subscribed to schedule_data');
+      } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        console.error('[Realtime] subscription failed:', status, err);
+      }
+    });
 
   return () => {
     supabase.removeChannel(channel);
