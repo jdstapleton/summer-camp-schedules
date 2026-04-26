@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { AppConfig, ImportColumnConfig } from '@/models/types';
 
 export function useConfigDialogState(config: AppConfig, open: boolean) {
@@ -6,15 +6,16 @@ export function useConfigDialogState(config: AppConfig, open: boolean) {
   const [extraWeeks, setExtraWeeks] = useState<string[]>([]);
   const [defaultMaxSize, setDefaultMaxSize] = useState('10');
   const [importColumnConfig, setImportColumnConfig] = useState<ImportColumnConfig | null>(null);
+  const prevOpen = useRef(false);
 
   useEffect(() => {
-    if (open) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (open && !prevOpen.current) {
       setGradeRanges([...config.gradeRanges]);
       setExtraWeeks([...config.extraWeeks]);
       setDefaultMaxSize(String(config.defaultMaxSize));
       setImportColumnConfig(JSON.parse(JSON.stringify(config.importColumnConfig)));
     }
+    prevOpen.current = open;
   }, [open, config]);
 
   function addGradeRange(value: string) {

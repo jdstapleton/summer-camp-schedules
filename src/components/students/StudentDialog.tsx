@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import {
   Button,
   Checkbox,
@@ -107,11 +107,13 @@ function studentFormReducer(state: StudentFormState, action: StudentFormAction):
 
 export function StudentDialog({ open, student, onSave, onClose }: StudentDialogProps) {
   const [form, dispatch] = useReducer(studentFormReducer, defaultState);
+  const prevOpen = useRef(false);
 
   useEffect(() => {
-    if (open) {
+    if (open && !prevOpen.current) {
       dispatch({ type: 'reset', student });
     }
+    prevOpen.current = open;
   }, [open, student]);
 
   const handleGenderChange = (e: SelectChangeEvent) => dispatch({ type: 'patch', payload: { gender: e.target.value as Gender } });

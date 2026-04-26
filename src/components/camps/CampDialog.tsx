@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { generateDefaultWeeks } from '@/config/defaultWeeks';
 import { useAppConfig } from '@/contexts/AppConfigProvider';
@@ -20,6 +20,7 @@ export function CampDialog({ open, camp, existingCamps, onSave, onClose, titleOv
   const [gradeRange, setGradeRange] = useState('');
   const [week, setWeek] = useState('');
   const [maxSize, setMaxSize] = useState('16');
+  const prevOpen = useRef(false);
 
   const existingNames = Array.from(new Set(existingCamps.map((c) => c.name))).sort();
   const existingWeeks = Array.from(new Set([...config.extraWeeks, ...existingCamps.map((c) => c.week)])).sort();
@@ -37,13 +38,13 @@ export function CampDialog({ open, camp, existingCamps, onSave, onClose, titleOv
   };
 
   useEffect(() => {
-    if (open) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (open && !prevOpen.current) {
       setName(camp?.name ?? '');
       setGradeRange(camp?.gradeRange ?? '');
       setWeek(camp?.week ?? '');
       setMaxSize(String(camp?.maxSize ?? config.defaultMaxSize));
     }
+    prevOpen.current = open;
   }, [open, camp, config.defaultMaxSize]);
 
   const parsedMax = parseInt(maxSize, 10);

@@ -24,6 +24,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   const [generatedSchedule, setGeneratedSchedule] = useState<GeneratedSchedule | null>(null);
   const [loading, setLoading] = useState(true);
   const saveDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isApplyingRemoteUpdate = useRef(false);
 
   // Fetch from Supabase on mount
   useEffect(() => {
@@ -43,15 +44,21 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const unsubscribe = subscribeToChanges((incoming) => {
       const migrated = migrateData(incoming);
+      isApplyingRemoteUpdate.current = true;
       setData(migrated);
       setGeneratedSchedule(migrated.schedule ?? null);
+      // Keep flag true for 600ms to outlast the 500ms debounce
+      // This prevents re-saving data we just received from the server
+      setTimeout(() => {
+        isApplyingRemoteUpdate.current = false;
+      }, 600);
     });
     return unsubscribe;
   }, []);
 
   // Debounced save to Supabase
   useEffect(() => {
-    if (loading) return; // Don't save while initial load is pending
+    if (loading || isApplyingRemoteUpdate.current) return; // Don't save while loading or applying remote updates
 
     if (saveDebounceRef.current) {
       clearTimeout(saveDebounceRef.current);
