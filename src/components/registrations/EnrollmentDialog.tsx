@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Autocomplete,
   Box,
@@ -41,10 +41,10 @@ export function EnrollmentDialog({ open, camp, registration, students, onSave, o
   const [newGroupIds, setNewGroupIds] = useState<string[]>([]);
   const [autocompleteValue, setAutocompleteValue] = useState<Student | null>(null);
   const [editingStudentId, setEditingStudentId] = useState<string | null>(null);
+  const prevOpen = useRef(false);
 
   useEffect(() => {
-    if (open) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (open && !prevOpen.current) {
       setSelectedIds([...registration.studentIds]);
       setFriendGroups(registration.friendGroups.map((g) => [...g]));
       setAddingGroup(false);
@@ -52,6 +52,7 @@ export function EnrollmentDialog({ open, camp, registration, students, onSave, o
       setAutocompleteValue(null);
       setEditingStudentId(null);
     }
+    prevOpen.current = open;
   }, [open, registration]);
 
   const addStudent = (student: Student) => {
