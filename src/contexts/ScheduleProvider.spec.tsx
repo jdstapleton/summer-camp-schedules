@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ScheduleProvider } from './ScheduleProvider';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { ImportBatchPayload } from '@/models/contexts';

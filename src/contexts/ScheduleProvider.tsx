@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Camp, CampRegistration, GeneratedSchedule, ScheduleData, Student } from '@/models/types';
 import type { ImportBatchPayload } from '@/models/contexts';
@@ -6,12 +6,10 @@ import { fileService } from '@/services/fileService';
 import { generateSchedule } from '@/services/schedulerService';
 import { migrateData } from '@/services/dataMigrations';
 import { extractMentionedStudents } from '@/services/friendGroupService';
-import { safeSetItem } from '@/services/safeStorage';
+import { fetchScheduleData, saveScheduleData, subscribeToChanges } from '@/services/supabaseStorage';
 import { ScheduleContext } from './ScheduleContext';
 
 const existingStudentKey = (s: Student): string => `${s.lastName.trim().toLowerCase()}|${s.firstName.trim().toLowerCase()}|${s.age}`;
-
-const STORAGE_KEY = 'summer-camp-schedules';
 
 const emptyData: ScheduleData = {
   version: 7,
@@ -21,35 +19,56 @@ const emptyData: ScheduleData = {
   schedule: null,
 };
 
-const isValidScheduleData = (data: unknown): data is ScheduleData => {
-  if (!data || typeof data !== 'object') return false;
-  const obj = data as Record<string, unknown>;
-  const isValidSchedule = (sched: unknown): sched is GeneratedSchedule | null =>
-    sched === null || (typeof sched === 'object' && Array.isArray((sched as Record<string, unknown>).instances));
-  return Array.isArray(obj.students) && Array.isArray(obj.camps) && Array.isArray(obj.registrations) && isValidSchedule(obj.schedule);
-};
-
 export function ScheduleProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<ScheduleData>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (isValidScheduleData(parsed)) return migrateData(parsed);
-        // Schema mismatch (likely old format), clear and start fresh
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    } catch {
-      // corrupted data, clear it and fall back to empty
-      localStorage.removeItem(STORAGE_KEY);
-    }
-    return emptyData;
-  });
-  const [generatedSchedule, setGeneratedSchedule] = useState<GeneratedSchedule | null>(data.schedule ?? null);
+  const [data, setData] = useState<ScheduleData>(emptyData);
+  const [generatedSchedule, setGeneratedSchedule] = useState<GeneratedSchedule | null>(null);
+  const [loading, setLoading] = useState(true);
+  const saveDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Fetch from Supabase on mount
   useEffect(() => {
-    safeSetItem(STORAGE_KEY, JSON.stringify(data));
-  }, [data]);
+    const init = async () => {
+      const remote = await fetchScheduleData();
+      if (remote) {
+        const migrated = migrateData(remote);
+        setData(migrated);
+        setGeneratedSchedule(migrated.schedule ?? null);
+      }
+      setLoading(false);
+    };
+    init();
+  }, []);
+
+  // Subscribe to real-time changes
+  useEffect(() => {
+    const unsubscribe = subscribeToChanges((incoming) => {
+      const migrated = migrateData(incoming);
+      setData(migrated);
+      setGeneratedSchedule(migrated.schedule ?? null);
+    });
+    return unsubscribe;
+  }, []);
+
+  // Debounced save to Supabase
+  useEffect(() => {
+    if (loading) return; // Don't save while initial load is pending
+
+    if (saveDebounceRef.current) {
+      clearTimeout(saveDebounceRef.current);
+    }
+
+    saveDebounceRef.current = setTimeout(() => {
+      saveScheduleData(data).catch((err) => {
+        console.error('Failed to save to Supabase:', err);
+      });
+    }, 500);
+
+    return () => {
+      if (saveDebounceRef.current) {
+        clearTimeout(saveDebounceRef.current);
+      }
+    };
+  }, [data, loading]);
 
   const addStudent = useCallback((student: Omit<Student, 'id'>) => {
     setData((prev) => ({
@@ -162,7 +181,7 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   const clearData = useCallback(() => {
     setData(emptyData);
     setGeneratedSchedule(null);
-    localStorage.removeItem(STORAGE_KEY);
+    // Supabase save will be triggered by the data change in useEffect
   }, []);
 
   const importBatch = useCallback((payload: ImportBatchPayload) => {

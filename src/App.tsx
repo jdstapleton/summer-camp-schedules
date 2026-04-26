@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { Box, CircularProgress } from '@mui/material';
 import { createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router';
 import { AppConfigProvider } from '@/contexts/AppConfigProvider';
 import { ScheduleProvider } from '@/contexts/ScheduleProvider';
@@ -8,6 +10,8 @@ import { StudentsPage } from '@/components/students/StudentsPage';
 import { CampsPage } from '@/components/camps/CampsPage';
 import { RegistrationsPage } from '@/components/registrations/RegistrationsPage';
 import { SchedulePage } from '@/components/schedule/SchedulePage';
+import { LoginPage } from '@/components/auth/LoginPage';
+import { supabase } from '@/services/supabaseClient';
 
 const rootRoute = createRootRoute({ component: Layout });
 
@@ -45,14 +49,53 @@ const routeTree = rootRoute.addChildren([indexRoute, studentsRoute, campsRoute, 
 
 const router = createRouter({ routeTree });
 
+function AuthGate({ children }: { children: React.ReactNode }) {
+  const [session, setSession] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      setSession(!!data.session && !error);
+    };
+
+    getSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(!!session);
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
+
+  if (session === null) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!session) {
+    return <LoginPage />;
+  }
+
+  return <>{children}</>;
+}
+
 export function App() {
   return (
     <ErrorBoundary>
-      <AppConfigProvider>
-        <ScheduleProvider>
-          <RouterProvider router={router} />
-        </ScheduleProvider>
-      </AppConfigProvider>
+      <AuthGate>
+        <AppConfigProvider>
+          <ScheduleProvider>
+            <RouterProvider router={router} />
+          </ScheduleProvider>
+        </AppConfigProvider>
+      </AuthGate>
     </ErrorBoundary>
   );
 }
