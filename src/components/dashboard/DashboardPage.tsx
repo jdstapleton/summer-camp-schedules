@@ -40,17 +40,17 @@ export function DashboardPage() {
         Dashboard
       </Typography>
       <ButtonRow>
-        <Button variant="contained" onClick={() => void loadFromFile()}>
-          Open Schedule File
+        <Button variant="outlined" color="error" onClick={() => setConfirmClear(true)}>
+          New Schedule
+        </Button>
+        <Button variant="contained" onClick={() => fileInputRef.current?.click()}>
+          Import from Excel
         </Button>
         <Button variant="outlined" onClick={saveToFile}>
           Save Schedule File
         </Button>
-        <Button variant="outlined" onClick={() => fileInputRef.current?.click()}>
-          Import from Excel
-        </Button>
-        <Button variant="outlined" color="error" onClick={() => setConfirmClear(true)}>
-          New Schedule
+        <Button variant="outlined" onClick={() => void loadFromFile()}>
+          Open Schedule File
         </Button>
       </ButtonRow>
       <input ref={fileInputRef} type="file" accept=".xlsx" style={{ display: 'none' }} onChange={handleFileChange} />
