@@ -242,4 +242,19 @@ describe('parseXlsx', () => {
     const result = await parseXlsx(buf);
     expect(result.students).toHaveLength(1);
   });
+
+  it('throws when the workbook contains no worksheets', async () => {
+    const wb = new ExcelJS.Workbook();
+    const buffer = (await wb.xlsx.writeBuffer()) as ArrayBuffer;
+    await expect(parseXlsx(buffer)).rejects.toThrow('The workbook contains no worksheets.');
+  });
+
+  it('skips rows where the session name yields an empty camp name', async () => {
+    // '-Location' → extractCampName strips everything before last dash → empty string
+    const buffer = await buildXlsx([dataRow({ sessionName: '-Location' })]);
+    const result = await parseXlsx(buffer);
+    expect(result.students).toHaveLength(0);
+    expect(result.skippedRows).toHaveLength(1);
+    expect(result.skippedRows[0].reason).toMatch(/empty camp name/);
+  });
 });

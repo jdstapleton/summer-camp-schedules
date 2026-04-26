@@ -1,6 +1,19 @@
-import { describe, expect, it } from 'vitest';
-import type { Student } from '@/models/types';
-import { firstNonEmpty, getEmergencyPhone, getInstanceSheetName, getSecondaryCellPhone, sanitizeSheetName, studentSortCompare, yesOrBlank, yesOrNo } from './shared';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type { CampInstance, Student } from '@/models/types';
+import {
+  applyCellBorders,
+  applyCellFill,
+  buildInstancesGroupedByCamp,
+  firstNonEmpty,
+  getEmergencyPhone,
+  getInstanceSheetName,
+  getSecondaryCellPhone,
+  sanitizeSheetName,
+  saveWorkbook,
+  studentSortCompare,
+  yesOrBlank,
+  yesOrNo,
+} from './shared';
 
 const makeStudent = (overrides: Partial<Student> = {}): Student => ({
   id: 's1',
@@ -139,5 +152,101 @@ describe('yesOrBlank / yesOrNo', () => {
   it('yesOrNo', () => {
     expect(yesOrNo(true)).toBe('Yes');
     expect(yesOrNo(false)).toBe('No');
+  });
+});
+
+describe('applyCellFill', () => {
+  it('sets the fill pattern on the cell and returns it', () => {
+    const cell = { fill: undefined as unknown };
+    const returned = applyCellFill(cell as Parameters<typeof applyCellFill>[0], 'FFFF0000');
+    expect(cell.fill).toEqual({
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFFF0000' },
+    });
+    expect(returned).toBe(cell);
+  });
+});
+
+describe('applyCellBorders', () => {
+  it('sets thin borders on all four sides and returns the cell', () => {
+    const cell = { border: undefined as unknown };
+    const returned = applyCellBorders(cell as Parameters<typeof applyCellBorders>[0]);
+    expect(cell.border).toEqual({
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' },
+    });
+    expect(returned).toBe(cell);
+  });
+
+  it('returns undefined without throwing when called with no argument', () => {
+    expect(() => applyCellBorders(undefined)).not.toThrow();
+    expect(applyCellBorders(undefined)).toBeUndefined();
+  });
+});
+
+describe('buildInstancesGroupedByCamp', () => {
+  it('groups instances by campId and sorts each group by instanceNumber', () => {
+    const instances: CampInstance[] = [
+      { id: 'c1-2', campId: 'c1', instanceNumber: 2, studentIds: [] },
+      { id: 'c2-1', campId: 'c2', instanceNumber: 1, studentIds: [] },
+      { id: 'c1-1', campId: 'c1', instanceNumber: 1, studentIds: [] },
+    ];
+    const grouped = buildInstancesGroupedByCamp(instances);
+    expect(grouped.size).toBe(2);
+    const c1 = grouped.get('c1')!;
+    expect(c1).toHaveLength(2);
+    expect(c1[0].instanceNumber).toBe(1);
+    expect(c1[1].instanceNumber).toBe(2);
+    expect(grouped.get('c2')).toHaveLength(1);
+  });
+
+  it('returns an empty map for empty input', () => {
+    expect(buildInstancesGroupedByCamp([])).toEqual(new Map());
+  });
+});
+
+describe('saveWorkbook', () => {
+  beforeEach(() => {
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('writes the workbook buffer, triggers a download, and revokes the URL', async () => {
+    const anchor = { href: '', download: '', click: vi.fn() };
+    vi.spyOn(document, 'createElement').mockReturnValueOnce(anchor as unknown as HTMLElement);
+    const mockWorkbook = {
+      xlsx: { writeBuffer: vi.fn().mockResolvedValue(new ArrayBuffer(8)) },
+    };
+
+    await saveWorkbook(mockWorkbook as unknown as Parameters<typeof saveWorkbook>[0], 'report.xlsx');
+
+    expect(mockWorkbook.xlsx.writeBuffer).toHaveBeenCalledOnce();
+    expect(anchor.download).toBe('report.xlsx');
+    expect(anchor.click).toHaveBeenCalledOnce();
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:mock');
+  });
+});
+
+describe('getInstanceSheetName fallback', () => {
+  it('returns a timestamp-based name after 999 collision slots are exhausted', () => {
+    const used = new Set<string>();
+    const candidate = sanitizeSheetName('Camp');
+    used.add(candidate);
+    for (let n = 2; n < 1000; n++) {
+      const suffix = ` (${n})`;
+      const trimmed = candidate.slice(0, 31 - suffix.length);
+      used.add(`${trimmed}${suffix}`);
+    }
+    vi.spyOn(Date, 'now').mockReturnValueOnce(1234567890);
+    const result = getInstanceSheetName('Camp', 1, 1, used);
+    expect(result).toContain('1234567890');
+    vi.restoreAllMocks();
   });
 });

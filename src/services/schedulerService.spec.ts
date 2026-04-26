@@ -255,4 +255,53 @@ describe('generateSchedule', () => {
       expect(inst.instanceNumber).toBe(i + 1);
     });
   });
+
+  it('spills overflow students into remaining buckets when gender exceeds target instances', () => {
+    // 9 girls, maxSize 3 → 3 instances; girlInstanceCount = floor(9/4) = 2 target buckets
+    // 3 girls overflow from the 2 target buckets into the 3rd bucket (lines 92–93)
+    const girls = Array.from({ length: 9 }, (_, i) => makeStudent(`g${i}`, 'female'));
+    const data: ScheduleData = {
+      version: 7,
+      students: girls,
+      camps: [{ id: 'c1', name: 'Art', gradeRange: 'Grades 1-3', week: 'June 8', maxSize: 3 }],
+      registrations: [{ campId: 'c1', studentIds: girls.map((s) => s.id), friendGroups: [] }],
+      schedule: null,
+    };
+    const result = generateSchedule(data);
+    const total = result.instances.reduce((sum, inst) => sum + inst.studentIds.length, 0);
+    expect(total).toBe(9);
+  });
+
+  it('uses smallestBucketIndex fallback when no bucket can fit the entire friend group', () => {
+    // maxSize 3, 9 students → 3 instances (buckets size 3 each)
+    // Friend group of 4 cannot fit in any bucket (all have room 3 < 4), triggering fallback (line 106)
+    const students = Array.from({ length: 9 }, (_, i) => makeStudent(`s${i}`, 'male'));
+    const friendGroup = students.slice(0, 4).map((s) => s.id);
+    const data: ScheduleData = {
+      version: 7,
+      students,
+      camps: [{ id: 'c1', name: 'Art', gradeRange: 'Grades 1-3', week: 'June 8', maxSize: 3 }],
+      registrations: [{ campId: 'c1', studentIds: students.map((s) => s.id), friendGroups: [friendGroup] }],
+      schedule: null,
+    };
+    const result = generateSchedule(data);
+    const total = result.instances.reduce((sum, inst) => sum + inst.studentIds.length, 0);
+    expect(total).toBe(9);
+    // All friend group members should end up in the same instance
+    const friendInstance = result.instances.find((inst) => friendGroup.every((id) => inst.studentIds.includes(id)));
+    expect(friendInstance).toBeDefined();
+  });
+
+  it('skips registrations whose campId has no matching camp', () => {
+    const students = [makeStudent('s1', 'male')];
+    const data: ScheduleData = {
+      version: 7,
+      students,
+      camps: [{ id: 'c1', name: 'Art', gradeRange: 'Grades 1-3', week: 'June 8', maxSize: 10 }],
+      registrations: [{ campId: 'nonexistent', studentIds: ['s1'], friendGroups: [] }],
+      schedule: null,
+    };
+    const result = generateSchedule(data);
+    expect(result.instances).toHaveLength(0);
+  });
 });

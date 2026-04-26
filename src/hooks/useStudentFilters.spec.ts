@@ -443,4 +443,40 @@ describe('useStudentFilters', () => {
       expect(result.current.uniqueTshirtSizes).toEqual(['Small', 'XL']);
     });
   });
+
+  describe('sort by camps', () => {
+    it('sorts students by their registered camp name', () => {
+      const alice = makeStudent({ id: '1', firstName: 'Alice', lastName: 'Smith' });
+      const bob = makeStudent({ id: '2', firstName: 'Bob', lastName: 'Jones' });
+      const campA = makeCamp({ id: 'c1', name: 'Astronomy' });
+      const campB = makeCamp({ id: 'c2', name: 'Biology' });
+      // Alice → Astronomy, Bob → Biology
+      const registrations = [
+        { campId: 'c1', studentIds: ['1'], friendGroups: [] },
+        { campId: 'c2', studentIds: ['2'], friendGroups: [] },
+      ];
+      const data = makeData([alice, bob], [campA, campB], registrations);
+      const { result } = renderHook(() => useStudentFilters(data));
+
+      // Default sort (by name asc): Jones < Smith → [bob, alice]
+      expect(result.current.sortedStudents.map((s) => s.id)).toEqual(['2', '1']);
+
+      // Sort by camp: Astronomy < Biology → [alice, bob]
+      act(() => result.current.setOrderBy('camps'));
+      expect(result.current.sortedStudents.map((s) => s.id)).toEqual(['1', '2']);
+    });
+  });
+
+  describe('default sort (unrecognized orderBy)', () => {
+    it('preserves input order when orderBy does not match any column', () => {
+      const alice = makeStudent({ id: '1', firstName: 'Alice', lastName: 'Smith' });
+      const bob = makeStudent({ id: '2', firstName: 'Bob', lastName: 'Jones' });
+      const { result } = renderHook(() => useStudentFilters(makeData([alice, bob])));
+
+      act(() => result.current.setOrderBy('unrecognized'));
+
+      // compareValues always returns 0 → stable sort preserves [alice, bob] input order
+      expect(result.current.sortedStudents.map((s) => s.id)).toEqual(['1', '2']);
+    });
+  });
 });
