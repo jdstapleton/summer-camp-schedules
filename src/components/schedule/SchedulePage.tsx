@@ -8,11 +8,12 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import PrintIcon from '@mui/icons-material/Print';
 import BadgeIcon from '@mui/icons-material/Badge';
 import ChecklistIcon from '@mui/icons-material/Checklist';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { CampInstance } from '@/models/types';
-import { exportClassroomRoster, exportPrintableMasterlist, exportSignInOutSheet } from '@/services/exports';
+import { exportClassroomRoster, exportPrintableMasterlist, exportSignInOutSheet, exportTshirtPickupSheet } from '@/services/exports';
 import { printLabels } from '@/services/labelService';
 import { PageHeaderRow } from '@/components/shared/shared.styles';
 import { ControlsRow, EmptyState, MenuItemIcon, MutedTypography, WeekFilterControl, WeekHeading, WeekSection } from './SchedulePage.styles';
@@ -161,6 +162,18 @@ export function SchedulePage() {
                 <ChecklistIcon />
               </MenuItemIcon>
               Sign In &amp; Sign Out Sheet
+            </MenuItem>
+            <MenuItem
+              disabled={!generatedSchedule || !selectedWeek}
+              onClick={() => {
+                setExportMenuAnchor(null);
+                void exportTshirtPickupSheet(data, Object.values(instancesByCamp).flat());
+              }}
+            >
+              <MenuItemIcon>
+                <ShoppingBagIcon />
+              </MenuItemIcon>
+              T-Shirt Pickup Sheet
             </MenuItem>
             <Divider />
             <MenuItem
