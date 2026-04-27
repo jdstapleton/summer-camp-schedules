@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ScheduleProvider } from './ScheduleProvider';
@@ -22,9 +22,23 @@ vi.mock('@/services/supabaseStorage', () => ({
 
 const wrapper = ({ children }: { children: ReactNode }) => <ScheduleProvider>{children}</ScheduleProvider>;
 
+beforeEach(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+});
+
 afterEach(() => {
+  vi.useRealTimers();
   vi.clearAllMocks();
 });
+
+// Initialize hook and wait for loading to complete
+const initHook = async () => {
+  const result = renderHook(() => useSchedule(), { wrapper });
+  await waitFor(() => {
+    expect(result.result.current).toBeDefined();
+  });
+  return result;
+};
 
 const blankContact = { name: '', homePhone: '', cellPhone: '' };
 
@@ -56,16 +70,17 @@ const makeCamp = (name: string): ImportBatchPayload['newCamps'][number] => ({
 describe('ScheduleProvider importBatch', () => {
   beforeEach(() => localStorage.clear());
 
-  it('adds students, camps, and registration entries', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('adds students, camps, and registration entries', async () => {
+    const { result } = await initHook();
 
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [makeStudent('Alice', 'Smith')],
         newCamps: [makeCamp('Art')],
         registrationRows: [{ campName: 'Art', dedupeKey: 'smith|alice|10' }],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
 
     expect(result.current.data.students).toHaveLength(1);
     expect(result.current.data.students[0].firstName).toBe('Alice');
@@ -76,57 +91,61 @@ describe('ScheduleProvider importBatch', () => {
     expect(reg?.studentIds).toHaveLength(1);
   });
 
-  it('deduplicates students by dedupeKey on repeated imports', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('deduplicates students by dedupeKey on repeated imports', async () => {
+    const { result } = await initHook();
     const student = makeStudent('Alice', 'Smith');
 
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [student],
         newCamps: [],
         registrationRows: [],
-      })
-    );
-    act(() =>
+      });
+      vi.advanceTimersByTime(300);
+    });
+    act(() => {
       result.current.importBatch({
         newStudents: [student],
         newCamps: [],
         registrationRows: [],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
 
     expect(result.current.data.students).toHaveLength(1);
   });
 
-  it('deduplicates camps by name on repeated imports', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('deduplicates camps by name on repeated imports', async () => {
+    const { result } = await initHook();
     const camp = makeCamp('Art');
 
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [],
         newCamps: [camp],
         registrationRows: [],
-      })
-    );
-    act(() =>
+      });
+      vi.advanceTimersByTime(300);
+    });
+    act(() => {
       result.current.importBatch({
         newStudents: [],
         newCamps: [camp],
         registrationRows: [],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
 
     expect(result.current.data.camps).toHaveLength(1);
   });
 
-  it('places mutually mentioning students in the same friend group', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('places mutually mentioning students in the same friend group', async () => {
+    const { result } = await initHook();
     const alice = makeStudent('Alice', 'Smith', 'Please group me with Bob');
     const bob = makeStudent('Bob', 'Jones', 'Please group me with Alice');
     const charlie = makeStudent('Charlie', 'Brown');
 
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [alice, bob, charlie],
         newCamps: [makeCamp('Art')],
@@ -135,8 +154,9 @@ describe('ScheduleProvider importBatch', () => {
           { campName: 'Art', dedupeKey: bob.dedupeKey },
           { campName: 'Art', dedupeKey: charlie.dedupeKey },
         ],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
 
     const campId = result.current.data.camps[0].id;
     const reg = result.current.data.registrations.find((r) => r.campId === campId);
@@ -148,13 +168,13 @@ describe('ScheduleProvider importBatch', () => {
     expect(reg?.friendGroups[0]).toContain(bobId);
   });
 
-  it('transitively merges friend groups (A→B, B→C become one group)', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('transitively merges friend groups (A→B, B→C become one group)', async () => {
+    const { result } = await initHook();
     const alice = makeStudent('Alice', 'Smith', 'I want to be with Bob');
     const bob = makeStudent('Bob', 'Jones', 'Please group me with Charlie');
     const charlie = makeStudent('Charlie', 'Brown');
 
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [alice, bob, charlie],
         newCamps: [makeCamp('Art')],
@@ -163,8 +183,9 @@ describe('ScheduleProvider importBatch', () => {
           { campName: 'Art', dedupeKey: bob.dedupeKey },
           { campName: 'Art', dedupeKey: charlie.dedupeKey },
         ],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
 
     const campId = result.current.data.camps[0].id;
     const reg = result.current.data.registrations.find((r) => r.campId === campId);
@@ -178,12 +199,12 @@ describe('ScheduleProvider importBatch', () => {
     expect(reg?.friendGroups[0]).toContain(charlieId);
   });
 
-  it('does not create friend groups when no students have special requests', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('does not create friend groups when no students have special requests', async () => {
+    const { result } = await initHook();
     const alice = makeStudent('Alice', 'Smith');
     const bob = makeStudent('Bob', 'Jones');
 
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [alice, bob],
         newCamps: [makeCamp('Art')],
@@ -191,21 +212,22 @@ describe('ScheduleProvider importBatch', () => {
           { campName: 'Art', dedupeKey: alice.dedupeKey },
           { campName: 'Art', dedupeKey: bob.dedupeKey },
         ],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
 
     const campId = result.current.data.camps[0].id;
     const reg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(reg?.friendGroups).toHaveLength(0);
   });
 
-  it('filters out friend groups with fewer than 2 members', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('filters out friend groups with fewer than 2 members', async () => {
+    const { result } = await initHook();
     // Alice mentions Dave who is not enrolled in the camp — no valid pair
     const alice = makeStudent('Alice', 'Smith', 'I want to be with Dave');
     const bob = makeStudent('Bob', 'Jones');
 
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [alice, bob],
         newCamps: [makeCamp('Art')],
@@ -213,18 +235,19 @@ describe('ScheduleProvider importBatch', () => {
           { campName: 'Art', dedupeKey: alice.dedupeKey },
           { campName: 'Art', dedupeKey: bob.dedupeKey },
         ],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
 
     const campId = result.current.data.camps[0].id;
     const reg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(reg?.friendGroups).toHaveLength(0);
   });
 
-  it('silently ignores registration rows referencing unknown camp or student', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('silently ignores registration rows referencing unknown camp or student', async () => {
+    const { result } = await initHook();
 
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [makeStudent('Alice', 'Smith')],
         newCamps: [makeCamp('Art')],
@@ -232,8 +255,9 @@ describe('ScheduleProvider importBatch', () => {
           { campName: 'NonExistentCamp', dedupeKey: 'smith|alice|10' },
           { campName: 'Art', dedupeKey: 'nobody|nobody|10' },
         ],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
 
     const campId = result.current.data.camps[0].id;
     const reg = result.current.data.registrations.find((r) => r.campId === campId);
@@ -272,36 +296,52 @@ describe('ScheduleProvider student CRUD', () => {
     vi.clearAllMocks();
   });
 
-  it('addStudent adds a student with a generated id', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.addStudent(makeStudentInput()));
+  it('addStudent adds a student with a generated id', async () => {
+    const { result } = await initHook();
+    act(() => {
+      result.current.addStudent(makeStudentInput());
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.data.students).toHaveLength(1);
     expect(result.current.data.students[0].firstName).toBe('Alice');
     expect(result.current.data.students[0].id).toBeTruthy();
   });
 
-  it('updateStudent replaces only the matching student', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.addStudent(makeStudentInput('Alice', 'Smith')));
-    act(() => result.current.addStudent(makeStudentInput('Bob', 'Jones')));
+  it('updateStudent replaces only the matching student', async () => {
+    const { result } = await initHook();
+    act(() => {
+      result.current.addStudent(makeStudentInput('Alice', 'Smith'));
+      vi.advanceTimersByTime(300);
+    });
+    act(() => {
+      result.current.addStudent(makeStudentInput('Bob', 'Jones'));
+      vi.advanceTimersByTime(300);
+    });
     const alice = result.current.data.students.find((s) => s.firstName === 'Alice')!;
-    act(() => result.current.updateStudent({ ...alice, firstName: 'Alicia' }));
+    act(() => {
+      result.current.updateStudent({ ...alice, firstName: 'Alicia' });
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.data.students).toHaveLength(2);
     expect(result.current.data.students.find((s) => s.id === alice.id)?.firstName).toBe('Alicia');
     expect(result.current.data.students.find((s) => s.firstName === 'Bob')).toBeDefined();
   });
 
-  it('deleteStudent removes the student and cleans up registrations', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() =>
+  it('deleteStudent removes the student and cleans up registrations', async () => {
+    const { result } = await initHook();
+    act(() => {
       result.current.importBatch({
         newStudents: [makeStudent('Alice', 'Smith')],
         newCamps: [makeCamp('Art')],
         registrationRows: [{ campName: 'Art', dedupeKey: 'smith|alice|10' }],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
     const studentId = result.current.data.students[0].id;
-    act(() => result.current.deleteStudent(studentId));
+    act(() => {
+      result.current.deleteStudent(studentId);
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.data.students).toHaveLength(0);
     const reg = result.current.data.registrations[0];
     expect(reg.studentIds).not.toContain(studentId);
@@ -314,9 +354,12 @@ describe('ScheduleProvider camp CRUD', () => {
     vi.clearAllMocks();
   });
 
-  it('addCamp adds a camp with a generated id and an empty registration', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.addCamp(makeCampInput()));
+  it('addCamp adds a camp with a generated id and an empty registration', async () => {
+    const { result } = await initHook();
+    act(() => {
+      result.current.addCamp(makeCampInput());
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.data.camps).toHaveLength(1);
     expect(result.current.data.camps[0].name).toBe('Art');
     expect(result.current.data.camps[0].id).toBeTruthy();
@@ -324,22 +367,37 @@ describe('ScheduleProvider camp CRUD', () => {
     expect(result.current.data.registrations.find((r) => r.campId === campId)).toBeDefined();
   });
 
-  it('updateCamp replaces only the matching camp', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.addCamp(makeCampInput('Art')));
-    act(() => result.current.addCamp(makeCampInput('Science')));
+  it('updateCamp replaces only the matching camp', async () => {
+    const { result } = await initHook();
+    act(() => {
+      result.current.addCamp(makeCampInput('Art'));
+      vi.advanceTimersByTime(300);
+    });
+    act(() => {
+      result.current.addCamp(makeCampInput('Science'));
+      vi.advanceTimersByTime(300);
+    });
     const art = result.current.data.camps.find((c) => c.name === 'Art')!;
-    act(() => result.current.updateCamp({ ...art, name: 'Arts & Crafts' }));
+    act(() => {
+      result.current.updateCamp({ ...art, name: 'Arts & Crafts' });
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.data.camps).toHaveLength(2);
     expect(result.current.data.camps.find((c) => c.id === art.id)?.name).toBe('Arts & Crafts');
     expect(result.current.data.camps.find((c) => c.name === 'Science')).toBeDefined();
   });
 
-  it('deleteCamp removes the camp and its registration', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.addCamp(makeCampInput()));
+  it('deleteCamp removes the camp and its registration', async () => {
+    const { result } = await initHook();
+    act(() => {
+      result.current.addCamp(makeCampInput());
+      vi.advanceTimersByTime(300);
+    });
     const campId = result.current.data.camps[0].id;
-    act(() => result.current.deleteCamp(campId));
+    act(() => {
+      result.current.deleteCamp(campId);
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.data.camps).toHaveLength(0);
     expect(result.current.data.registrations.find((r) => r.campId === campId)).toBeUndefined();
   });
@@ -351,48 +409,60 @@ describe('ScheduleProvider registration and schedule operations', () => {
     vi.clearAllMocks();
   });
 
-  it('updateRegistration replaces the matching registration', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.addCamp(makeCampInput()));
+  it('updateRegistration replaces the matching registration', async () => {
+    const { result } = await initHook();
+    act(() => {
+      result.current.addCamp(makeCampInput());
+      vi.advanceTimersByTime(300);
+    });
     const campId = result.current.data.camps[0].id;
-    act(() =>
+    act(() => {
       result.current.updateRegistration({
         campId,
         studentIds: ['fake-id'],
         friendGroups: [],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
     const reg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(reg?.studentIds).toEqual(['fake-id']);
   });
 
-  it('refreshSchedule generates a schedule from current data', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('refreshSchedule generates a schedule from current data', async () => {
+    const { result } = await initHook();
     const students = Array.from({ length: 4 }, (_, i) => makeStudent(`S${i}`, `Last${i}`));
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: students,
         newCamps: [makeCamp('Art')],
         registrationRows: students.map((s) => ({ campName: 'Art', dedupeKey: s.dedupeKey })),
-      })
-    );
-    act(() => result.current.refreshSchedule());
+      });
+      vi.advanceTimersByTime(300);
+    });
+    act(() => {
+      result.current.refreshSchedule();
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.generatedSchedule).not.toBeNull();
     expect(result.current.generatedSchedule!.instances).toHaveLength(1);
   });
 
-  it('moveStudentBetweenInstances moves a student and updates data.schedule', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('moveStudentBetweenInstances moves a student and updates data.schedule', async () => {
+    const { result } = await initHook();
     // 20 students in a camp with maxSize 10 → 2 instances
     const students = Array.from({ length: 20 }, (_, i) => makeStudent(`S${i}`, `Last${i}`));
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: students,
         newCamps: [makeCamp('Art')],
         registrationRows: students.map((s) => ({ campName: 'Art', dedupeKey: s.dedupeKey })),
-      })
-    );
-    act(() => result.current.refreshSchedule());
+      });
+      vi.advanceTimersByTime(300);
+    });
+    act(() => {
+      result.current.refreshSchedule();
+      vi.advanceTimersByTime(300);
+    });
     const schedule = result.current.generatedSchedule!;
     expect(schedule.instances).toHaveLength(2);
 
@@ -400,7 +470,10 @@ describe('ScheduleProvider registration and schedule operations', () => {
     const toInstance = schedule.instances[1];
     const studentToMove = fromInstance.studentIds[0];
 
-    act(() => result.current.moveStudentBetweenInstances(studentToMove, fromInstance.id, toInstance.id));
+    act(() => {
+      result.current.moveStudentBetweenInstances(studentToMove, fromInstance.id, toInstance.id);
+      vi.advanceTimersByTime(300);
+    });
 
     const updated = result.current.generatedSchedule!;
     expect(updated.instances[0].studentIds).not.toContain(studentToMove);
@@ -408,11 +481,17 @@ describe('ScheduleProvider registration and schedule operations', () => {
     expect(result.current.data.schedule).toEqual(updated);
   });
 
-  it('clearData resets state to empty', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.addStudent(makeStudentInput()));
+  it('clearData resets state to empty', async () => {
+    const { result } = await initHook();
+    act(() => {
+      result.current.addStudent(makeStudentInput());
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.data.students).toHaveLength(1);
-    act(() => result.current.clearData());
+    act(() => {
+      result.current.clearData();
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.data.students).toHaveLength(0);
     expect(result.current.data.camps).toHaveLength(0);
     expect(result.current.generatedSchedule).toBeNull();
@@ -425,14 +504,17 @@ describe('ScheduleProvider file operations', () => {
     vi.clearAllMocks();
   });
 
-  it('saveToFile calls fileService.saveFile with current data', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.saveToFile());
+  it('saveToFile calls fileService.saveFile with current data', async () => {
+    const { result } = await initHook();
+    act(() => {
+      result.current.saveToFile();
+      vi.advanceTimersByTime(300);
+    });
     expect(fileService.saveFile).toHaveBeenCalledWith(result.current.data, 'summer-camp-schedules.json');
   });
 
   it('loadFromFile updates state when openFile resolves with data', async () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+    const { result } = await initHook();
     const mockData: ScheduleData = {
       version: 7,
       students: [
@@ -462,6 +544,7 @@ describe('ScheduleProvider file operations', () => {
 
     await act(async () => {
       await result.current.loadFromFile();
+      vi.advanceTimersByTime(300);
     });
 
     expect(result.current.data.students).toHaveLength(1);
@@ -469,12 +552,16 @@ describe('ScheduleProvider file operations', () => {
   });
 
   it('loadFromFile does not update state when openFile returns null', async () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
-    act(() => result.current.addStudent(makeStudentInput()));
+    const { result } = await initHook();
+    act(() => {
+      result.current.addStudent(makeStudentInput());
+      vi.advanceTimersByTime(300);
+    });
     vi.mocked(fileService.openFile).mockResolvedValueOnce(null);
 
     await act(async () => {
       await result.current.loadFromFile();
+      vi.advanceTimersByTime(300);
     });
 
     expect(result.current.data.students).toHaveLength(1);
@@ -487,31 +574,34 @@ describe('ScheduleProvider localStorage edge cases', () => {
     vi.clearAllMocks();
   });
 
-  it('falls back to empty data when localStorage contains corrupted JSON', () => {
+  it('falls back to empty data when localStorage contains corrupted JSON', async () => {
     localStorage.setItem('summer-camp-schedules', 'not-valid-json!!!');
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+    const { result } = await initHook();
     expect(result.current.data.students).toHaveLength(0);
   });
 
-  it('falls back to empty data when localStorage contains valid JSON that fails schema check', () => {
+  it('falls back to empty data when localStorage contains valid JSON that fails schema check', async () => {
     localStorage.setItem('summer-camp-schedules', JSON.stringify({ unexpected: 'shape' }));
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+    const { result } = await initHook();
     expect(result.current.data.students).toHaveLength(0);
   });
 
-  it('moveStudentBetweenInstances is a no-op when generatedSchedule is null', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('moveStudentBetweenInstances is a no-op when generatedSchedule is null', async () => {
+    const { result } = await initHook();
     expect(result.current.generatedSchedule).toBeNull();
-    act(() => result.current.moveStudentBetweenInstances('s1', 'inst-1', 'inst-2'));
+    act(() => {
+      result.current.moveStudentBetweenInstances('s1', 'inst-1', 'inst-2');
+      vi.advanceTimersByTime(300);
+    });
     expect(result.current.generatedSchedule).toBeNull();
   });
 
-  it('deleteStudent prunes friend groups when a member is removed', () => {
-    const { result } = renderHook(() => useSchedule(), { wrapper });
+  it('deleteStudent prunes friend groups when a member is removed', async () => {
+    const { result } = await initHook();
     // Import two students with mutual mentions (creates a friend group)
     const alice = makeStudent('Alice', 'Smith', 'Please group with Bob');
     const bob = makeStudent('Bob', 'Jones', 'Please group with Alice');
-    act(() =>
+    act(() => {
       result.current.importBatch({
         newStudents: [alice, bob],
         newCamps: [makeCamp('Art')],
@@ -519,8 +609,9 @@ describe('ScheduleProvider localStorage edge cases', () => {
           { campName: 'Art', dedupeKey: alice.dedupeKey },
           { campName: 'Art', dedupeKey: bob.dedupeKey },
         ],
-      })
-    );
+      });
+      vi.advanceTimersByTime(300);
+    });
     const campId = result.current.data.camps[0].id;
     const reg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(reg?.friendGroups).toHaveLength(1);
@@ -528,7 +619,10 @@ describe('ScheduleProvider localStorage edge cases', () => {
     // Deleting Alice should remove the friend group (only 1 member left)
     const aliceFromData = result.current.data.students.find((s) => s.firstName === 'Alice');
     if (!aliceFromData) throw new Error('Alice not found');
-    act(() => result.current.deleteStudent(aliceFromData.id));
+    act(() => {
+      result.current.deleteStudent(aliceFromData.id);
+      vi.advanceTimersByTime(300);
+    });
     const updatedReg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(updatedReg?.friendGroups).toHaveLength(0);
   });
