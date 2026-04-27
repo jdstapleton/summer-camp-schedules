@@ -23,8 +23,6 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<ScheduleData>(emptyData);
   const [generatedSchedule, setGeneratedSchedule] = useState<GeneratedSchedule | null>(null);
   const [loading, setLoading] = useState(true);
-  const saveDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isApplyingRemoteUpdate = useRef(false);
 
   // Fetch from Supabase on mount
   useEffect(() => {
@@ -44,102 +42,136 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const unsubscribe = subscribeToChanges((incoming) => {
       const migrated = migrateData(incoming);
-      isApplyingRemoteUpdate.current = true;
       setData(migrated);
       setGeneratedSchedule(migrated.schedule ?? null);
-      // Keep flag true for 600ms to outlast the 500ms debounce
-      // This prevents re-saving data we just received from the server
-      setTimeout(() => {
-        isApplyingRemoteUpdate.current = false;
-      }, 600);
     });
     return unsubscribe;
   }, []);
 
-  // Debounced save to Supabase
-  useEffect(() => {
-    if (loading || isApplyingRemoteUpdate.current) return; // Don't save while loading or applying remote updates
+  // Refs for serialized saves: ensure only one in-flight at a time, always save latest state
+  const savePendingRef = useRef<ScheduleData | null>(null);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const saveInFlightRef = useRef(false);
 
-    if (saveDebounceRef.current) {
-      clearTimeout(saveDebounceRef.current);
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
+  const doSave = useCallback(async () => {
+    if (saveInFlightRef.current || !savePendingRef.current) return;
+    const toSave = savePendingRef.current;
+    savePendingRef.current = null;
+    saveInFlightRef.current = true;
+    try {
+      await saveScheduleData(toSave);
+    } catch (err) {
+      console.error('Failed to save to Supabase:', err);
+    } finally {
+      saveInFlightRef.current = false;
+      if (savePendingRef.current) doSave(); // flush any change that arrived while saving
     }
+  }, []);
 
-    saveDebounceRef.current = setTimeout(() => {
-      saveScheduleData(data).catch((err) => {
-        console.error('Failed to save to Supabase:', err);
-      });
-    }, 500);
-
-    return () => {
-      if (saveDebounceRef.current) {
-        clearTimeout(saveDebounceRef.current);
+  const applyAndSave = useCallback(
+    (newData: ScheduleData) => {
+      setData(newData);
+      if (!loading) {
+        savePendingRef.current = newData;
+        if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = setTimeout(doSave, 300);
       }
-    };
-  }, [data, loading]);
+    },
+    [loading, doSave]
+  );
 
-  const addStudent = useCallback((student: Omit<Student, 'id'>) => {
-    setData((prev) => ({
-      ...prev,
-      students: [...prev.students, { ...student, id: crypto.randomUUID() }],
-    }));
-  }, []);
+  const addStudent = useCallback(
+    (student: Omit<Student, 'id'>) => {
+      const newData = {
+        ...data,
+        students: [...data.students, { ...student, id: crypto.randomUUID() }],
+      };
+      applyAndSave(newData);
+    },
+    [data, applyAndSave]
+  );
 
-  const updateStudent = useCallback((student: Student) => {
-    setData((prev) => ({
-      ...prev,
-      students: prev.students.map((s) => (s.id === student.id ? student : s)),
-    }));
-  }, []);
+  const updateStudent = useCallback(
+    (student: Student) => {
+      const newData = {
+        ...data,
+        students: data.students.map((s) => (s.id === student.id ? student : s)),
+      };
+      applyAndSave(newData);
+    },
+    [data, applyAndSave]
+  );
 
-  const deleteStudent = useCallback((id: string) => {
-    setData((prev) => ({
-      ...prev,
-      students: prev.students.filter((s) => s.id !== id),
-      registrations: prev.registrations.map((r) => ({
-        ...r,
-        studentIds: r.studentIds.filter((sid) => sid !== id),
-        friendGroups: r.friendGroups.map((g) => g.filter((sid) => sid !== id)).filter((g) => g.length >= 2),
-      })),
-    }));
-  }, []);
+  const deleteStudent = useCallback(
+    (id: string) => {
+      const newData = {
+        ...data,
+        students: data.students.filter((s) => s.id !== id),
+        registrations: data.registrations.map((r) => ({
+          ...r,
+          studentIds: r.studentIds.filter((sid) => sid !== id),
+          friendGroups: r.friendGroups.map((g) => g.filter((sid) => sid !== id)).filter((g) => g.length >= 2),
+        })),
+      };
+      applyAndSave(newData);
+    },
+    [data, applyAndSave]
+  );
 
-  const addCamp = useCallback((camp: Omit<Camp, 'id'>) => {
-    const id = crypto.randomUUID();
-    setData((prev) => ({
-      ...prev,
-      camps: [...prev.camps, { ...camp, id }],
-      registrations: [...prev.registrations, { campId: id, studentIds: [], friendGroups: [] }],
-    }));
-  }, []);
+  const addCamp = useCallback(
+    (camp: Omit<Camp, 'id'>) => {
+      const id = crypto.randomUUID();
+      const newData = {
+        ...data,
+        camps: [...data.camps, { ...camp, id }],
+        registrations: [...data.registrations, { campId: id, studentIds: [], friendGroups: [] }],
+      };
+      applyAndSave(newData);
+    },
+    [data, applyAndSave]
+  );
 
-  const updateCamp = useCallback((camp: Camp) => {
-    setData((prev) => ({
-      ...prev,
-      camps: prev.camps.map((c) => (c.id === camp.id ? camp : c)),
-    }));
-  }, []);
+  const updateCamp = useCallback(
+    (camp: Camp) => {
+      const newData = {
+        ...data,
+        camps: data.camps.map((c) => (c.id === camp.id ? camp : c)),
+      };
+      applyAndSave(newData);
+    },
+    [data, applyAndSave]
+  );
 
-  const deleteCamp = useCallback((id: string) => {
-    setData((prev) => ({
-      ...prev,
-      camps: prev.camps.filter((c) => c.id !== id),
-      registrations: prev.registrations.filter((r) => r.campId !== id),
-    }));
-  }, []);
+  const deleteCamp = useCallback(
+    (id: string) => {
+      const newData = {
+        ...data,
+        camps: data.camps.filter((c) => c.id !== id),
+        registrations: data.registrations.filter((r) => r.campId !== id),
+      };
+      applyAndSave(newData);
+    },
+    [data, applyAndSave]
+  );
 
-  const updateRegistration = useCallback((registration: CampRegistration) => {
-    setData((prev) => ({
-      ...prev,
-      registrations: prev.registrations.map((r) => (r.campId === registration.campId ? registration : r)),
-    }));
-  }, []);
+  const updateRegistration = useCallback(
+    (registration: CampRegistration) => {
+      const newData = {
+        ...data,
+        registrations: data.registrations.map((r) => (r.campId === registration.campId ? registration : r)),
+      };
+      applyAndSave(newData);
+    },
+    [data, applyAndSave]
+  );
 
-  const moveStudentBetweenInstances = useCallback((studentId: string, fromInstanceId: string, toInstanceId: string) => {
-    setGeneratedSchedule((prev) => {
-      if (!prev) return prev;
+  const moveStudentBetweenInstances = useCallback(
+    (studentId: string, fromInstanceId: string, toInstanceId: string) => {
+      if (!generatedSchedule) return;
       const updatedSchedule = {
-        ...prev,
-        instances: prev.instances.map((inst) => {
+        ...generatedSchedule,
+        instances: generatedSchedule.instances.map((inst) => {
           if (inst.id === fromInstanceId) {
             return {
               ...inst,
@@ -155,50 +187,52 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
           return inst;
         }),
       };
-      setData((prevData) => ({
-        ...prevData,
+      setGeneratedSchedule(updatedSchedule);
+      const newData = {
+        ...data,
         schedule: updatedSchedule,
-      }));
-      return updatedSchedule;
-    });
-  }, []);
+      };
+      applyAndSave(newData);
+    },
+    [data, generatedSchedule, applyAndSave]
+  );
 
   const refreshSchedule = useCallback(() => {
     const newSchedule = generateSchedule(data);
     setGeneratedSchedule(newSchedule);
-    setData((prevData) => ({
-      ...prevData,
+    const newData = {
+      ...data,
       schedule: newSchedule,
-    }));
-  }, [data]);
+    };
+    applyAndSave(newData);
+  }, [data, applyAndSave]);
 
   const loadFromFile = useCallback(async () => {
     const loaded = await fileService.openFile();
     if (loaded) {
       const migratedData = migrateData(loaded);
-      setData(migratedData);
+      applyAndSave(migratedData);
       setGeneratedSchedule(migratedData.schedule ?? null);
     }
-  }, []);
+  }, [applyAndSave]);
 
   const saveToFile = useCallback(() => {
     fileService.saveFile(data, 'summer-camp-schedules.json');
   }, [data]);
 
   const clearData = useCallback(() => {
-    setData(emptyData);
+    applyAndSave(emptyData);
     setGeneratedSchedule(null);
-    // Supabase save will be triggered by the data change in useEffect
-  }, []);
+  }, [applyAndSave]);
 
-  const importBatch = useCallback((payload: ImportBatchPayload) => {
-    setData((prev) => {
+  const importBatch = useCallback(
+    (payload: ImportBatchPayload) => {
       const keyToStudentId = new Map<string, string>();
-      for (const existing of prev.students) {
+      for (const existing of data.students) {
         keyToStudentId.set(existingStudentKey(existing), existing.id);
       }
 
-      const mergedStudents = [...prev.students];
+      const mergedStudents = [...data.students];
       for (const parsed of payload.newStudents) {
         const { dedupeKey, ...studentFields } = parsed;
         if (keyToStudentId.has(dedupeKey)) continue;
@@ -208,12 +242,12 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
       }
 
       const nameToCampId = new Map<string, string>();
-      for (const existing of prev.camps) {
+      for (const existing of data.camps) {
         nameToCampId.set(existing.name.trim().toLowerCase(), existing.id);
       }
 
-      const mergedCamps = [...prev.camps];
-      const mergedRegistrations = [...prev.registrations];
+      const mergedCamps = [...data.camps];
+      const mergedRegistrations = [...data.registrations];
       for (const newCamp of payload.newCamps) {
         const canonical = newCamp.name.trim().toLowerCase();
         if (nameToCampId.has(canonical)) continue;
@@ -285,14 +319,16 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         reg.friendGroups = Array.from(groupMap.values()).filter((g) => g.length >= 2);
       }
 
-      return {
-        ...prev,
+      const newData = {
+        ...data,
         students: mergedStudents,
         camps: mergedCamps,
         registrations: Array.from(registrationByCampId.values()),
       };
-    });
-  }, []);
+      applyAndSave(newData);
+    },
+    [data, applyAndSave]
+  );
 
   return (
     <ScheduleContext.Provider

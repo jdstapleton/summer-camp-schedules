@@ -14,7 +14,17 @@ vi.mock('@/services/fileService', () => ({
   },
 }));
 
+vi.mock('@/services/supabaseStorage', () => ({
+  fetchScheduleData: vi.fn().mockResolvedValue(null),
+  saveScheduleData: vi.fn().mockResolvedValue(true),
+  subscribeToChanges: vi.fn().mockReturnValue(() => {}),
+}));
+
 const wrapper = ({ children }: { children: ReactNode }) => <ScheduleProvider>{children}</ScheduleProvider>;
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
 
 const blankContact = { name: '', homePhone: '', cellPhone: '' };
 
@@ -516,8 +526,9 @@ describe('ScheduleProvider localStorage edge cases', () => {
     expect(reg?.friendGroups).toHaveLength(1);
 
     // Deleting Alice should remove the friend group (only 1 member left)
-    const aliceId = result.current.data.students.find((s) => s.firstName === 'Alice')?.id!;
-    act(() => result.current.deleteStudent(aliceId));
+    const aliceFromData = result.current.data.students.find((s) => s.firstName === 'Alice');
+    if (!aliceFromData) throw new Error('Alice not found');
+    act(() => result.current.deleteStudent(aliceFromData.id));
     const updatedReg = result.current.data.registrations.find((r) => r.campId === campId);
     expect(updatedReg?.friendGroups).toHaveLength(0);
   });
