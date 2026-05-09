@@ -1,3 +1,10 @@
+export interface Location {
+  id: string;
+  name: string;
+  address: string;
+  urlTag: string;
+}
+
 export type Gender = 'male' | 'female' | 'other';
 export type Custody = 'Both' | 'Father' | 'Mother';
 

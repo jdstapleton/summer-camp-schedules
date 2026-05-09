@@ -7,6 +7,7 @@ import { addStudentsToExistingSchedule, generateSchedule, removeStudentsFromExis
 import { migrateData } from '@/services/dataMigrations';
 import { extractMentionedStudents } from '@/services/friendGroupService';
 import { fetchScheduleData, saveScheduleData, subscribeToChanges } from '@/services/supabaseStorage';
+import { useLocation } from './LocationContext';
 import { ScheduleContext } from './ScheduleContext';
 
 const existingStudentKey = (s: Student): string => `${s.lastName.trim().toLowerCase()}|${s.firstName.trim().toLowerCase()}|${s.age}`;
@@ -20,14 +21,20 @@ const emptyData: ScheduleData = {
 };
 
 export function ScheduleProvider({ children }: { children: ReactNode }) {
+  const { location } = useLocation();
+  const locationId = location.id;
+
   const [data, setData] = useState<ScheduleData>(emptyData);
   const [generatedSchedule, setGeneratedSchedule] = useState<GeneratedSchedule | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch from Supabase on mount
+  // Fetch from Supabase whenever locationId changes
   useEffect(() => {
     const init = async () => {
-      const remote = await fetchScheduleData();
+      setData(emptyData);
+      setGeneratedSchedule(null);
+      setLoading(true);
+      const remote = await fetchScheduleData(locationId);
       if (remote) {
         const migrated = migrateData(remote);
         setData(migrated);
@@ -36,17 +43,17 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     };
     init();
-  }, []);
+  }, [locationId]);
 
-  // Subscribe to real-time changes
+  // Subscribe to real-time changes, scoped to this location
   useEffect(() => {
-    const unsubscribe = subscribeToChanges((incoming) => {
+    const unsubscribe = subscribeToChanges(locationId, (incoming) => {
       const migrated = migrateData(incoming);
       setData(migrated);
       setGeneratedSchedule(migrated.schedule ?? null);
     });
     return unsubscribe;
-  }, []);
+  }, [locationId]);
 
   // Refs for serialized saves: ensure only one in-flight at a time, always save latest state
   const savePendingRef = useRef<ScheduleData | null>(null);
@@ -60,14 +67,14 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
     savePendingRef.current = null;
     saveInFlightRef.current = true;
     try {
-      await saveScheduleData(toSave);
+      await saveScheduleData(locationId, toSave);
     } catch (err) {
       console.error('Failed to save to Supabase:', err);
     } finally {
       saveInFlightRef.current = false;
       if (savePendingRef.current) doSave(); // flush any change that arrived while saving
     }
-  }, []);
+  }, [locationId]);
 
   const applyAndSave = useCallback(
     (newData: ScheduleData) => {

@@ -1,10 +1,29 @@
 import { renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useSchedule } from './useSchedule';
 import { ScheduleProvider } from '@/contexts/ScheduleProvider';
+import { LocationContext } from '@/contexts/LocationContext';
 
-const wrapper = ({ children }: { children: ReactNode }) => <ScheduleProvider>{children}</ScheduleProvider>;
+vi.mock('@/services/supabaseStorage', () => ({
+  fetchScheduleData: vi.fn().mockResolvedValue(null),
+  saveScheduleData: vi.fn().mockResolvedValue(true),
+  subscribeToChanges: vi.fn().mockReturnValue(() => {}),
+}));
+
+const testLocation = { id: 'test-loc', name: 'Test', address: '', urlTag: 'test' };
+const locationContextValue = {
+  location: testLocation,
+  locations: [testLocation],
+  createLocation: vi.fn(),
+  deleteLocation: vi.fn(),
+};
+
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <LocationContext.Provider value={locationContextValue}>
+    <ScheduleProvider>{children}</ScheduleProvider>
+  </LocationContext.Provider>
+);
 
 describe('useSchedule', () => {
   beforeEach(() => localStorage.clear());

@@ -2,6 +2,7 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ScheduleProvider } from './ScheduleProvider';
+import { LocationContext } from './LocationContext';
 import { useSchedule } from '@/hooks/useSchedule';
 import type { ImportBatchPayload } from '@/models/contexts';
 import type { Camp, ScheduleData, Student } from '@/models/types';
@@ -20,7 +21,19 @@ vi.mock('@/services/supabaseStorage', () => ({
   subscribeToChanges: vi.fn().mockReturnValue(() => {}),
 }));
 
-const wrapper = ({ children }: { children: ReactNode }) => <ScheduleProvider>{children}</ScheduleProvider>;
+const testLocation = { id: 'test-loc', name: 'Test', address: '', urlTag: 'test' };
+const locationContextValue = {
+  location: testLocation,
+  locations: [testLocation],
+  createLocation: vi.fn(),
+  deleteLocation: vi.fn(),
+};
+
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <LocationContext.Provider value={locationContextValue}>
+    <ScheduleProvider>{children}</ScheduleProvider>
+  </LocationContext.Provider>
+);
 
 beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true });
