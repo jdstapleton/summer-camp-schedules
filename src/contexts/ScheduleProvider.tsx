@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import type { Camp, CampRegistration, GeneratedSchedule, ScheduleData, Student } from '@/models/types';
 import type { ImportBatchPayload } from '@/models/contexts';
 import { fileService } from '@/services/fileService';
-import { generateSchedule } from '@/services/schedulerService';
+import { addStudentsToExistingSchedule, generateSchedule, removeStudentsFromExistingSchedule, splitIntoInstances } from '@/services/schedulerService';
 import { migrateData } from '@/services/dataMigrations';
 import { extractMentionedStudents } from '@/services/friendGroupService';
 import { fetchScheduleData, saveScheduleData, subscribeToChanges } from '@/services/supabaseStorage';
@@ -157,9 +157,36 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
 
   const updateRegistration = useCallback(
     (registration: CampRegistration) => {
+      let updatedSchedule = data.schedule;
+      if (updatedSchedule) {
+        const oldReg = data.registrations.find((r) => r.campId === registration.campId);
+        const oldStudentIds = oldReg?.studentIds ?? [];
+        const addedIds = registration.studentIds.filter((id) => !oldStudentIds.includes(id));
+        // const removedIds = oldStudentIds.filter((id) => !registration.studentIds.includes(id));
+        const removedIds: string[] = [];
+
+        if (removedIds.length > 0) {
+          updatedSchedule = removeStudentsFromExistingSchedule(updatedSchedule, registration.campId, removedIds);
+        }
+        if (addedIds.length > 0) {
+          const camp = data.camps.find((c) => c.id === registration.campId);
+          if (camp) {
+            const hasInstances = updatedSchedule.instances.some((i) => i.campId === registration.campId);
+            if (hasInstances) {
+              updatedSchedule = addStudentsToExistingSchedule(updatedSchedule, registration.campId, addedIds, camp.maxSize);
+            } else {
+              const studentMap = new Map(data.students.map((s) => [s.id, s]));
+              const newInstances = splitIntoInstances(registration, camp, studentMap);
+              updatedSchedule = { instances: [...updatedSchedule.instances, ...newInstances] };
+            }
+          }
+        }
+        setGeneratedSchedule(updatedSchedule);
+      }
       const newData = {
         ...data,
         registrations: data.registrations.map((r) => (r.campId === registration.campId ? registration : r)),
+        schedule: updatedSchedule,
       };
       applyAndSave(newData);
     },
@@ -319,11 +346,33 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
         reg.friendGroups = Array.from(groupMap.values()).filter((g) => g.length >= 2);
       }
 
+      let updatedSchedule = data.schedule;
+      if (updatedSchedule) {
+        const studentMap = new Map(mergedStudents.map((s) => [s.id, s]));
+        for (const [campId, newReg] of registrationByCampId.entries()) {
+          const oldReg = data.registrations.find((r) => r.campId === campId);
+          const oldStudentIds = oldReg?.studentIds ?? [];
+          const addedIds = newReg.studentIds.filter((id) => !oldStudentIds.includes(id));
+          if (addedIds.length === 0) continue;
+          const camp = mergedCamps.find((c) => c.id === campId);
+          if (!camp) continue;
+          const hasInstances = updatedSchedule.instances.some((i) => i.campId === campId);
+          if (hasInstances) {
+            updatedSchedule = addStudentsToExistingSchedule(updatedSchedule, campId, addedIds, camp.maxSize);
+          } else {
+            const newInstances = splitIntoInstances(newReg, camp, studentMap);
+            updatedSchedule = { instances: [...updatedSchedule.instances, ...newInstances] };
+          }
+        }
+        setGeneratedSchedule(updatedSchedule);
+      }
+
       const newData = {
         ...data,
         students: mergedStudents,
         camps: mergedCamps,
         registrations: Array.from(registrationByCampId.values()),
+        schedule: updatedSchedule,
       };
       applyAndSave(newData);
     },

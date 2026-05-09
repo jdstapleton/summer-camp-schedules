@@ -17,7 +17,7 @@ export function generateSchedule(data: ScheduleData): GeneratedSchedule {
   return { instances };
 }
 
-function splitIntoInstances(registration: CampRegistration, camp: Camp, studentMap: Map<string, Student>): CampInstance[] {
+export function splitIntoInstances(registration: CampRegistration, camp: Camp, studentMap: Map<string, Student>): CampInstance[] {
   const { campId, studentIds, friendGroups } = registration;
   const { maxSize } = camp;
 
@@ -113,4 +113,37 @@ function makeCampInstances(campId: string, buckets: string[][]): CampInstance[] 
     instanceNumber: i + 1,
     studentIds,
   }));
+}
+
+export function addStudentsToExistingSchedule(schedule: GeneratedSchedule, campId: string, newStudentIds: string[], maxSize: number): GeneratedSchedule {
+  if (newStudentIds.length === 0) return schedule;
+
+  const campInstances = schedule.instances.filter((i) => i.campId === campId).map((i) => ({ ...i, studentIds: [...i.studentIds] }));
+  const otherInstances = schedule.instances.filter((i) => i.campId !== campId);
+
+  for (const studentId of newStudentIds) {
+    const target = campInstances.filter((i) => i.studentIds.length < maxSize).sort((a, b) => b.studentIds.length - a.studentIds.length)[0];
+    if (target) {
+      target.studentIds.push(studentId);
+    } else {
+      const n = campInstances.length + 1;
+      campInstances.push({ id: `${campId}-${n}`, campId, instanceNumber: n, studentIds: [studentId] });
+    }
+  }
+
+  return { instances: [...otherInstances, ...campInstances] };
+}
+
+export function removeStudentsFromExistingSchedule(schedule: GeneratedSchedule, campId: string, removedStudentIds: string[]): GeneratedSchedule {
+  if (removedStudentIds.length === 0) return schedule;
+
+  const removedSet = new Set(removedStudentIds);
+  const otherInstances = schedule.instances.filter((i) => i.campId !== campId);
+  const remaining = schedule.instances
+    .filter((i) => i.campId === campId)
+    .map((i) => ({ ...i, studentIds: i.studentIds.filter((id) => !removedSet.has(id)) }))
+    .filter((i) => i.studentIds.length > 0)
+    .map((i, idx) => ({ ...i, instanceNumber: idx + 1, id: `${campId}-${idx + 1}` }));
+
+  return { instances: [...otherInstances, ...remaining] };
 }
