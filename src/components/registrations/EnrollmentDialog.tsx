@@ -12,17 +12,23 @@ import {
   Divider,
   FormControlLabel,
   IconButton,
+  Tab,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tabs,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
 import type { CampRegistration, Camp, Student } from '@/models/types';
 
 interface EnrollmentDialogProps {
@@ -35,6 +41,8 @@ interface EnrollmentDialogProps {
 }
 
 export function EnrollmentDialog({ open, camp, registration, students, onSave, onClose }: EnrollmentDialogProps) {
+  const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
+  const [mobileTab, setMobileTab] = useState(0);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [friendGroups, setFriendGroups] = useState<string[][]>([]);
   const [addingGroup, setAddingGroup] = useState(false);
@@ -51,6 +59,7 @@ export function EnrollmentDialog({ open, camp, registration, students, onSave, o
       setNewGroupIds([]);
       setAutocompleteValue(null);
       setEditingStudentId(null);
+      setMobileTab(0);
     }
     prevOpen.current = open;
   }, [open, registration]);
@@ -116,55 +125,58 @@ export function EnrollmentDialog({ open, camp, registration, students, onSave, o
 
   const studentName = (id: string) => {
     const s = students.find((st) => st.id === id);
-    return s ? `${s.firstName} ${s.lastName}` : id;
+    return s ? `${s.lastName}, ${s.firstName}` : id;
   };
 
+  const showStudents = !isMobile || mobileTab === 0;
+  const showGroups = !isMobile || mobileTab === 1;
+
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth fullScreen={isMobile}>
       <DialogTitle>
         Manage Enrollment: {camp.name}
-        <Typography
-          variant="body2"
-          sx={{
-            color: 'text.secondary',
-          }}
-        >
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           Max size: {camp.maxSize} · Enrolled: {selectedIds.length}
           {instancesNeeded > 1 && ` · ${instancesNeeded} instances will be created`}
         </Typography>
       </DialogTitle>
+      {isMobile && (
+        <Tabs value={mobileTab} onChange={(_, v) => setMobileTab(v)} variant="fullWidth">
+          <Tab label={`Students (${selectedIds.length})`} />
+          <Tab label={`Groups (${friendGroups.length})`} />
+        </Tabs>
+      )}
       <DialogContent dividers>
-        <Typography variant="subtitle2" gutterBottom>
-          Add Students
-        </Typography>
-        <Box sx={{ mb: 3 }}>
-          <Autocomplete
-            options={students.filter((s) => !selectedIds.includes(s.id))}
-            getOptionLabel={(s) => `${s.firstName} ${s.lastName} (${s.gender})`}
-            value={autocompleteValue}
-            onChange={(_, value) => {
-              if (value) addStudent(value);
-            }}
-            renderInput={(params) => <TextField {...params} placeholder="Search and add student" />}
-            noOptionsText="All students already added"
-          />
-        </Box>
-
-        <Typography variant="subtitle2" gutterBottom>
-          Enrolled Students ({selectedIds.length})
-        </Typography>
-        {selectedIds.length === 0 && (
-          <Typography
-            variant="body2"
-            sx={{
-              color: 'text.secondary',
-              mb: 2,
-            }}
-          >
+        {showStudents && (
+          <>
+            <Typography variant="subtitle2" gutterBottom>
+              Add Students
+            </Typography>
+            <Box sx={{ mb: 3 }}>
+              <Autocomplete
+                options={students.filter((s) => !selectedIds.includes(s.id))}
+                getOptionLabel={(s) => `${s.firstName} ${s.lastName} (${s.gender})`}
+                value={autocompleteValue}
+                onChange={(_, value) => {
+                  if (value) addStudent(value);
+                }}
+                renderInput={(params) => <TextField {...params} placeholder="Search and add student" />}
+                noOptionsText="All students already added"
+              />
+            </Box>
+          </>
+        )}
+        {showStudents && (
+          <Typography variant="subtitle2" gutterBottom>
+            Enrolled Students ({selectedIds.length})
+          </Typography>
+        )}
+        {showStudents && selectedIds.length === 0 && (
+          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
             {students.length === 0 ? 'No students added yet. Go to the Students page first.' : 'Add students using the search box above.'}
           </Typography>
         )}
-        {selectedIds.length > 0 && (
+        {showStudents && selectedIds.length > 0 && (
           <TableContainer
             sx={{
               mb: 2,
@@ -177,22 +189,28 @@ export function EnrollmentDialog({ open, camp, registration, students, onSave, o
               <TableHead>
                 <TableRow sx={{ bgcolor: 'action.hover' }}>
                   <TableCell>Name</TableCell>
-                  <TableCell align="right">Gender</TableCell>
+                  {!isMobile && <TableCell align="right">Gender</TableCell>}
                   <TableCell align="right">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {students
                   .filter((s) => selectedIds.includes(s.id))
-                  .sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`))
+                  .sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`))
                   .map((student) => (
                     <TableRow key={student.id}>
                       <TableCell>
-                        {student.firstName} {student.lastName}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          {student.lastName}, {student.firstName}
+                          {isMobile && student.gender === 'male' && <MaleIcon fontSize="small" color="action" />}
+                          {isMobile && student.gender === 'female' && <FemaleIcon fontSize="small" color="action" />}
+                        </Box>
                       </TableCell>
-                      <TableCell align="right">
-                        <Typography variant="body2">{student.gender}</Typography>
-                      </TableCell>
+                      {!isMobile && (
+                        <TableCell align="right">
+                          <Typography variant="body2">{student.gender}</Typography>
+                        </TableCell>
+                      )}
                       <TableCell align="right">
                         <IconButton size="small" onClick={() => setEditingStudentId(student.id)} title="Edit friend groups">
                           <EditIcon fontSize="small" />
@@ -208,112 +226,81 @@ export function EnrollmentDialog({ open, camp, registration, students, onSave, o
           </TableContainer>
         )}
 
-        <Divider sx={{ my: 2 }} />
+        {!isMobile && <Divider sx={{ my: 2 }} />}
 
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 1,
-          }}
-        >
-          <Typography variant="subtitle2">Friend Groups ({friendGroups.length})</Typography>
-          {!addingGroup && (
-            <Button size="small" onClick={() => setAddingGroup(true)} disabled={availableForGroup.length < 2}>
-              + Add Group
-            </Button>
-          )}
-        </Box>
+        {showGroups && (
+          <>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Typography variant="subtitle2">Friend Groups ({friendGroups.length})</Typography>
+              {!addingGroup && (
+                <Button size="small" onClick={() => setAddingGroup(true)} disabled={availableForGroup.length < 2}>
+                  + Add Group
+                </Button>
+              )}
+            </Box>
 
-        {friendGroups.map((group, i) => (
-          <Box
-            key={i}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              mb: 1,
-              flexWrap: 'wrap',
-            }}
-          >
-            <Typography
-              variant="caption"
-              sx={{
-                color: 'text.secondary',
-                mr: 0.5,
-              }}
-            >
-              Group {i + 1}:
-            </Typography>
-            {group.map((id) => (
-              <Chip key={id} label={studentName(id)} size="small" />
+            {friendGroups.map((group, i) => (
+              <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, flexWrap: 'wrap' }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary', mr: 0.5 }}>
+                  Group {i + 1}:
+                </Typography>
+                {group.map((id) => (
+                  <Chip key={id} label={studentName(id)} size="small" />
+                ))}
+                <IconButton size="small" onClick={() => removeGroup(i)}>
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Box>
             ))}
-            <IconButton size="small" onClick={() => removeGroup(i)}>
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Box>
-        ))}
 
-        {friendGroups.length === 0 && !addingGroup && (
-          <Typography
-            variant="body2"
-            sx={{
-              color: 'text.secondary',
-            }}
-          >
-            No friend groups defined. Students in a group will be kept in the same instance.
-          </Typography>
-        )}
+            {friendGroups.length === 0 && !addingGroup && (
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                No friend groups defined. Students in a group will be kept in the same instance.
+              </Typography>
+            )}
 
-        {addingGroup && (
-          <Box
-            sx={{
-              mt: 1,
-              p: 2,
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-            }}
-          >
-            <Typography variant="body2" gutterBottom>
-              Select 2 or more enrolled students to keep together:
-            </Typography>
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                maxHeight: 180,
-                overflowY: 'auto',
-              }}
-            >
-              {availableForGroup.map((student) => (
-                <FormControlLabel
-                  key={student.id}
-                  control={<Checkbox size="small" checked={newGroupIds.includes(student.id)} onChange={() => toggleNewGroupMember(student.id)} />}
-                  label={
-                    <Typography variant="body2">
-                      {student.firstName} {student.lastName}
-                    </Typography>
-                  }
-                />
-              ))}
-            </Box>
-            <Box sx={{ mt: 1, display: 'flex', gap: 1 }}>
-              <Button size="small" variant="contained" onClick={confirmAddGroup} disabled={newGroupIds.length < 2}>
-                Add Group
-              </Button>
-              <Button
-                size="small"
-                onClick={() => {
-                  setAddingGroup(false);
-                  setNewGroupIds([]);
-                }}
-              >
-                Cancel
-              </Button>
-            </Box>
-          </Box>
+            {addingGroup && (
+              <Box sx={{ mt: 1, p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+                <Typography variant="body2" gutterBottom>
+                  Select 2 or more enrolled students to keep together:
+                </Typography>
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                    maxHeight: 180,
+                    overflowY: 'auto',
+                  }}
+                >
+                  {availableForGroup.map((student) => (
+                    <FormControlLabel
+                      key={student.id}
+                      control={<Checkbox size="small" checked={newGroupIds.includes(student.id)} onChange={() => toggleNewGroupMember(student.id)} />}
+                      label={
+                        <Typography variant="body2">
+                          {student.firstName} {student.lastName}
+                        </Typography>
+                      }
+                    />
+                  ))}
+                </Box>
+                <Box sx={{ mt: 1, display: 'flex', gap: 1 }}>
+                  <Button size="small" variant="contained" onClick={confirmAddGroup} disabled={newGroupIds.length < 2}>
+                    Add Group
+                  </Button>
+                  <Button
+                    size="small"
+                    onClick={() => {
+                      setAddingGroup(false);
+                      setNewGroupIds([]);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              </Box>
+            )}
+          </>
         )}
 
         {editingStudentId && (

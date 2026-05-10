@@ -95,7 +95,7 @@ export function SchedulePage() {
 
   return (
     <div>
-      <PageHeaderRow mb={3}>
+      <PageHeaderRow mb={3} sx={{ flexWrap: 'wrap', gap: 1 }}>
         <Typography variant="h4">Schedule</Typography>
         <ControlsRow>
           {uniqueWeeks.length > 0 && (

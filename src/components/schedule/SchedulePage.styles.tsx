@@ -10,13 +10,18 @@ const genderColor = (gender: Gender): string => {
 
 export const ControlsRow = styled(Box)(({ theme }) => ({
   display: 'flex',
-  gap: theme.spacing(2),
+  flexWrap: 'wrap',
+  gap: theme.spacing(1),
   alignItems: 'center',
 }));
 
-export const WeekFilterControl = styled(FormControl)({
+export const WeekFilterControl = styled(FormControl)(({ theme }) => ({
   minWidth: 200,
-});
+  [theme.breakpoints.down('sm')]: {
+    minWidth: 'unset',
+    flex: '1 1 auto',
+  },
+}));
 
 export const EmptyState = styled(Box)(({ theme }) => ({
   textAlign: 'center',
@@ -71,6 +76,9 @@ export const InstanceCard = styled(Card, {
 })<{ isOver?: boolean; isDropTarget?: boolean }>(({ theme, isOver, isDropTarget }) => ({
   flex: '1 1 200px',
   maxWidth: 280,
+  [theme.breakpoints.down('sm')]: {
+    maxWidth: 'unset',
+  },
   ...(isDropTarget && {
     outline: '1px dashed',
     outlineColor: theme.palette.divider,
