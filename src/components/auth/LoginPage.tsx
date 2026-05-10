@@ -6,7 +6,16 @@ export function LoginPage() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(() => {
+    const hash = window.location.hash;
+    const params = new URLSearchParams(hash.substring(1));
+    const errorDescription = params.get('error_description');
+    if (errorDescription) {
+      window.location.hash = '';
+      return decodeURIComponent(errorDescription.replace(/\+/g, ' '));
+    }
+    return '';
+  });
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
