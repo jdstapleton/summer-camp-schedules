@@ -14,9 +14,13 @@ export const StatCardSubtitle = styled(Typography)(({ theme }) => ({
 }));
 
 export const ButtonRow = styled(Box)(({ theme }) => ({
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
   gap: theme.spacing(2),
   marginBottom: theme.spacing(4),
+  [theme.breakpoints.down('sm')]: {
+    gridTemplateColumns: 'repeat(2, 1fr)',
+  },
 }));
 
 export const StatCardsRow = styled(Box)(({ theme }) => ({
