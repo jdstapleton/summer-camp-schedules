@@ -1,948 +1,2350 @@
 {
-  "version": 7,
-  "students": [
-    {
-      "id": "s01",
-      "firstName": "Ethan",
-      "lastName": "Brooks",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": true,
-      "age": 6,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Small",
-      "primary": {
-        "name": "Sarah Brooks",
-        "homePhone": "",
-        "cellPhone": "(206) 500-1000"
-      },
-      "secondary": {
-        "name": "Grandma Rose",
-        "homePhone": "",
-        "cellPhone": "(425) 200-2000"
-      },
-      "emergency": {
-        "name": "Dr. Karen Brooks",
-        "homePhone": "(206) 555-0101",
-        "cellPhone": "(206) 555-0102"
-      }
-    },
-    {
-      "id": "s02",
-      "firstName": "Noah",
-      "lastName": "Carter",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": false,
-      "age": 7,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Small",
-      "primary": {
-        "name": "Michael Carter",
-        "homePhone": "",
-        "cellPhone": "(207) 501-1017"
-      },
-      "secondary": {
-        "name": "Uncle Tom",
-        "homePhone": "",
-        "cellPhone": "(426) 201-2023"
-      },
-      "emergency": {
-        "name": "Uncle Ben Carter",
-        "homePhone": "(207) 555-0103",
-        "cellPhone": "(207) 555-0104"
-      }
-    },
-    {
-      "id": "s03",
-      "firstName": "Liam",
-      "lastName": "Davis",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": true,
-      "age": 8,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Child Medium",
-      "primary": {
-        "name": "Jessica Davis",
-        "homePhone": "",
-        "cellPhone": "(208) 502-1034"
-      },
-      "secondary": {
-        "name": "Aunt Karen",
-        "homePhone": "",
-        "cellPhone": "(427) 202-2046"
-      },
-      "emergency": {
-        "name": "Grandpa Frank Davis",
-        "homePhone": "(208) 555-0105",
-        "cellPhone": "(208) 555-0106"
-      }
-    },
-    {
-      "id": "s04",
-      "firstName": "Mason",
-      "lastName": "Evans",
-      "gender": "male",
-      "preCamp": true,
-      "postCamp": false,
-      "age": 9,
-      "custody": "Father",
-      "photo": false,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Medium",
-      "primary": {
-        "name": "David Evans",
-        "homePhone": "",
-        "cellPhone": "(209) 503-1051"
-      },
-      "secondary": {
-        "name": "Grandpa Joe",
-        "homePhone": "",
-        "cellPhone": "(428) 203-2069"
-      },
-      "emergency": {
-        "name": "Aunt Carol Evans",
-        "homePhone": "(209) 555-0107",
-        "cellPhone": "(209) 555-0108"
-      }
-    },
-    {
-      "id": "s05",
-      "firstName": "Logan",
-      "lastName": "Foster",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": true,
-      "age": 10,
-      "custody": "Mother",
-      "photo": false,
-      "specialRequest": "Needs extra bathroom breaks",
-      "medicalIssues": "Peanut allergy - epipen in bag",
-      "primary": {
-        "name": "Amanda Foster",
-        "homePhone": "",
-        "cellPhone": "(210) 504-1068"
-      },
-      "secondary": {
-        "name": "Aunt Emily",
-        "homePhone": "",
-        "cellPhone": "(429) 204-2092"
-      },
-      "emergency": {
-        "name": "Dr. Paul Foster",
-        "homePhone": "(210) 555-0109",
-        "cellPhone": "(210) 555-0110"
-      },
-      "tshirtSize": "Youth Large"
-    },
-    {
-      "id": "s06",
-      "firstName": "Oliver",
-      "lastName": "Grant",
-      "gender": "male",
-      "preCamp": true,
-      "postCamp": false,
-      "age": 11,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "Vegetarian meal preference",
-      "medicalIssues": "Asthma - inhaler required",
-      "primary": {
-        "name": "James Grant",
-        "homePhone": "",
-        "cellPhone": "(211) 505-1085"
-      },
-      "secondary": {
-        "name": "Uncle Mark",
-        "homePhone": "",
-        "cellPhone": "(430) 205-2115"
-      },
-      "emergency": {
-        "name": "Grandma Helen Grant",
-        "homePhone": "(211) 555-0111",
-        "cellPhone": "(211) 555-0112"
-      },
-      "tshirtSize": "Youth Large"
-    },
-    {
-      "id": "s07",
-      "firstName": "James",
-      "lastName": "Harris",
-      "gender": "male",
-      "preCamp": true,
-      "postCamp": true,
-      "age": 12,
-      "custody": "Both",
-      "photo": false,
-      "specialRequest": "",
-      "medicalIssues": "Diabetes - monitor glucose",
-      "primary": {
-        "name": "Jennifer Harris",
-        "homePhone": "",
-        "cellPhone": "(212) 506-1102"
-      },
-      "secondary": {
-        "name": "Grandma Mary",
-        "homePhone": "",
-        "cellPhone": "(431) 206-2138"
-      },
-      "emergency": {
-        "name": "Uncle Dan Harris",
-        "homePhone": "(212) 555-0113",
-        "cellPhone": "(212) 555-0114"
-      },
-      "tshirtSize": "Medium"
-    },
-    {
-      "id": "s08",
-      "firstName": "Lucas",
-      "lastName": "Irving",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": true,
-      "age": 13,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "Shy - needs encouragement to participate",
-      "medicalIssues": "",
-      "tshirtSize": "Large",
-      "primary": {
-        "name": "Robert Irving",
-        "homePhone": "",
-        "cellPhone": "(213) 507-1119"
-      },
-      "secondary": {
-        "name": "Uncle Chris",
-        "homePhone": "",
-        "cellPhone": "(432) 207-2161"
-      },
-      "emergency": {
-        "name": "Aunt Ruth Irving",
-        "homePhone": "(213) 555-0115",
-        "cellPhone": "(213) 555-0116"
-      }
-    },
-    {
-      "id": "s09",
-      "firstName": "Jackson",
-      "lastName": "Jensen",
-      "gender": "male",
-      "preCamp": true,
-      "postCamp": true,
-      "age": 14,
-      "custody": "Father",
-      "photo": false,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Adult Large",
-      "primary": {
-        "name": "Lisa Jensen",
-        "homePhone": "",
-        "cellPhone": "(214) 508-1136"
-      },
-      "secondary": {
-        "name": "Aunt Nicole",
-        "homePhone": "",
-        "cellPhone": "(433) 208-2184"
-      },
-      "emergency": {
-        "name": "Grandpa Carl Jensen",
-        "homePhone": "(214) 555-0117",
-        "cellPhone": "(214) 555-0118"
-      }
-    },
-    {
-      "id": "s10",
-      "firstName": "Aiden",
-      "lastName": "Kim",
-      "gender": "male",
-      "preCamp": true,
-      "postCamp": true,
-      "age": 6,
-      "custody": "Mother",
-      "photo": false,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Small",
-      "primary": {
-        "name": "William Kim",
-        "homePhone": "",
-        "cellPhone": "(215) 509-1153"
-      },
-      "secondary": {
-        "name": "Grandpa Bill",
-        "homePhone": "",
-        "cellPhone": "(434) 209-2207"
-      },
-      "emergency": {
-        "name": "Dr. Alice Kim",
-        "homePhone": "(215) 555-0119",
-        "cellPhone": "(215) 555-0120"
-      }
-    },
-    {
-      "id": "s11",
-      "firstName": "Carter",
-      "lastName": "Lewis",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": false,
-      "age": 7,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Small",
-      "primary": {
-        "name": "Mary Lewis",
-        "homePhone": "",
-        "cellPhone": "(206) 510-1170"
-      },
-      "secondary": {
-        "name": "Aunt Susan",
-        "homePhone": "",
-        "cellPhone": "(425) 210-2230"
-      },
-      "emergency": {
-        "name": "Uncle Phil Lewis",
-        "homePhone": "(206) 555-0121",
-        "cellPhone": "(206) 555-0122"
-      }
-    },
-    {
-      "id": "s12",
-      "firstName": "Owen",
-      "lastName": "Morgan",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": true,
-      "age": 8,
-      "custody": "Both",
-      "photo": false,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Child Medium",
-      "primary": {
-        "name": "Richard Morgan",
-        "homePhone": "",
-        "cellPhone": "(207) 511-1187"
-      },
-      "secondary": {
-        "name": "Uncle Steve",
-        "homePhone": "",
-        "cellPhone": "(426) 211-2253"
-      },
-      "emergency": {
-        "name": "Grandma Edna Morgan",
-        "homePhone": "(207) 555-0123",
-        "cellPhone": "(207) 555-0124"
-      }
-    },
-    {
-      "id": "s13",
-      "firstName": "Henry",
-      "lastName": "Nelson",
-      "gender": "male",
-      "preCamp": true,
-      "postCamp": false,
-      "age": 9,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Medium",
-      "primary": {
-        "name": "Patricia Nelson",
-        "homePhone": "",
-        "cellPhone": "(208) 512-1204"
-      },
-      "secondary": {
-        "name": "Grandma Ann",
-        "homePhone": "",
-        "cellPhone": "(427) 212-2276"
-      },
-      "emergency": {
-        "name": "Aunt Diane Nelson",
-        "homePhone": "(208) 555-0125",
-        "cellPhone": "(208) 555-0126"
-      }
-    },
-    {
-      "id": "s14",
-      "firstName": "Sebastian",
-      "lastName": "Ortiz",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": false,
-      "age": 10,
-      "custody": "Father",
-      "photo": false,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Large",
-      "primary": {
-        "name": "Thomas Ortiz",
-        "homePhone": "",
-        "cellPhone": "(209) 513-1221"
-      },
-      "secondary": {
-        "name": "Uncle Kevin",
-        "homePhone": "",
-        "cellPhone": "(428) 213-2299"
-      },
-      "emergency": {
-        "name": "Dr. Ray Ortiz",
-        "homePhone": "(209) 555-0127",
-        "cellPhone": "(209) 555-0128"
-      }
-    },
-    {
-      "id": "s15",
-      "firstName": "Elijah",
-      "lastName": "Patel",
-      "gender": "male",
-      "preCamp": false,
-      "postCamp": false,
-      "age": 11,
-      "custody": "Mother",
-      "photo": false,
-      "specialRequest": "Needs extra bathroom breaks",
-      "medicalIssues": "Peanut allergy - epipen in bag",
-      "primary": {
-        "name": "Barbara Patel",
-        "homePhone": "",
-        "cellPhone": "(210) 514-1238"
-      },
-      "secondary": {
-        "name": "Aunt Linda",
-        "homePhone": "",
-        "cellPhone": "(429) 214-2322"
-      },
-      "emergency": {
-        "name": "Uncle Hank Patel",
-        "homePhone": "(210) 555-0129",
-        "cellPhone": "(210) 555-0130"
-      },
-      "tshirtSize": "Youth Large"
-    },
-    {
-      "id": "s16",
-      "firstName": "Emma",
-      "lastName": "Quinn",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": false,
-      "age": 12,
-      "custody": "Both",
-      "photo": false,
-      "specialRequest": "Vegetarian meal preference",
-      "medicalIssues": "Asthma - inhaler required",
-      "primary": {
-        "name": "Sarah Quinn",
-        "homePhone": "",
-        "cellPhone": "(211) 515-1255"
-      },
-      "secondary": {
-        "name": "Grandma Rose",
-        "homePhone": "",
-        "cellPhone": "(430) 215-2345"
-      },
-      "emergency": {
-        "name": "Grandpa Lou Quinn",
-        "homePhone": "(211) 555-0131",
-        "cellPhone": "(211) 555-0132"
-      },
-      "tshirtSize": "Medium"
-    },
-    {
-      "id": "s17",
-      "firstName": "Olivia",
-      "lastName": "Reed",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": true,
-      "age": 13,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "Diabetes - monitor glucose",
-      "primary": {
-        "name": "Michael Reed",
-        "homePhone": "",
-        "cellPhone": "(212) 516-1272"
-      },
-      "secondary": {
-        "name": "Uncle Tom",
-        "homePhone": "",
-        "cellPhone": "(431) 216-2368"
-      },
-      "emergency": {
-        "name": "Aunt Vera Reed",
-        "homePhone": "(212) 555-0133",
-        "cellPhone": "(212) 555-0134"
-      },
-      "tshirtSize": "Large"
-    },
-    {
-      "id": "s18",
-      "firstName": "Sophia",
-      "lastName": "Scott",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": true,
-      "age": 14,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "Shy - needs encouragement to participate",
-      "medicalIssues": "",
-      "tshirtSize": "Adult Large",
-      "primary": {
-        "name": "Jessica Scott",
-        "homePhone": "",
-        "cellPhone": "(213) 517-1289"
-      },
-      "secondary": {
-        "name": "Aunt Karen",
-        "homePhone": "",
-        "cellPhone": "(432) 217-2391"
-      },
-      "emergency": {
-        "name": "Dr. Norm Scott",
-        "homePhone": "(213) 555-0135",
-        "cellPhone": "(213) 555-0136"
-      }
-    },
-    {
-      "id": "s19",
-      "firstName": "Isabella",
-      "lastName": "Torres",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": false,
-      "age": 6,
-      "custody": "Father",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Small",
-      "primary": {
-        "name": "David Torres",
-        "homePhone": "",
-        "cellPhone": "(214) 518-1306"
-      },
-      "secondary": {
-        "name": "Grandpa Joe",
-        "homePhone": "",
-        "cellPhone": "(433) 218-2414"
-      },
-      "emergency": {
-        "name": "Uncle Walt Torres",
-        "homePhone": "(214) 555-0137",
-        "cellPhone": "(214) 555-0138"
-      }
-    },
-    {
-      "id": "s20",
-      "firstName": "Ava",
-      "lastName": "Upton",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": false,
-      "age": 7,
-      "custody": "Mother",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Small",
-      "primary": {
-        "name": "Amanda Upton",
-        "homePhone": "",
-        "cellPhone": "(215) 519-1323"
-      },
-      "secondary": {
-        "name": "Aunt Emily",
-        "homePhone": "",
-        "cellPhone": "(434) 219-2437"
-      },
-      "emergency": {
-        "name": "Grandma Flo Upton",
-        "homePhone": "(215) 555-0139",
-        "cellPhone": "(215) 555-0140"
-      }
-    },
-    {
-      "id": "s21",
-      "firstName": "Mia",
-      "lastName": "Vargas",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": true,
-      "age": 8,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Child Medium",
-      "primary": {
-        "name": "James Vargas",
-        "homePhone": "",
-        "cellPhone": "(206) 520-1340"
-      },
-      "secondary": {
-        "name": "Uncle Mark",
-        "homePhone": "",
-        "cellPhone": "(425) 220-2460"
-      },
-      "emergency": {
-        "name": "Aunt Greta Vargas",
-        "homePhone": "(206) 555-0141",
-        "cellPhone": "(206) 555-0142"
-      }
-    },
-    {
-      "id": "s22",
-      "firstName": "Charlotte",
-      "lastName": "Walker",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": true,
-      "age": 9,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Medium",
-      "primary": {
-        "name": "Jennifer Walker",
-        "homePhone": "",
-        "cellPhone": "(207) 521-1357"
-      },
-      "secondary": {
-        "name": "Grandma Mary",
-        "homePhone": "",
-        "cellPhone": "(426) 221-2483"
-      },
-      "emergency": {
-        "name": "Dr. Clint Walker",
-        "homePhone": "(207) 555-0143",
-        "cellPhone": "(207) 555-0144"
-      }
-    },
-    {
-      "id": "s23",
-      "firstName": "Amelia",
-      "lastName": "Xavier",
-      "gender": "female",
-      "preCamp": false,
-      "postCamp": false,
-      "age": 10,
-      "custody": "Both",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Large",
-      "primary": {
-        "name": "Robert Xavier",
-        "homePhone": "",
-        "cellPhone": "(208) 522-1374"
-      },
-      "secondary": {
-        "name": "Uncle Chris",
-        "homePhone": "",
-        "cellPhone": "(427) 222-2506"
-      },
-      "emergency": {
-        "name": "Grandpa Earl Xavier",
-        "homePhone": "(208) 555-0145",
-        "cellPhone": "(208) 555-0146"
-      }
-    },
-    {
-      "id": "s24",
-      "firstName": "Harper",
-      "lastName": "Young",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": false,
-      "age": 11,
-      "custody": "Father",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Large",
-      "primary": {
-        "name": "Lisa Young",
-        "homePhone": "",
-        "cellPhone": "(209) 523-1391"
-      },
-      "secondary": {
-        "name": "Aunt Nicole",
-        "homePhone": "",
-        "cellPhone": "(428) 223-2529"
-      },
-      "emergency": {
-        "name": "Uncle Roy Young",
-        "homePhone": "(209) 555-0147",
-        "cellPhone": "(209) 555-0148"
-      }
-    },
-    {
-      "id": "s25",
-      "firstName": "Evelyn",
-      "lastName": "Zhang",
-      "gender": "female",
-      "preCamp": false,
-      "postCamp": true,
-      "age": 12,
-      "custody": "Mother",
-      "photo": false,
-      "specialRequest": "Needs extra bathroom breaks",
-      "medicalIssues": "Peanut allergy - epipen in bag",
-      "primary": {
-        "name": "William Zhang",
-        "homePhone": "",
-        "cellPhone": "(210) 524-1408"
-      },
-      "secondary": {
-        "name": "Grandpa Bill",
-        "homePhone": "",
-        "cellPhone": "(429) 224-2552"
-      },
-      "emergency": {
-        "name": "Aunt Mae Zhang",
-        "homePhone": "(210) 555-0149",
-        "cellPhone": "(210) 555-0150"
-      },
-      "tshirtSize": "Medium"
-    },
-    {
-      "id": "s26",
-      "firstName": "Abigail",
-      "lastName": "Adams",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": false,
-      "age": 13,
-      "custody": "Both",
-      "photo": false,
-      "specialRequest": "Vegetarian meal preference",
-      "medicalIssues": "Asthma - inhaler required",
-      "primary": {
-        "name": "Mary Adams",
-        "homePhone": "",
-        "cellPhone": "(211) 525-1425"
-      },
-      "secondary": {
-        "name": "Aunt Susan",
-        "homePhone": "",
-        "cellPhone": "(430) 225-2575"
-      },
-      "emergency": {
-        "name": "Grandma Bea Adams",
-        "homePhone": "(211) 555-0151",
-        "cellPhone": "(211) 555-0152"
-      },
-      "tshirtSize": "Large"
-    },
-    {
-      "id": "s27",
-      "firstName": "Emily",
-      "lastName": "Baker",
-      "gender": "female",
-      "preCamp": false,
-      "postCamp": false,
-      "age": 14,
-      "custody": "Both",
-      "photo": false,
-      "specialRequest": "",
-      "medicalIssues": "Diabetes - monitor glucose",
-      "primary": {
-        "name": "Richard Baker",
-        "homePhone": "",
-        "cellPhone": "(212) 526-1442"
-      },
-      "secondary": {
-        "name": "Uncle Steve",
-        "homePhone": "",
-        "cellPhone": "(431) 226-2598"
-      },
-      "emergency": {
-        "name": "Dr. Glen Baker",
-        "homePhone": "(212) 555-0153",
-        "cellPhone": "(212) 555-0154"
-      },
-      "tshirtSize": "Adult Large"
-    },
-    {
-      "id": "s28",
-      "firstName": "Madison",
-      "lastName": "Cole",
-      "gender": "female",
-      "preCamp": true,
-      "postCamp": true,
-      "age": 6,
-      "custody": "Both",
-      "photo": false,
-      "specialRequest": "Shy - needs encouragement to participate",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Small",
-      "primary": {
-        "name": "Patricia Cole",
-        "homePhone": "",
-        "cellPhone": "(213) 527-1459"
-      },
-      "secondary": {
-        "name": "Grandma Ann",
-        "homePhone": "",
-        "cellPhone": "(432) 227-2621"
-      },
-      "emergency": {
-        "name": "Uncle Chet Cole",
-        "homePhone": "(213) 555-0155",
-        "cellPhone": "(213) 555-0156"
-      }
-    },
-    {
-      "id": "s29",
-      "firstName": "Ella",
-      "lastName": "Diaz",
-      "gender": "female",
-      "preCamp": false,
-      "postCamp": true,
-      "age": 7,
-      "custody": "Father",
-      "photo": false,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Youth Small",
-      "primary": {
-        "name": "Thomas Diaz",
-        "homePhone": "",
-        "cellPhone": "(214) 528-1476"
-      },
-      "secondary": {
-        "name": "Uncle Kevin",
-        "homePhone": "",
-        "cellPhone": "(433) 228-2644"
-      },
-      "emergency": {
-        "name": "Aunt Irma Diaz",
-        "homePhone": "(214) 555-0157",
-        "cellPhone": "(214) 555-0158"
-      }
-    },
-    {
-      "id": "s30",
-      "firstName": "Scarlett",
-      "lastName": "Edwards",
-      "gender": "female",
-      "preCamp": false,
-      "postCamp": true,
-      "age": 8,
-      "custody": "Mother",
-      "photo": true,
-      "specialRequest": "",
-      "medicalIssues": "",
-      "tshirtSize": "Child Medium",
-      "primary": {
-        "name": "Barbara Edwards",
-        "homePhone": "",
-        "cellPhone": "(215) 529-1493"
-      },
-      "secondary": {
-        "name": "Aunt Linda",
-        "homePhone": "",
-        "cellPhone": "(434) 229-2667"
-      },
-      "emergency": {
-        "name": "Grandpa Ned Edwards",
-        "homePhone": "(215) 555-0159",
-        "cellPhone": "(215) 555-0160"
-      }
-    }
-  ],
   "camps": [
     {
-      "id": "c01",
-      "name": "Minecraft Programming",
-      "gradeRange": "Grades 4-7",
-      "week": "June 8",
-      "maxSize": 12
+      "id": "ed129065-ea37-4314-8f82-885c6c487515",
+      "name": "3D Creator",
+      "week": "Week 1",
+      "maxSize": 10,
+      "gradeRange": "Grades 1-3"
     },
     {
-      "id": "c02",
-      "name": "Little Chemist",
-      "gradeRange": "PreK-K",
-      "week": "June 8",
-      "maxSize": 16
+      "id": "ef9c1bf6-ff07-426a-9562-b62b640601be",
+      "name": "Advanced Robotics with LEGO EV3",
+      "week": "Week 1",
+      "maxSize": 10,
+      "gradeRange": "Grades 1-3"
     },
     {
-      "id": "c03",
-      "name": "Eco Explorer",
-      "gradeRange": "Grades 1-3",
-      "week": "June 15",
-      "maxSize": 14
+      "id": "ef923b6d-7b4e-47b2-887b-58df55aa23c3",
+      "name": "Cosmos",
+      "week": "Week 1",
+      "maxSize": 10,
+      "gradeRange": "Grades 1-3"
     },
     {
-      "id": "c04",
-      "name": "Coding with Roblox",
-      "gradeRange": "Grades 6-8",
-      "week": "June 22",
-      "maxSize": 12
+      "id": "e776c20c-a8ca-403b-94b7-6cc2e6c6c20a",
+      "name": "Dash and Dot Programmer",
+      "week": "Week 1",
+      "maxSize": 10,
+      "gradeRange": "Grades 1-3"
     },
     {
-      "id": "c05",
-      "name": "Jr Space Explorer",
-      "gradeRange": "Grades 4-7",
-      "week": "July 6",
-      "maxSize": 15
+      "id": "c11c2d80-29ea-49d8-89f0-f3cfc08d2db7",
+      "name": "Little Space Explorer",
+      "week": "Week 1",
+      "maxSize": 10,
+      "gradeRange": "Grades 1-3"
+    },
+    {
+      "id": "7cb25a06-934e-40cd-9b8e-44063bee1450",
+      "name": "Little Space Explorer/ Half Day",
+      "week": "Week 1",
+      "maxSize": 10,
+      "gradeRange": "Grades 1-3"
+    },
+    {
+      "id": "c27871d8-7870-4f63-9512-b3fd32d38c00",
+      "name": "QuadCopter Aerial Robotics",
+      "week": "Week 1",
+      "maxSize": 10,
+      "gradeRange": "Grades 1-3"
+    },
+    {
+      "id": "5bf56c38-1bad-4892-9d6c-1eef55f06e5a",
+      "name": "Space Engineer",
+      "week": "Week 1",
+      "maxSize": 10,
+      "gradeRange": "Grades 1-3"
+    }
+  ],
+  "version": 7,
+  "schedule": {
+    "instances": [
+      {
+        "id": "ed129065-ea37-4314-8f82-885c6c487515-1",
+        "campId": "ed129065-ea37-4314-8f82-885c6c487515",
+        "studentIds": [
+          "94ff769f-d9b9-4867-a473-bdb812cd14d4",
+          "81814b2c-954a-4df5-82f4-20d9b49ca8b7",
+          "817f9dbb-b6da-40dc-a8b4-3442d8109e03",
+          "01471a4d-1daf-4103-81ad-b71b77527db9",
+          "5dbb934e-62c1-4539-adea-f91e8212e984",
+          "362fa058-c2d4-44a4-9c5c-adfb4577171b",
+          "9b6007ff-a872-4245-b5b8-c25bd2ab9b2a",
+          "d31b5d82-ce96-4e14-8ef2-0268e6ec4dbd",
+          "bf238e60-0739-4fcb-8976-31e745a28f98",
+          "fc6c4070-8643-4cde-bf9a-fa91f5d2ea58"
+        ],
+        "instanceNumber": 1
+      },
+      {
+        "id": "ed129065-ea37-4314-8f82-885c6c487515-2",
+        "campId": "ed129065-ea37-4314-8f82-885c6c487515",
+        "studentIds": [
+          "f6269616-a604-46f4-af04-8861bd7955fa",
+          "7e35c673-3156-4191-a037-c49c4ec09bab",
+          "b920a7f5-1c63-4772-bb3f-d434c4ad7efc",
+          "0c3a0032-539a-4910-8916-2e15bf149bcf",
+          "cdc8be8a-bac5-4bca-ba82-8e0153669872",
+          "002ffb0f-d705-4aa7-9f16-5ca9f0403d30",
+          "a8288b60-6e7d-47e8-ac9f-3ab143be2f81",
+          "384f4901-57df-4cd5-9aca-779308aa0ad4",
+          "75c4cafb-456b-43a9-b527-0ecb4d634720"
+        ],
+        "instanceNumber": 2
+      },
+      {
+        "id": "ef923b6d-7b4e-47b2-887b-58df55aa23c3-1",
+        "campId": "ef923b6d-7b4e-47b2-887b-58df55aa23c3",
+        "studentIds": [
+          "d1aa55ea-4588-4d06-85f2-4eb5f941577f",
+          "0bdbfa6e-ce99-423f-9e0b-e721d58a4d20",
+          "84945b9f-2ea8-4aad-916d-98e56135c669",
+          "19e3a185-691d-4fd8-85e7-cc4bb3ef0b57",
+          "f2135a4f-505a-4d51-ba9d-75204d4f0c2c",
+          "dab21bac-34e4-4218-a38c-c39b3a553fb2",
+          "724b343a-f0ab-4132-a46f-f6f18b39655d",
+          "61793c2b-e5f5-4cf5-92a8-6eaf5bf0dd65",
+          "8f99bd1a-a700-4ebe-bd66-53462005c03e",
+          "5e071536-a211-43c5-8232-86c683a981a2"
+        ],
+        "instanceNumber": 1
+      },
+      {
+        "id": "7cb25a06-934e-40cd-9b8e-44063bee1450-1",
+        "campId": "7cb25a06-934e-40cd-9b8e-44063bee1450",
+        "studentIds": ["e3c21346-0de1-49d4-acfc-73b427092bde"],
+        "instanceNumber": 1
+      },
+      {
+        "id": "c27871d8-7870-4f63-9512-b3fd32d38c00-1",
+        "campId": "c27871d8-7870-4f63-9512-b3fd32d38c00",
+        "studentIds": [
+          "57d4210a-6b51-4627-bb09-414d76bb2a8c",
+          "a2566194-6bfe-4456-94ab-3de684f4a820",
+          "424ba725-61cb-4ea3-8b5f-af88fa71dc9e",
+          "e448c5f6-6794-42ec-8e36-94b3c0402269",
+          "4c996538-c3da-42f8-a85e-e735284fb3c3",
+          "2b402a03-49bc-438f-b139-462d16b07d31",
+          "9f536377-9842-487e-bf8b-db58e2b1dfdf",
+          "1db85270-16e7-4103-acdc-a67d159de951",
+          "f141087c-ff2d-4c17-9ef4-5a1a5b991577",
+          "a8279eac-b9f8-4db2-8fe4-84ac4e8fc2d2"
+        ],
+        "instanceNumber": 1
+      },
+      {
+        "id": "5bf56c38-1bad-4892-9d6c-1eef55f06e5a-1",
+        "campId": "5bf56c38-1bad-4892-9d6c-1eef55f06e5a",
+        "studentIds": [
+          "cc8802ed-da6f-494e-942e-4acd25e91d2a",
+          "f2e23cd2-d254-4ae2-b1fd-db03ebb8a358",
+          "572820b6-61af-4063-a86c-2873a1936e57",
+          "fc43287f-9b21-4fc8-8177-ae0c971dfb66",
+          "87310ad7-92ab-40b7-81f1-75b34475130d"
+        ],
+        "instanceNumber": 1
+      },
+      {
+        "id": "ef9c1bf6-ff07-426a-9562-b62b640601be-1",
+        "campId": "ef9c1bf6-ff07-426a-9562-b62b640601be",
+        "studentIds": [
+          "3bffa3f3-54f0-4b7d-ba79-60af9266ca07",
+          "616b8885-fcf8-4a4a-9e37-4985ee735784",
+          "baa07967-b1da-4a60-bf2e-e79a22b2d658",
+          "1cc31674-2025-47c5-ac42-edb89d1266eb",
+          "f51111fe-b021-42e4-9a82-7d270e7f3528",
+          "1733f695-8174-4a9b-a7ce-ed7b715d6d20",
+          "1f627126-9416-4edb-af6f-ec2638c46b94",
+          "64e98c71-cfb5-4eb6-8e1c-c34443198781",
+          "ad2ea461-8dfd-49e5-8b23-b7612dc14bcb",
+          "5e69720b-ce0a-4b65-a50b-0dccbba7ff7a"
+        ],
+        "instanceNumber": 1
+      },
+      {
+        "id": "ef9c1bf6-ff07-426a-9562-b62b640601be-2",
+        "campId": "ef9c1bf6-ff07-426a-9562-b62b640601be",
+        "studentIds": ["d45dc741-c0d4-4d96-8726-8961e4a529a4"],
+        "instanceNumber": 2
+      },
+      {
+        "id": "c11c2d80-29ea-49d8-89f0-f3cfc08d2db7-1",
+        "campId": "c11c2d80-29ea-49d8-89f0-f3cfc08d2db7",
+        "studentIds": [
+          "5c566f9e-9270-42f0-bdb7-024d151d543b",
+          "0ca8d349-4568-4459-aa70-53d6b8292b96",
+          "0d1eec50-85bd-4dce-9f85-7ae85fb642a4",
+          "ee55453c-cb9d-478e-ac9a-5830f41361a2",
+          "f8f5731e-406e-413a-bea7-0de1d1dd51f3"
+        ],
+        "instanceNumber": 1
+      },
+      {
+        "id": "e776c20c-a8ca-403b-94b7-6cc2e6c6c20a-1",
+        "campId": "e776c20c-a8ca-403b-94b7-6cc2e6c6c20a",
+        "studentIds": [
+          "377c0f40-07d3-43e2-9487-7c720339c8f3",
+          "c8391064-b587-41ec-adeb-eb0746ecae95",
+          "db5d5588-8b16-4675-b567-dae58d487fef",
+          "ac1b2792-6982-4731-96dd-b554c69e7b7d",
+          "cb437481-582e-4787-98bd-bd04f41c6a6b",
+          "8aecd32a-cecd-4aa8-82ca-774217c4f3c7",
+          "a944195e-c6d4-4a76-8bf4-cb665321b1f0",
+          "c043d6f7-f6be-4797-b548-5b8f276c26eb",
+          "d45dc741-c0d4-4d96-8726-8961e4a529a4"
+        ],
+        "instanceNumber": 1
+      }
+    ]
+  },
+  "students": [
+    {
+      "id": "94ff769f-d9b9-4867-a473-bdb812cd14d4",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Linda Mercer",
+        "cellPhone": "",
+        "homePhone": "5550100001"
+      },
+      "lastName": "Mercer",
+      "postCamp": false,
+      "emergency": {
+        "name": "Linda Mercer",
+        "cellPhone": "5550100001",
+        "homePhone": ""
+      },
+      "firstName": "Marcus",
+      "secondary": {
+        "name": "Kevin Mercer",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": "Be placed with his brother Devin Mercer"
+    },
+    {
+      "id": "81814b2c-954a-4df5-82f4-20d9b49ca8b7",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Linda Mercer",
+        "cellPhone": "",
+        "homePhone": "5550100001"
+      },
+      "lastName": "Mercer",
+      "postCamp": false,
+      "emergency": {
+        "name": "Linda Mercer",
+        "cellPhone": "5550100001",
+        "homePhone": ""
+      },
+      "firstName": "Devin",
+      "secondary": {
+        "name": "Kevin Mercer",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": "Be in the same section as his brother Marcus Mercer"
+    },
+    {
+      "id": "002ffb0f-d705-4aa7-9f16-5ca9f0403d30",
+      "age": 9,
+      "photo": false,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Yuki Nakamura",
+        "cellPhone": "5550100002",
+        "homePhone": "5550100002"
+      },
+      "lastName": "Nakamura",
+      "postCamp": false,
+      "emergency": {
+        "name": "Taro Nakamura",
+        "cellPhone": "5550100003",
+        "homePhone": ""
+      },
+      "firstName": "Kai",
+      "secondary": {
+        "name": "Taro Nakamura",
+        "cellPhone": "5550100003",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "f6269616-a604-46f4-af04-8861bd7955fa",
+      "age": 10,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Grace Aldrich",
+        "cellPhone": "5550100004",
+        "homePhone": "5550100004"
+      },
+      "lastName": "Aldrich",
+      "postCamp": false,
+      "emergency": {
+        "name": "Isla Aldrich",
+        "cellPhone": "5550100005",
+        "homePhone": ""
+      },
+      "firstName": "Isla",
+      "secondary": {
+        "name": "Scott Aldrich",
+        "cellPhone": "5550100005",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "a8288b60-6e7d-47e8-ac9f-3ab143be2f81",
+      "age": 9,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Wei Huang",
+        "cellPhone": "5550100006",
+        "homePhone": "5550100006"
+      },
+      "lastName": "Huang",
+      "postCamp": false,
+      "emergency": {
+        "name": "Wei Huang",
+        "cellPhone": "5550100006",
+        "homePhone": ""
+      },
+      "firstName": "Jasper",
+      "secondary": {
+        "name": "Min Huang",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "7e35c673-3156-4191-a037-c49c4ec09bab",
+      "age": 10,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Ji-Yeon Park",
+        "cellPhone": "5550100007",
+        "homePhone": "5550100007"
+      },
+      "lastName": "Park",
+      "postCamp": false,
+      "emergency": {
+        "name": "Young-Suk Lee",
+        "cellPhone": "5550100008",
+        "homePhone": ""
+      },
+      "firstName": "Soo-Yeon",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "b920a7f5-1c63-4772-bb3f-d434c4ad7efc",
+      "age": 9,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Patrick Callahan",
+        "cellPhone": "5550100009",
+        "homePhone": "5550100009"
+      },
+      "lastName": "Callahan",
+      "postCamp": false,
+      "emergency": {
+        "name": "Maeve Callahan",
+        "cellPhone": "5550100010",
+        "homePhone": ""
+      },
+      "firstName": "Finn",
+      "secondary": {
+        "name": "Maeve Callahan",
+        "cellPhone": "5550100010",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "Yes",
+      "specialRequest": "Finn takes daily attention helping medicine"
+    },
+    {
+      "id": "eea5bf46-5887-4bcb-aac6-ef0e0b98e769",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Renata Marchetti",
+        "cellPhone": "5550100011",
+        "homePhone": ""
+      },
+      "lastName": "Marchetti",
+      "postCamp": false,
+      "emergency": {
+        "name": "Anton Marchetti",
+        "cellPhone": "5550100012",
+        "homePhone": ""
+      },
+      "firstName": "Theo",
+      "secondary": {
+        "name": "Anton Marchetti",
+        "cellPhone": "5550100012",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "384f4901-57df-4cd5-9aca-779308aa0ad4",
+      "age": 13,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Abena Osei",
+        "cellPhone": "",
+        "homePhone": "5550100013"
+      },
+      "lastName": "Osei",
+      "postCamp": false,
+      "emergency": {
+        "name": "Kofi Osei",
+        "cellPhone": "5550100014",
+        "homePhone": ""
+      },
+      "firstName": "Kwame",
+      "secondary": {
+        "name": "Kofi Osei",
+        "cellPhone": "5550100014",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "75c4cafb-456b-43a9-b527-0ecb4d634720",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Claire Moreau",
+        "cellPhone": "5550100015",
+        "homePhone": "5550100016"
+      },
+      "lastName": "Moreau",
+      "postCamp": false,
+      "emergency": {
+        "name": "Claire Moreau",
+        "cellPhone": "5550100015",
+        "homePhone": ""
+      },
+      "firstName": "Ethan",
+      "secondary": {
+        "name": "Henri Moreau",
+        "cellPhone": "5550100016",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "ADHD, autism spectrum",
+      "specialRequest": "He usually takes medicine at 230pm."
+    },
+    {
+      "id": "0c3a0032-539a-4910-8916-2e15bf149bcf",
+      "age": 11,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Dana Hollis",
+        "cellPhone": "5550100017",
+        "homePhone": ""
+      },
+      "lastName": "Hollis",
+      "postCamp": false,
+      "emergency": {
+        "name": "Dana Hollis",
+        "cellPhone": "5550100017",
+        "homePhone": ""
+      },
+      "firstName": "Zara",
+      "secondary": {
+        "name": "Ryan Hollis",
+        "cellPhone": "5550100018",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": "Zara is allergic to non-organic strawberries"
+    },
+    {
+      "id": "cdc8be8a-bac5-4bca-ba82-8e0153669872",
+      "age": 10,
+      "photo": false,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": true,
+      "primary": {
+        "name": "Karen Vance",
+        "cellPhone": "5550100019",
+        "homePhone": "5550100019"
+      },
+      "lastName": "Vance",
+      "postCamp": true,
+      "emergency": {
+        "name": "Claire Vance",
+        "cellPhone": "5550100019",
+        "homePhone": ""
+      },
+      "firstName": "Claire",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "817f9dbb-b6da-40dc-a8b4-3442d8109e03",
+      "age": 10,
+      "photo": false,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": true,
+      "primary": {
+        "name": "Karen Vance",
+        "cellPhone": "5550100019",
+        "homePhone": "5550100019"
+      },
+      "lastName": "Vance",
+      "postCamp": true,
+      "emergency": {
+        "name": "Karen Vance",
+        "cellPhone": "5550100019",
+        "homePhone": ""
+      },
+      "firstName": "Paige",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "01471a4d-1daf-4103-81ad-b71b77527db9",
+      "age": 10,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Lisa Dalton",
+        "cellPhone": "5550100020",
+        "homePhone": "5550100020"
+      },
+      "lastName": "Dalton",
+      "postCamp": false,
+      "emergency": {
+        "name": "Lisa Dalton",
+        "cellPhone": "5550100020",
+        "homePhone": ""
+      },
+      "firstName": "Mia",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "Fainting",
+      "specialRequest": "If Mia feels like she is going to faint, she will usually say that she is not feeling well. If she does faint, do not call 911 - this is typical. It usually is triggered by the sight of blood, injury, or something gross that is being discussed. It doesn't happen randomly."
+    },
+    {
+      "id": "5dbb934e-62c1-4539-adea-f91e8212e984",
+      "age": 10,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Marie Flynn",
+        "cellPhone": "5550100021",
+        "homePhone": "5550100021"
+      },
+      "lastName": "Flynn",
+      "postCamp": true,
+      "emergency": {
+        "name": "Marie Flynn",
+        "cellPhone": "5550100021",
+        "homePhone": ""
+      },
+      "firstName": "Sloane",
+      "secondary": {
+        "name": "David Flynn",
+        "cellPhone": "5550100022",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "362fa058-c2d4-44a4-9c5c-adfb4577171b",
+      "age": 10,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Marie Flynn",
+        "cellPhone": "5550100021",
+        "homePhone": "5550100021"
+      },
+      "lastName": "Flynn",
+      "postCamp": true,
+      "emergency": {
+        "name": "Marie Flynn",
+        "cellPhone": "5550100021",
+        "homePhone": ""
+      },
+      "firstName": "Bryn",
+      "secondary": {
+        "name": "David Flynn",
+        "cellPhone": "5550100022",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "Allergies",
+      "specialRequest": ""
+    },
+    {
+      "id": "fc6c4070-8643-4cde-bf9a-fa91f5d2ea58",
+      "age": 11,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Carlos Vasquez",
+        "cellPhone": "5550100023",
+        "homePhone": "5550100023"
+      },
+      "lastName": "Vasquez",
+      "postCamp": true,
+      "emergency": {
+        "name": "Carlos Vasquez",
+        "cellPhone": "5550100023",
+        "homePhone": ""
+      },
+      "firstName": "Nate",
+      "secondary": {
+        "name": "Elena Vasquez",
+        "cellPhone": "5550100024",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "9b6007ff-a872-4245-b5b8-c25bd2ab9b2a",
+      "age": 9,
+      "photo": true,
+      "gender": "female",
+      "custody": "Father",
+      "preCamp": false,
+      "primary": {
+        "name": "Brett Stanton",
+        "cellPhone": "",
+        "homePhone": "5550100025"
+      },
+      "lastName": "Stanton",
+      "postCamp": false,
+      "emergency": {
+        "name": "Brett Stanton",
+        "cellPhone": "5550100025",
+        "homePhone": ""
+      },
+      "firstName": "Piper",
+      "secondary": {
+        "name": "Rachel Stanton",
+        "cellPhone": "5550100026",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "d31b5d82-ce96-4e14-8ef2-0268e6ec4dbd",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Helen Ashworth",
+        "cellPhone": "5550100027",
+        "homePhone": "5550100028"
+      },
+      "lastName": "Ashworth",
+      "postCamp": false,
+      "emergency": {
+        "name": "Helen Ashworth",
+        "cellPhone": "5550100027",
+        "homePhone": ""
+      },
+      "firstName": "Liam",
+      "secondary": {
+        "name": "James Ashworth",
+        "cellPhone": "5550100029",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": "Make sure Liam drinks water, and take breaks inside if outside for more than 20 minutes on very hot days."
+    },
+    {
+      "id": "bf238e60-0739-4fcb-8976-31e745a28f98",
+      "age": 9,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Sofia Delgado",
+        "cellPhone": "",
+        "homePhone": "5550100030"
+      },
+      "lastName": "Delgado",
+      "postCamp": false,
+      "emergency": {
+        "name": "Rita Delgado",
+        "cellPhone": "5550100031",
+        "homePhone": ""
+      },
+      "firstName": "Carlos",
+      "secondary": {
+        "name": "Marco Delgado",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "3bffa3f3-54f0-4b7d-ba79-60af9266ca07",
+      "age": 9,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Dmitri Volkov",
+        "cellPhone": "5550100032",
+        "homePhone": "5550100032"
+      },
+      "lastName": "Volkov",
+      "postCamp": false,
+      "emergency": {
+        "name": "Dmitri Volkov",
+        "cellPhone": "5550100032",
+        "homePhone": ""
+      },
+      "firstName": "Anton",
+      "secondary": {
+        "name": "Natasha Volkov",
+        "cellPhone": "5550100033",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "616b8885-fcf8-4a4a-9e37-4985ee735784",
+      "age": 9,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Raj Sharma",
+        "cellPhone": "",
+        "homePhone": "5550100034"
+      },
+      "lastName": "Sharma",
+      "postCamp": false,
+      "emergency": {
+        "name": "Priya Sharma",
+        "cellPhone": "5550100035",
+        "homePhone": ""
+      },
+      "firstName": "Dev",
+      "secondary": {
+        "name": "Priya Sharma",
+        "cellPhone": "5550100035",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "1f627126-9416-4edb-af6f-ec2638c46b94",
+      "age": 10,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Susan Whitfield",
+        "cellPhone": "5550100036",
+        "homePhone": "5550100037"
+      },
+      "lastName": "Whitfield",
+      "postCamp": false,
+      "emergency": {
+        "name": "Susan Whitfield",
+        "cellPhone": "5550100036",
+        "homePhone": ""
+      },
+      "firstName": "Nora",
+      "secondary": {
+        "name": "Greg Whitfield",
+        "cellPhone": "5550100037",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "baa07967-b1da-4a60-bf2e-e79a22b2d658",
+      "age": 11,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Anne Thornton",
+        "cellPhone": "5550100038",
+        "homePhone": ""
+      },
+      "lastName": "Thornton",
+      "postCamp": false,
+      "emergency": {
+        "name": "Anne Thornton",
+        "cellPhone": "5550100038",
+        "homePhone": ""
+      },
+      "firstName": "Will",
+      "secondary": {
+        "name": "Jeff Thornton",
+        "cellPhone": "5550100039",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "1cc31674-2025-47c5-ac42-edb89d1266eb",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Mark Barrett",
+        "cellPhone": "5550100040",
+        "homePhone": "5550100040"
+      },
+      "lastName": "Barrett",
+      "postCamp": false,
+      "emergency": {
+        "name": "Mark Barrett",
+        "cellPhone": "5550100041",
+        "homePhone": ""
+      },
+      "firstName": "Owen",
+      "secondary": {
+        "name": "Jamie Barrett",
+        "cellPhone": "5550100041",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "ad2ea461-8dfd-49e5-8b23-b7612dc14bcb",
+      "age": 11,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Mark Barrett",
+        "cellPhone": "5550100040",
+        "homePhone": "5550100040"
+      },
+      "lastName": "Barrett",
+      "postCamp": false,
+      "emergency": {
+        "name": "Mark Barrett",
+        "cellPhone": "5550100041",
+        "homePhone": ""
+      },
+      "firstName": "Cole",
+      "secondary": {
+        "name": "Jamie Barrett",
+        "cellPhone": "5550100041",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "64e98c71-cfb5-4eb6-8e1c-c34443198781",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Brianna Coleman",
+        "cellPhone": "5550100042",
+        "homePhone": "5550100042"
+      },
+      "lastName": "Coleman",
+      "postCamp": false,
+      "emergency": {
+        "name": "Patricia Coleman",
+        "cellPhone": "5550100044",
+        "homePhone": ""
+      },
+      "firstName": "Eli",
+      "secondary": {
+        "name": "Derek Coleman",
+        "cellPhone": "5550100043",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "5e69720b-ce0a-4b65-a50b-0dccbba7ff7a",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": true,
+      "primary": {
+        "name": "Brad Archer",
+        "cellPhone": "5550100045",
+        "homePhone": "5550100045"
+      },
+      "lastName": "Archer",
+      "postCamp": false,
+      "emergency": {
+        "name": "Frank Archer",
+        "cellPhone": "5550100046",
+        "homePhone": ""
+      },
+      "firstName": "Dane",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "f51111fe-b021-42e4-9a82-7d270e7f3528",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Diane Morrison",
+        "cellPhone": "5550100047",
+        "homePhone": "5550100047"
+      },
+      "lastName": "Morrison",
+      "postCamp": true,
+      "emergency": {
+        "name": "Diane Morrison",
+        "cellPhone": "5550100047",
+        "homePhone": ""
+      },
+      "firstName": "Jake",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "1733f695-8174-4a9b-a7ce-ed7b715d6d20",
+      "age": 10,
+      "photo": true,
+      "gender": "male",
+      "custody": "Mother",
+      "preCamp": false,
+      "primary": {
+        "name": "Tanya Okafor",
+        "cellPhone": "5550100048",
+        "homePhone": "5550100049"
+      },
+      "lastName": "Okafor",
+      "postCamp": false,
+      "emergency": {
+        "name": "Tanya Okafor",
+        "cellPhone": "5550100048",
+        "homePhone": ""
+      },
+      "firstName": "Theo",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "d1aa55ea-4588-4d06-85f2-4eb5f941577f",
+      "age": 7,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": true,
+      "primary": {
+        "name": "Bruno Falco",
+        "cellPhone": "5550100050",
+        "homePhone": "5550100050"
+      },
+      "lastName": "Falco",
+      "postCamp": true,
+      "emergency": {
+        "name": "Rosa Falco",
+        "cellPhone": "5550100051",
+        "homePhone": ""
+      },
+      "firstName": "Nico",
+      "secondary": {
+        "name": "Rosa Falco",
+        "cellPhone": "5550100051",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "0bdbfa6e-ce99-423f-9e0b-e721d58a4d20",
+      "age": 6,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Tom Stafford",
+        "cellPhone": "5550100052",
+        "homePhone": "5550100052"
+      },
+      "lastName": "Stafford",
+      "postCamp": false,
+      "emergency": {
+        "name": "Tom Stafford",
+        "cellPhone": "5550100052",
+        "homePhone": ""
+      },
+      "firstName": "Cora",
+      "secondary": {
+        "name": "Amy Stafford",
+        "cellPhone": "5550100053",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "follicular eczema",
+      "specialRequest": "please use sunscreen provided due to child's follicular eczema"
+    },
+    {
+      "id": "84945b9f-2ea8-4aad-916d-98e56135c669",
+      "age": 7,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Sarah Larkin",
+        "cellPhone": "5550100054",
+        "homePhone": "5550100054"
+      },
+      "lastName": "Larkin",
+      "postCamp": true,
+      "emergency": {
+        "name": "Dorothy Barnes",
+        "cellPhone": "5550100056",
+        "homePhone": ""
+      },
+      "firstName": "Phoebe",
+      "secondary": {
+        "name": "Chris Larkin",
+        "cellPhone": "5550100055",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "19e3a185-691d-4fd8-85e7-cc4bb3ef0b57",
+      "age": 7,
+      "photo": false,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Helen Kwan",
+        "cellPhone": "5550100057",
+        "homePhone": ""
+      },
+      "lastName": "Kwan",
+      "postCamp": false,
+      "emergency": {
+        "name": "Helen Kwan",
+        "cellPhone": "5550100057",
+        "homePhone": ""
+      },
+      "firstName": "Jordan",
+      "secondary": {
+        "name": "David Kwan",
+        "cellPhone": "5550100058",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "f2135a4f-505a-4d51-ba9d-75204d4f0c2c",
+      "age": 6,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Linda Tran",
+        "cellPhone": "5550100059",
+        "homePhone": ""
+      },
+      "lastName": "Tran",
+      "postCamp": false,
+      "emergency": {
+        "name": "Linda Tran",
+        "cellPhone": "5550100059",
+        "homePhone": ""
+      },
+      "firstName": "Felix",
+      "secondary": {
+        "name": "Kenneth Tran",
+        "cellPhone": "5550100060",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": "Please allow Kenneth Tran, Mackenzie Foster, Anne Carr and Bill Carr to also pick up child"
+    },
+    {
+      "id": "dab21bac-34e4-4218-a38c-c39b3a553fb2",
+      "age": 7,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Sofia Delgado",
+        "cellPhone": "",
+        "homePhone": "5550100030"
+      },
+      "lastName": "Delgado",
+      "postCamp": false,
+      "emergency": {
+        "name": "Sofia Delgado",
+        "cellPhone": "5550100030",
+        "homePhone": ""
+      },
+      "firstName": "Maya",
+      "secondary": {
+        "name": "Marco Delgado",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": "Would like for her to improve their writing and math skills within these activities."
+    },
+    {
+      "id": "724b343a-f0ab-4132-a46f-f6f18b39655d",
+      "age": 7,
+      "photo": true,
+      "gender": "female",
+      "custody": "Mother",
+      "preCamp": false,
+      "primary": {
+        "name": "Susan Weiss",
+        "cellPhone": "5550100062",
+        "homePhone": "5550100062"
+      },
+      "lastName": "Weiss",
+      "postCamp": false,
+      "emergency": {
+        "name": "Anne Carr",
+        "cellPhone": "5550100063",
+        "homePhone": ""
+      },
+      "firstName": "Jade",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": "Please allow her to be in class with Felix Tran"
+    },
+    {
+      "id": "61793c2b-e5f5-4cf5-92a8-6eaf5bf0dd65",
+      "age": 7,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Patricia Byrne",
+        "cellPhone": "5550100064",
+        "homePhone": "5550100064"
+      },
+      "lastName": "Byrne",
+      "postCamp": false,
+      "emergency": {
+        "name": "Patricia Byrne",
+        "cellPhone": "5550100064",
+        "homePhone": ""
+      },
+      "firstName": "Lena",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "8f99bd1a-a700-4ebe-bd66-53462005c03e",
+      "age": 8,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Grace Aldrich",
+        "cellPhone": "5550100004",
+        "homePhone": "5550100004"
+      },
+      "lastName": "Aldrich",
+      "postCamp": false,
+      "emergency": {
+        "name": "Scott Aldrich",
+        "cellPhone": "5550100005",
+        "homePhone": ""
+      },
+      "firstName": "Flynn",
+      "secondary": {
+        "name": "Scott Aldrich",
+        "cellPhone": "5550100005",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "377c0f40-07d3-43e2-9487-7c720339c8f3",
+      "age": 6,
+      "photo": true,
+      "gender": "male",
+      "custody": "Mother",
+      "preCamp": false,
+      "primary": {
+        "name": "Dana Anders",
+        "cellPhone": "5550100065",
+        "homePhone": "5550100065"
+      },
+      "lastName": "Anders",
+      "postCamp": false,
+      "emergency": {
+        "name": "Dana Anders",
+        "cellPhone": "5550100065",
+        "homePhone": ""
+      },
+      "firstName": "Cole",
+      "secondary": {
+        "name": "Tim Anders",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "Sensory Processing Disorder/ADHD",
+      "specialRequest": ""
+    },
+    {
+      "id": "c8391064-b587-41ec-adeb-eb0746ecae95",
+      "age": 6,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": true,
+      "primary": {
+        "name": "Kim Foster",
+        "cellPhone": "5550100066",
+        "homePhone": "5550100066"
+      },
+      "lastName": "Foster",
+      "postCamp": false,
+      "emergency": {
+        "name": "Kim Foster",
+        "cellPhone": "5550100066",
+        "homePhone": ""
+      },
+      "firstName": "Blake",
+      "secondary": {
+        "name": "Mike Foster",
+        "cellPhone": "5550100067",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "db5d5588-8b16-4675-b567-dae58d487fef",
+      "age": 7,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Rob Kingston",
+        "cellPhone": "5550100068",
+        "homePhone": "5550100068"
+      },
+      "lastName": "Kingston",
+      "postCamp": false,
+      "emergency": {
+        "name": "Rob Kingston",
+        "cellPhone": "5550100068",
+        "homePhone": ""
+      },
+      "firstName": "Sam",
+      "secondary": {
+        "name": "Jennifer Kingston",
+        "cellPhone": "5550100069",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "ac1b2792-6982-4731-96dd-b554c69e7b7d",
+      "age": 8,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Yoko Fujita",
+        "cellPhone": "5550100070",
+        "homePhone": "5550100071"
+      },
+      "lastName": "Fujita",
+      "postCamp": false,
+      "emergency": {
+        "name": "Yoko Fujita",
+        "cellPhone": "5550100070",
+        "homePhone": ""
+      },
+      "firstName": "Riku",
+      "secondary": {
+        "name": "Ken Fujita",
+        "cellPhone": "5550100072",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "cb437481-582e-4787-98bd-bd04f41c6a6b",
+      "age": 8,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Abena Osei",
+        "cellPhone": "",
+        "homePhone": "5550100013"
+      },
+      "lastName": "Osei",
+      "postCamp": false,
+      "emergency": {
+        "name": "Kofi Osei",
+        "cellPhone": "5550100073",
+        "homePhone": ""
+      },
+      "firstName": "Imani",
+      "secondary": {
+        "name": "Kofi Osei",
+        "cellPhone": "5550100014",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "8aecd32a-cecd-4aa8-82ca-774217c4f3c7",
+      "age": 7,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Wei Huang",
+        "cellPhone": "5550100006",
+        "homePhone": "5550100006"
+      },
+      "lastName": "Huang",
+      "postCamp": false,
+      "emergency": {
+        "name": "Wei Huang",
+        "cellPhone": "5550100006",
+        "homePhone": ""
+      },
+      "firstName": "Lily",
+      "secondary": {
+        "name": "Min Huang",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "a944195e-c6d4-4a76-8bf4-cb665321b1f0",
+      "age": 5,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Dmitri Volkov",
+        "cellPhone": "5550100032",
+        "homePhone": "5550100032"
+      },
+      "lastName": "Volkov",
+      "postCamp": false,
+      "emergency": {
+        "name": "Dmitri Volkov",
+        "cellPhone": "5550100032",
+        "homePhone": ""
+      },
+      "firstName": "Sonya",
+      "secondary": {
+        "name": "Natasha Volkov",
+        "cellPhone": "5550100033",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "5c566f9e-9270-42f0-bdb7-024d151d543b",
+      "age": 5,
+      "photo": true,
+      "gender": "male",
+      "custody": "Mother",
+      "preCamp": false,
+      "primary": {
+        "name": "Jen Wilder",
+        "cellPhone": "5550100074",
+        "homePhone": "5550100074"
+      },
+      "lastName": "Wilder",
+      "postCamp": false,
+      "emergency": {
+        "name": "Jen Wilder",
+        "cellPhone": "5550100074",
+        "homePhone": ""
+      },
+      "firstName": "Sam",
+      "secondary": {
+        "name": "Dale Wilder",
+        "cellPhone": "5550100075",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "Allergies (takes medication)",
+      "specialRequest": ""
+    },
+    {
+      "id": "0ca8d349-4568-4459-aa70-53d6b8292b96",
+      "age": 5,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Patrick Callahan",
+        "cellPhone": "5550100009",
+        "homePhone": "5550100009"
+      },
+      "lastName": "Callahan",
+      "postCamp": false,
+      "emergency": {
+        "name": "Maeve Callahan",
+        "cellPhone": "5550100010",
+        "homePhone": ""
+      },
+      "firstName": "Leo",
+      "secondary": {
+        "name": "Maeve Callahan",
+        "cellPhone": "5550100010",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "0d1eec50-85bd-4dce-9f85-7ae85fb642a4",
+      "age": 5,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Beth Marsh",
+        "cellPhone": "5550100076",
+        "homePhone": ""
+      },
+      "lastName": "Marsh",
+      "postCamp": false,
+      "emergency": {
+        "name": "Beth Marsh",
+        "cellPhone": "5550100078",
+        "homePhone": ""
+      },
+      "firstName": "Felix",
+      "secondary": {
+        "name": "Tom Marsh",
+        "cellPhone": "5550100077",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "e3c21346-0de1-49d4-acfc-73b427092bde",
+      "age": 4,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Vera Novak",
+        "cellPhone": "5550100079",
+        "homePhone": ""
+      },
+      "lastName": "Novak",
+      "postCamp": false,
+      "emergency": {
+        "name": "Vera Novak",
+        "cellPhone": "5550100079",
+        "homePhone": ""
+      },
+      "firstName": "Petra",
+      "secondary": {
+        "name": "Pavel Novak",
+        "cellPhone": "5550100080",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": "Our child is vegetarian. No other requests."
+    },
+    {
+      "id": "ee55453c-cb9d-478e-ac9a-5830f41361a2",
+      "age": 5,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Hiromi Tanaka",
+        "cellPhone": "",
+        "homePhone": "5550100081"
+      },
+      "lastName": "Tanaka",
+      "postCamp": false,
+      "emergency": {
+        "name": "Aiko Tanaka",
+        "cellPhone": "5550100082",
+        "homePhone": ""
+      },
+      "firstName": "Suki",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "57d4210a-6b51-4627-bb09-414d76bb2a8c",
+      "age": 13,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Patrick Brennan",
+        "cellPhone": "5550100083",
+        "homePhone": "5550100084"
+      },
+      "lastName": "Brennan",
+      "postCamp": false,
+      "emergency": {
+        "name": "Patrick Brennan",
+        "cellPhone": "5550100083",
+        "homePhone": ""
+      },
+      "firstName": "Sophia",
+      "secondary": {
+        "name": "Fiona Brennan",
+        "cellPhone": "5550100083",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "a2566194-6bfe-4456-94ab-3de684f4a820",
+      "age": 11,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Maria Solis",
+        "cellPhone": "5550100085",
+        "homePhone": "5550100085"
+      },
+      "lastName": "Solis",
+      "postCamp": false,
+      "emergency": {
+        "name": "Maria Solis",
+        "cellPhone": "5550100085",
+        "homePhone": ""
+      },
+      "firstName": "Zoe",
+      "secondary": {
+        "name": "Juan Solis",
+        "cellPhone": "5550100086",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "424ba725-61cb-4ea3-8b5f-af88fa71dc9e",
+      "age": 11,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Maria Solis",
+        "cellPhone": "5550100085",
+        "homePhone": "5550100085"
+      },
+      "lastName": "Solis",
+      "postCamp": false,
+      "emergency": {
+        "name": "Maria Solis",
+        "cellPhone": "5550100085",
+        "homePhone": ""
+      },
+      "firstName": "Ana",
+      "secondary": {
+        "name": "Juan Solis",
+        "cellPhone": "5550100086",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "e448c5f6-6794-42ec-8e36-94b3c0402269",
+      "age": 12,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Anna Petrov",
+        "cellPhone": "5550100087",
+        "homePhone": "5550100088"
+      },
+      "lastName": "Petrov",
+      "postCamp": false,
+      "emergency": {
+        "name": "Anna Petrov",
+        "cellPhone": "5550100087",
+        "homePhone": ""
+      },
+      "firstName": "Nadia",
+      "secondary": {
+        "name": "Boris Petrov",
+        "cellPhone": "5550100089",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "4c996538-c3da-42f8-a85e-e735284fb3c3",
+      "age": 11,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Yoko Fujita",
+        "cellPhone": "5550100070",
+        "homePhone": "5550100071"
+      },
+      "lastName": "Fujita",
+      "postCamp": false,
+      "emergency": {
+        "name": "Yoko Fujita",
+        "cellPhone": "5550100070",
+        "homePhone": ""
+      },
+      "firstName": "Kenji",
+      "secondary": {
+        "name": "Ken Fujita",
+        "cellPhone": "5550100072",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "2b402a03-49bc-438f-b139-462d16b07d31",
+      "age": 13,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Christine Donovan",
+        "cellPhone": "5550100090",
+        "homePhone": "5550100091"
+      },
+      "lastName": "Donovan",
+      "postCamp": false,
+      "emergency": {
+        "name": "Christine Donovan",
+        "cellPhone": "5550100090",
+        "homePhone": ""
+      },
+      "firstName": "Alex",
+      "secondary": {
+        "name": "Brian Donovan",
+        "cellPhone": "5550100092",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "severe dairy and beef allergies",
+      "specialRequest": "I assume we provide all our own food (lunch and snacks?) if there are snacks or special treats provided like ice cream please let me know so I can bring something for Alex"
+    },
+    {
+      "id": "9f536377-9842-487e-bf8b-db58e2b1dfdf",
+      "age": 13,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Amy Hendricks",
+        "cellPhone": "5550100093",
+        "homePhone": "5550100094"
+      },
+      "lastName": "Hendricks",
+      "postCamp": false,
+      "emergency": {
+        "name": "Dave Hendricks",
+        "cellPhone": "5550100095",
+        "homePhone": ""
+      },
+      "firstName": "Cole",
+      "secondary": {
+        "name": "Dave Hendricks",
+        "cellPhone": "5550100095",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "1db85270-16e7-4103-acdc-a67d159de951",
+      "age": 13,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": true,
+      "primary": {
+        "name": "Paula Webb",
+        "cellPhone": "5550100096",
+        "homePhone": "5550100097"
+      },
+      "lastName": "Webb",
+      "postCamp": true,
+      "emergency": {
+        "name": "Paula Webb",
+        "cellPhone": "5550100096",
+        "homePhone": ""
+      },
+      "firstName": "Marcus",
+      "secondary": {
+        "name": "Eric Webb",
+        "cellPhone": "5550100098",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "f141087c-ff2d-4c17-9ef4-5a1a5b991577",
+      "age": 13,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Donna Hartley",
+        "cellPhone": "5550100099",
+        "homePhone": "5550100100"
+      },
+      "lastName": "Hartley",
+      "postCamp": false,
+      "emergency": {
+        "name": "Donna Hartley",
+        "cellPhone": "5550100099",
+        "homePhone": ""
+      },
+      "firstName": "Bryce",
+      "secondary": {
+        "name": "Phil Hartley",
+        "cellPhone": "5550100099",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "a8279eac-b9f8-4db2-8fe4-84ac4e8fc2d2",
+      "age": 12,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Diane Shaw",
+        "cellPhone": "",
+        "homePhone": "5550100101"
+      },
+      "lastName": "Shaw",
+      "postCamp": false,
+      "emergency": {
+        "name": "Robert Shaw",
+        "cellPhone": "5550100102",
+        "homePhone": ""
+      },
+      "firstName": "Declan",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "cc8802ed-da6f-494e-942e-4acd25e91d2a",
+      "age": 7,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Marie Fontaine",
+        "cellPhone": "5550100103",
+        "homePhone": ""
+      },
+      "lastName": "Fontaine",
+      "postCamp": false,
+      "emergency": {
+        "name": "Marie Fontaine",
+        "cellPhone": "5550100103",
+        "homePhone": ""
+      },
+      "firstName": "Remy",
+      "secondary": {
+        "name": "Claude Fontaine",
+        "cellPhone": "5550100104",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "f2e23cd2-d254-4ae2-b1fd-db03ebb8a358",
+      "age": 5,
+      "photo": false,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Yuki Nakamura",
+        "cellPhone": "5550100002",
+        "homePhone": "5550100002"
+      },
+      "lastName": "Nakamura",
+      "postCamp": false,
+      "emergency": {
+        "name": "Taro Nakamura",
+        "cellPhone": "5550100003",
+        "homePhone": ""
+      },
+      "firstName": "Chloe",
+      "secondary": {
+        "name": "Taro Nakamura",
+        "cellPhone": "5550100003",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "572820b6-61af-4063-a86c-2873a1936e57",
+      "age": 8,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Rachel Calloway",
+        "cellPhone": "5550100105",
+        "homePhone": "5550100105"
+      },
+      "lastName": "Calloway",
+      "postCamp": false,
+      "emergency": {
+        "name": "Rachel Calloway",
+        "cellPhone": "5550100105",
+        "homePhone": ""
+      },
+      "firstName": "Jude",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "fc43287f-9b21-4fc8-8177-ae0c971dfb66",
+      "age": 8,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Patrick Callahan",
+        "cellPhone": "5550100009",
+        "homePhone": "5550100009"
+      },
+      "lastName": "Callahan",
+      "postCamp": false,
+      "emergency": {
+        "name": "Maeve Callahan",
+        "cellPhone": "5550100010",
+        "homePhone": ""
+      },
+      "firstName": "Brody",
+      "secondary": {
+        "name": "Maeve Callahan",
+        "cellPhone": "5550100010",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "87310ad7-92ab-40b7-81f1-75b34475130d",
+      "age": 8,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Ji-Yeon Park",
+        "cellPhone": "5550100007",
+        "homePhone": "5550100007"
+      },
+      "lastName": "Park",
+      "postCamp": false,
+      "emergency": {
+        "name": "Young-Suk Lee",
+        "cellPhone": "5550100008",
+        "homePhone": ""
+      },
+      "firstName": "Min-Jun",
+      "secondary": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "peanut and tree nut allergies",
+      "specialRequest": "please make sure he does not ingest peanuts or tree nuts."
+    },
+    {
+      "id": "5e071536-a211-43c5-8232-86c683a981a2",
+      "age": 3,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": true,
+      "primary": {
+        "name": "Sam Reyes",
+        "cellPhone": "",
+        "homePhone": "5550100106"
+      },
+      "lastName": "Reyes",
+      "postCamp": true,
+      "emergency": {
+        "name": "",
+        "cellPhone": "",
+        "homePhone": ""
+      },
+      "firstName": "Marco",
+      "secondary": {
+        "name": "Lucy Reyes",
+        "cellPhone": "",
+        "homePhone": "5550100107"
+      },
+      "tshirtSize": "Youth Small",
+      "medicalIssues": "",
+      "specialRequest": "He can sometimes want his mommy"
+    },
+    {
+      "id": "c043d6f7-f6be-4797-b548-5b8f276c26eb",
+      "age": 6,
+      "photo": true,
+      "gender": "male",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Nina Bauer",
+        "cellPhone": "5550100108",
+        "homePhone": "5550100108"
+      },
+      "lastName": "Bauer",
+      "postCamp": false,
+      "emergency": {
+        "name": "Tom Bauer",
+        "cellPhone": "",
+        "homePhone": "5550100110"
+      },
+      "firstName": "Lucas",
+      "secondary": {
+        "name": "Greta Bauer",
+        "cellPhone": "5550100109",
+        "homePhone": "5550100109"
+      },
+      "tshirtSize": "Youth Small",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "d45dc741-c0d4-4d96-8726-8961e4a529a4",
+      "age": 7,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Steve Hawkins",
+        "cellPhone": "5550100111",
+        "homePhone": "5550100112"
+      },
+      "lastName": "Hawkins",
+      "postCamp": false,
+      "emergency": {
+        "name": "Nick Torres",
+        "cellPhone": "5550100114",
+        "homePhone": "5550100114"
+      },
+      "firstName": "Ruby",
+      "secondary": {
+        "name": "Chris Hawkins",
+        "cellPhone": "5550100113",
+        "homePhone": "5550100113"
+      },
+      "tshirtSize": "Youth Small",
+      "medicalIssues": "",
+      "specialRequest": ""
+    },
+    {
+      "id": "f8f5731e-406e-413a-bea7-0de1d1dd51f3",
+      "age": 3,
+      "photo": true,
+      "gender": "female",
+      "custody": "Both",
+      "preCamp": false,
+      "primary": {
+        "name": "Steve Hawkins",
+        "cellPhone": "5550100115",
+        "homePhone": "5550100115"
+      },
+      "lastName": "Hawkins",
+      "postCamp": false,
+      "emergency": {
+        "name": "Sara Hawkins",
+        "cellPhone": "5550100117",
+        "homePhone": ""
+      },
+      "firstName": "Wren",
+      "secondary": {
+        "name": "Chris Hawkins",
+        "cellPhone": "5550100116",
+        "homePhone": ""
+      },
+      "tshirtSize": "",
+      "medicalIssues": "",
+      "specialRequest": ""
     }
   ],
   "registrations": [
     {
-      "campId": "c01",
-      "studentIds": ["s01", "s02", "s03", "s04", "s05", "s06", "s07", "s16", "s17", "s18", "s19", "s20", "s21", "s22", "s23", "s24", "s25", "s26", "s27", "s28"],
-      "friendGroups": [
-        ["s01", "s02", "s03"],
-        ["s19", "s20", "s21"]
-      ]
+      "campId": "ed129065-ea37-4314-8f82-885c6c487515",
+      "studentIds": [
+        "94ff769f-d9b9-4867-a473-bdb812cd14d4",
+        "81814b2c-954a-4df5-82f4-20d9b49ca8b7",
+        "002ffb0f-d705-4aa7-9f16-5ca9f0403d30",
+        "f6269616-a604-46f4-af04-8861bd7955fa",
+        "a8288b60-6e7d-47e8-ac9f-3ab143be2f81",
+        "7e35c673-3156-4191-a037-c49c4ec09bab",
+        "b920a7f5-1c63-4772-bb3f-d434c4ad7efc",
+        "384f4901-57df-4cd5-9aca-779308aa0ad4",
+        "75c4cafb-456b-43a9-b527-0ecb4d634720",
+        "0c3a0032-539a-4910-8916-2e15bf149bcf",
+        "cdc8be8a-bac5-4bca-ba82-8e0153669872",
+        "817f9dbb-b6da-40dc-a8b4-3442d8109e03",
+        "01471a4d-1daf-4103-81ad-b71b77527db9",
+        "5dbb934e-62c1-4539-adea-f91e8212e984",
+        "362fa058-c2d4-44a4-9c5c-adfb4577171b",
+        "fc6c4070-8643-4cde-bf9a-fa91f5d2ea58",
+        "9b6007ff-a872-4245-b5b8-c25bd2ab9b2a",
+        "d31b5d82-ce96-4e14-8ef2-0268e6ec4dbd",
+        "bf238e60-0739-4fcb-8976-31e745a28f98"
+      ],
+      "friendGroups": [["94ff769f-d9b9-4867-a473-bdb812cd14d4", "81814b2c-954a-4df5-82f4-20d9b49ca8b7"]]
     },
     {
-      "campId": "c02",
-      "studentIds": ["s08", "s09", "s10", "s11", "s12", "s13", "s14", "s15", "s17", "s18", "s22", "s23", "s24", "s25", "s26", "s27", "s28", "s29"],
-      "friendGroups": [
-        ["s08", "s09"],
-        ["s24", "s25", "s26"]
-      ]
-    },
-    {
-      "campId": "c03",
-      "studentIds": ["s01", "s04", "s07", "s10", "s13", "s16", "s19", "s22", "s25", "s28"],
+      "campId": "ef9c1bf6-ff07-426a-9562-b62b640601be",
+      "studentIds": [
+        "3bffa3f3-54f0-4b7d-ba79-60af9266ca07",
+        "616b8885-fcf8-4a4a-9e37-4985ee735784",
+        "1f627126-9416-4edb-af6f-ec2638c46b94",
+        "baa07967-b1da-4a60-bf2e-e79a22b2d658",
+        "1cc31674-2025-47c5-ac42-edb89d1266eb",
+        "ad2ea461-8dfd-49e5-8b23-b7612dc14bcb",
+        "64e98c71-cfb5-4eb6-8e1c-c34443198781",
+        "5e69720b-ce0a-4b65-a50b-0dccbba7ff7a",
+        "f51111fe-b021-42e4-9a82-7d270e7f3528",
+        "1733f695-8174-4a9b-a7ce-ed7b715d6d20"
+      ],
       "friendGroups": []
     },
     {
-      "campId": "c04",
-      "studentIds": ["s02", "s03", "s05", "s06", "s08", "s11", "s12", "s14", "s15", "s17", "s18", "s20", "s21", "s23", "s29", "s30"],
-      "friendGroups": [
-        ["s02", "s03"],
-        ["s29", "s30"]
-      ]
+      "campId": "ef923b6d-7b4e-47b2-887b-58df55aa23c3",
+      "studentIds": [
+        "d1aa55ea-4588-4d06-85f2-4eb5f941577f",
+        "0bdbfa6e-ce99-423f-9e0b-e721d58a4d20",
+        "84945b9f-2ea8-4aad-916d-98e56135c669",
+        "19e3a185-691d-4fd8-85e7-cc4bb3ef0b57",
+        "f2135a4f-505a-4d51-ba9d-75204d4f0c2c",
+        "dab21bac-34e4-4218-a38c-c39b3a553fb2",
+        "724b343a-f0ab-4132-a46f-f6f18b39655d",
+        "61793c2b-e5f5-4cf5-92a8-6eaf5bf0dd65",
+        "8f99bd1a-a700-4ebe-bd66-53462005c03e",
+        "5e071536-a211-43c5-8232-86c683a981a2"
+      ],
+      "friendGroups": [["f2135a4f-505a-4d51-ba9d-75204d4f0c2c", "724b343a-f0ab-4132-a46f-f6f18b39655d"]]
     },
     {
-      "campId": "c05",
-      "studentIds": ["s04", "s06", "s09", "s13", "s16", "s18", "s23", "s27", "s30"],
-      "friendGroups": [["s04", "s06", "s09"]]
+      "campId": "e776c20c-a8ca-403b-94b7-6cc2e6c6c20a",
+      "studentIds": [
+        "377c0f40-07d3-43e2-9487-7c720339c8f3",
+        "c8391064-b587-41ec-adeb-eb0746ecae95",
+        "db5d5588-8b16-4675-b567-dae58d487fef",
+        "ac1b2792-6982-4731-96dd-b554c69e7b7d",
+        "cb437481-582e-4787-98bd-bd04f41c6a6b",
+        "8aecd32a-cecd-4aa8-82ca-774217c4f3c7",
+        "a944195e-c6d4-4a76-8bf4-cb665321b1f0",
+        "c043d6f7-f6be-4797-b548-5b8f276c26eb",
+        "d45dc741-c0d4-4d96-8726-8961e4a529a4"
+      ],
+      "friendGroups": []
+    },
+    {
+      "campId": "c11c2d80-29ea-49d8-89f0-f3cfc08d2db7",
+      "studentIds": [
+        "5c566f9e-9270-42f0-bdb7-024d151d543b",
+        "0ca8d349-4568-4459-aa70-53d6b8292b96",
+        "0d1eec50-85bd-4dce-9f85-7ae85fb642a4",
+        "ee55453c-cb9d-478e-ac9a-5830f41361a2",
+        "f8f5731e-406e-413a-bea7-0de1d1dd51f3"
+      ],
+      "friendGroups": []
+    },
+    {
+      "campId": "7cb25a06-934e-40cd-9b8e-44063bee1450",
+      "studentIds": ["e3c21346-0de1-49d4-acfc-73b427092bde"],
+      "friendGroups": []
+    },
+    {
+      "campId": "c27871d8-7870-4f63-9512-b3fd32d38c00",
+      "studentIds": [
+        "57d4210a-6b51-4627-bb09-414d76bb2a8c",
+        "a2566194-6bfe-4456-94ab-3de684f4a820",
+        "424ba725-61cb-4ea3-8b5f-af88fa71dc9e",
+        "e448c5f6-6794-42ec-8e36-94b3c0402269",
+        "4c996538-c3da-42f8-a85e-e735284fb3c3",
+        "2b402a03-49bc-438f-b139-462d16b07d31",
+        "9f536377-9842-487e-bf8b-db58e2b1dfdf",
+        "1db85270-16e7-4103-acdc-a67d159de951",
+        "f141087c-ff2d-4c17-9ef4-5a1a5b991577",
+        "a8279eac-b9f8-4db2-8fe4-84ac4e8fc2d2"
+      ],
+      "friendGroups": []
+    },
+    {
+      "campId": "5bf56c38-1bad-4892-9d6c-1eef55f06e5a",
+      "studentIds": [
+        "cc8802ed-da6f-494e-942e-4acd25e91d2a",
+        "f2e23cd2-d254-4ae2-b1fd-db03ebb8a358",
+        "572820b6-61af-4063-a86c-2873a1936e57",
+        "fc43287f-9b21-4fc8-8177-ae0c971dfb66",
+        "87310ad7-92ab-40b7-81f1-75b34475130d"
+      ],
+      "friendGroups": []
     }
   ]
 }
