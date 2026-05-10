@@ -18,10 +18,12 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from '@tanstack/react-router';
 import { useLocation } from '@/contexts/LocationContext';
 import { ConfigDialog } from '@/components/config/ConfigDialog';
+import { supabase } from '@/services/supabaseClient';
 
 export function SettingsMenu() {
   const { location, locations, createLocation, deleteLocation } = useLocation();
@@ -80,6 +82,12 @@ export function SettingsMenu() {
     }
   };
 
+  const handleLogout = async () => {
+    setAnchorEl(null);
+    await supabase.auth.signOut();
+    navigate({ to: '/' });
+  };
+
   return (
     <>
       <IconButton color="inherit" onClick={(e) => setAnchorEl(e.currentTarget)} title="Settings" sx={{ display: { xs: 'none', md: 'block' } }}>
@@ -123,6 +131,13 @@ export function SettingsMenu() {
             <SettingsIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Settings" />
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon sx={{ minWidth: 32 }}>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
         </MenuItem>
       </Menu>
 
